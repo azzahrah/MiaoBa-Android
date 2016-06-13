@@ -30,12 +30,9 @@ public class LivePlayerActivity extends AbsActivity {
     int tsID;
     String outTsPath;
     SurfaceView sv;
-    EditText logText;
-    Boolean showLog, enableVideo;
     float srcWidth;
     float srcHeight;
     DisplayMetrics dm;
-    Button capBtn;
 
     private LiveInfo liveInfo;
 
@@ -44,9 +41,8 @@ public class LivePlayerActivity extends AbsActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         dm = getResources().getDisplayMetrics();
-
-        showLog = SharedUtils.getBoolean("enablePlayLog", false);
-        enableVideo = SharedUtils.getBoolean("enableVideo", false);
+        sv = (SurfaceView) findViewById(R.id.surfaceview1);
+        liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
 
         LivePlayer.init(this);
         LivePlayer.setDelegate(new LivePlayerDelegate() {
@@ -61,33 +57,7 @@ public class LivePlayerActivity extends AbsActivity {
             }
         });
 
-        sv = (SurfaceView) findViewById(R.id.surfaceview1);
-        capBtn = (Button) findViewById(R.id.play_cap_button);
-        capBtn.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String capFilePath = Environment.getExternalStorageDirectory().getPath() + "/play_cap.jpg";
-                if (LivePlayer.capturePicture(capFilePath)) {
-                    ToastUtils.show(mContext, "截图保存到 " + capFilePath);
-                } else {
-                    ToastUtils.show(mContext, "截图保存失败");
-                }
-            }
-        });
-
-        logText = (EditText) findViewById(R.id.editText3);
-        if (!showLog) {
-            logText.setVisibility(View.GONE);
-        }
-
-        liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
-
-        if (enableVideo) {
-            LivePlayer.setUIVIew(sv);
-        } else {
-            LivePlayer.setUIVIew(null);
-        }
+        LivePlayer.setUIVIew(sv);
 
         /**
          * 设置缓冲区时长，与flash编程时一样，可以设置2个值
@@ -122,7 +92,7 @@ public class LivePlayerActivity extends AbsActivity {
          */
         LivePlayer.subscribe(true);
 
-        String playUrl = "rtmp://cdn.nodemedia.cn/live/stream_" + liveInfo.userid;
+        String playUrl = "rtmp://cdn.nodemedia.cn/live/stream_"+ liveInfo.userid;
         //SharedUtils.getString("playUrl", "rtmp://play.nodemedia.cn/NodeMedia/stream");// 获取上一页设置的播放地址，非sdk方法
         /**
          * 开始播放
@@ -141,7 +111,6 @@ public class LivePlayerActivity extends AbsActivity {
 //					try {
 //						Thread.sleep(200);
 //					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
 //						e.printStackTrace();
 //					}
 //				}
@@ -195,36 +164,27 @@ public class LivePlayerActivity extends AbsActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            StringBuffer sb = new StringBuffer();
-            SimpleDateFormat sDateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
-            String sRecTime = sDateFormat.format(new java.util.Date());
-            sb.append(sRecTime);
-            sb.append(" - ");
-            sb.append(msg.getData().getString("msg"));
-            sb.append("\r\n");
-            logText.append(sb);
-
             switch (msg.what) {
                 case 1000:
-                    Toast.makeText(LivePlayerActivity.this, "正在连接视频", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LivePlayerActivity.this, "正在连接视频", Toast.LENGTH_SHORT).show();
                     break;
                 case 1001:
-                    Toast.makeText(LivePlayerActivity.this, "视频连接成功", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LivePlayerActivity.this, "视频连接成功", Toast.LENGTH_SHORT).show();
                     break;
                 case 1002:
-                    Toast.makeText(LivePlayerActivity.this, "视频连接失败", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LivePlayerActivity.this, "视频连接失败", Toast.LENGTH_SHORT).show();
                     //流地址不存在，或者本地网络无法和服务端通信，回调这里。5秒后重连， 可停止
                     //LivePlayer.stopPlay();
                     break;
                 case 1003:
-                    Toast.makeText(LivePlayerActivity.this, "视频开始重连", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LivePlayerActivity.this, "视频开始重连", Toast.LENGTH_SHORT).show();
                     //LivePlayer.stopPlay();    //自动重连总开关
                     break;
                 case 1004:
-                    Toast.makeText(LivePlayerActivity.this, "视频播放结束", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LivePlayerActivity.this, "视频播放结束", Toast.LENGTH_SHORT).show();
                     break;
                 case 1005:
-                    Toast.makeText(LivePlayerActivity.this, "网络异常,播放中断", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LivePlayerActivity.this, "网络异常,播放中断", Toast.LENGTH_SHORT).show();
                     //播放中途网络异常，回调这里。1秒后重连，如不需要，可停止
                     //LivePlayer.stopPlay();
                     break;
