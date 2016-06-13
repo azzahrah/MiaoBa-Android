@@ -94,7 +94,7 @@ public class ChatListView extends ListView {
         ViewGroup.LayoutParams layoutParams = headerView.getLayoutParams();
         layoutParams.height = isLoading ? loadingYDist : 1;
         headerView.setLayoutParams(layoutParams);
-        headerView.findViewById(R.id.chat_header_progress).setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        headerView.findViewById(R.id.loading_progress).setVisibility(isLoading ? View.VISIBLE : View.GONE);
         requestLayout();
     }
 
