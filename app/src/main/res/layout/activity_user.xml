@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/common_rect_match">
+
+    <LinearLayout
+        style="@style/common_rect_match"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/user_face_layout"
+            style="@style/common_rect_horizontal"
+            android:layout_marginBottom="@dimen/common_dp_24"
+            android:layout_marginTop="@dimen/common_dp_24"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="头像" />
+
+            <ImageView
+                android:id="@+id/user_face"
+                android:layout_width="@dimen/common_dp_36"
+                android:layout_height="@dimen/common_dp_36"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/default_head" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/user_name_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="昵称" />
+
+            <TextView
+                android:id="@+id/user_name"
+                style="@style/common_textview_black"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/common_dp_8"
+                android:drawableRight="@drawable/icon_arrow_gray_light"
+                android:text="@string/app_name"
+                android:textColor="@color/common_theme_light" />
+        </RelativeLayout>
+
+        <View
+            style="@style/common_line"
+            android:layout_marginLeft="@dimen/common_dp_16" />
+
+        <RelativeLayout
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="映客号" />
+
+            <TextView
+                android:id="@+id/user_leadid"
+                style="@style/common_textview_black"
+                android:layout_alignParentRight="true"
+                android:text="@string/app_name"
+                android:textColor="@color/common_theme_light" />
+        </RelativeLayout>
+
+        <View
+            style="@style/common_line"
+            android:layout_marginLeft="@dimen/common_dp_16" />
+
+        <RelativeLayout
+            android:id="@+id/user_sex_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="性别" />
+
+            <ImageView
+                android:id="@+id/user_sex"
+                style="@style/common_imageview"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/global_male" />
+        </RelativeLayout>
+
+        <View
+            style="@style/common_line"
+            android:layout_marginLeft="@dimen/common_dp_16" />
+
+        <RelativeLayout
+            android:id="@+id/user_autograph_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="个性签名" />
+
+            <ImageView
+                android:id="@+id/user_autograph"
+                style="@style/common_imageview"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_arrow_gray_light" />
+        </RelativeLayout>
+
+        <View
+            style="@style/common_line"
+            android:layout_marginLeft="@dimen/common_dp_16" />
+
+        <RelativeLayout
+            android:id="@+id/user_identity_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="身份信息" />
+
+            <ImageView
+                android:id="@+id/user_identity"
+                style="@style/common_imageview"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_arrow_gray_light" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/user_auth_layout"
+            style="@style/common_rect_horizontal"
+            android:layout_marginBottom="@dimen/common_dp_24"
+            android:layout_marginTop="@dimen/common_dp_24"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="认证" />
+
+            <TextView
+                android:id="@+id/user_auth"
+                style="@style/common_textview_gray"
+                android:layout_alignParentRight="true"
+                android:text="升级映客认证号" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/user_age_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="年龄" />
+
+            <TextView
+                android:id="@+id/user_age"
+                style="@style/common_textview_gray"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/common_dp_8"
+                android:drawableRight="@drawable/icon_arrow_gray_light"
+                android:text="你猜" />
+        </RelativeLayout>
+
+        <View
+            style="@style/common_line"
+            android:layout_marginLeft="@dimen/common_dp_16" />
+
+        <RelativeLayout
+            android:id="@+id/user_emotion_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="情感状态" />
+
+            <TextView
+                android:id="@+id/user_emotion"
+                style="@style/common_textview_gray"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/common_dp_8"
+                android:drawableRight="@drawable/icon_arrow_gray_light"
+                android:text="保密" />
+        </RelativeLayout>
+
+        <View
+            style="@style/common_line"
+            android:layout_marginLeft="@dimen/common_dp_16" />
+
+        <RelativeLayout
+            android:id="@+id/user_city_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="家乡" />
+
+            <TextView
+                android:id="@+id/user_city"
+                style="@style/common_textview_gray"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/common_dp_8"
+                android:drawableRight="@drawable/icon_arrow_gray_light"
+                android:text="火星" />
+        </RelativeLayout>
+
+        <View
+            style="@style/common_line"
+            android:layout_marginLeft="@dimen/common_dp_16" />
+
+        <RelativeLayout
+            android:id="@+id/user_occupation_layout"
+            style="@style/common_rect_horizontal"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="职业" />
+
+            <TextView
+                android:id="@+id/user_occupation"
+                style="@style/common_textview_gray"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/common_dp_8"
+                android:drawableRight="@drawable/icon_arrow_gray_light"
+                android:text="主播" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/user_weibo_layout"
+            style="@style/common_rect_horizontal"
+            android:layout_marginBottom="@dimen/common_dp_24"
+            android:layout_marginTop="@dimen/common_dp_24"
+            android:background="@drawable/common_background"
+            android:paddingLeft="@dimen/common_dp_16"
+            android:paddingRight="@dimen/common_dp_16">
+
+            <TextView
+                style="@style/common_textview_black"
+                android:drawableLeft="@drawable/icon_sinaweibo"
+                android:drawablePadding="@dimen/common_dp_8"
+                android:paddingBottom="@dimen/common_dp_20"
+                android:paddingTop="@dimen/common_dp_20"
+                android:text="新浪微博" />
+
+            <TextView
+                android:id="@+id/user_weibo"
+                style="@style/common_button_theme_pie"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="绑定" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

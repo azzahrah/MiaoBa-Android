@@ -1,0 +1,239 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--</style>-->
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--<item name="colorPrimaryDark">@android:color/white</item>-->
+    </style>
+
+    <style name="common_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_dp_1</item>
+        <item name="android:background">@color/line_divider</item>
+    </style>
+
+    <style name="common_vertical_line" parent="common_line">
+        <item name="android:layout_width">@dimen/common_dp_1</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="common_dotted_line" parent="common_line">
+        <item name="android:background">@drawable/dotted_line</item>
+        <item name="android:layerType">software</item>
+    </style>
+
+    <style name="common_listview" parent="common_rect_match">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <!-- 阻止list项变黑色 -->
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <!-- 设置list项点击颜色 -->
+        <item name="android:listSelector">@android:color/transparent</item>
+        <!-- 设置list项 上边和下边无黑色的阴影 -->
+        <item name="android:fadingEdge">none</item>
+        <!-- 设置滚动条的自动隐藏和显示 -->
+        <item name="android:fadeScrollbars">false</item>
+        <!-- 设置滚动条的隐藏 -->
+        <item name="android:scrollbars">none</item>
+        <!-- 设置滚动到底部模式 -->
+        <!--<item name="android:overScrollMode">never</item>-->
+        <!--List分割线-->
+        <item name="android:divider">@color/line_divider</item>
+        <!--List分割线高度-->
+        <item name="android:dividerHeight">@dimen/common_dp_1</item>
+    </style>
+
+    <style name="common_textview" parent="common_rect_wrap">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="common_textview_black_big" parent="common_textview">
+        <item name="android:textSize">@dimen/common_sp_18</item>
+        <item name="android:textColor">@color/common_black_light</item>
+    </style>
+
+    <style name="common_textview_black" parent="common_textview_black_big">
+        <item name="android:textSize">@dimen/common_sp_16</item>
+    </style>
+
+    <style name="common_textview_black_small" parent="common_textview_black_big">
+        <item name="android:textSize">@dimen/common_sp_14</item>
+    </style>
+
+    <style name="common_textview_black_dark_big" parent="common_textview_black_big">
+        <item name="android:textColor">@color/common_black_dark</item>
+    </style>
+
+    <style name="common_textview_black_drak" parent="common_textview_black_big">
+        <item name="android:textSize">@dimen/common_sp_16</item>
+    </style>
+
+    <style name="common_textview_black_dark_small" parent="common_textview_black_dark_big">
+        <item name="android:textSize">@dimen/common_sp_14</item>
+    </style>
+
+    <style name="common_textview_white_big" parent="common_textview_black_big">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="common_textview_white" parent="common_textview_white_big">
+        <item name="android:textSize">@dimen/common_sp_16</item>
+    </style>
+
+    <style name="common_textview_white_small" parent="common_textview_white_big">
+        <item name="android:textSize">@dimen/common_sp_14</item>
+    </style>
+
+    <style name="common_textview_gray_big" parent="common_textview_black_big">
+        <item name="android:textColor">@color/common_gray_dark</item>
+    </style>
+
+    <style name="common_textview_gray" parent="common_textview_gray_big">
+        <item name="android:textSize">@dimen/common_sp_16</item>
+    </style>
+
+    <style name="common_textview_gray_small" parent="common_textview_gray_big">
+        <item name="android:textSize">@dimen/common_sp_14</item>
+    </style>
+
+    <style name="common_textview_gray_mini" parent="common_textview_gray_big">
+        <item name="android:textSize">@dimen/common_sp_12</item>
+    </style>
+
+    <style name="common_edittext" parent="common_rect_horizontal">
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textSize">@dimen/common_sp_14</item>
+        <item name="android:textColor">@color/common_black_light</item>
+        <item name="android:textColorHint">@color/common_gray_light</item>
+    </style>
+
+    <style name="common_edittext_less" parent="common_edittext">
+        <item name="android:maxLength">50</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:paddingBottom">@dimen/common_dp_12</item>
+        <item name="android:paddingLeft">@dimen/common_dp_16</item>
+        <item name="android:paddingRight">@dimen/common_dp_16</item>
+        <item name="android:paddingTop">@dimen/common_dp_12</item>
+    </style>
+
+    <style name="common_edit_user" parent="common_edittext">
+        <item name="android:textSize">@dimen/common_sp_18</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingBottom">@dimen/common_dp_12</item>
+        <item name="android:paddingRight">@dimen/common_dp_4</item>
+        <item name="android:paddingTop">@dimen/common_dp_12</item>
+        <item name="android:paddingLeft">@dimen/common_dp_4</item>
+    </style>
+
+    <style name="common_edit_phone" parent="common_edit_user">
+        <item name="android:maxLength">11</item>
+        <item name="android:inputType">number</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/common_round_rect_line_gray_light</item>
+    </style>
+
+    <style name="common_edit_captcha" parent="common_edit_user">
+        <item name="android:maxLength">4</item>
+        <item name="android:inputType">number</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/common_round_rect_line_gray_light</item>
+    </style>
+
+    <style name="common_edit_password" parent="common_edit_user">
+        <item name="android:maxLength">18</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:digits">
+            1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_
+        </item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:password">true</item>
+    </style>
+
+    <style name="common_imageview" parent="common_rect_wrap">
+        <item name="android:contentDescription">@string/app_name</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="common_button" parent="common_rect_horizontal">
+        <item name="android:paddingLeft">@dimen/common_dp_12</item>
+        <item name="android:paddingRight">@dimen/common_dp_12</item>
+        <item name="android:paddingTop">@dimen/common_dp_12</item>
+        <item name="android:paddingBottom">@dimen/common_dp_12</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/common_sp_18</item>
+    </style>
+
+    <style name="common_button_theme_pie" parent="common_button">
+        <item name="android:background">@drawable/common_round_rect_pie_theme</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="common_button_theme_line" parent="common_button">
+        <item name="android:background">@drawable/common_round_rect_line_theme</item>
+        <item name="android:textColor">@color/common_theme_light</item>
+    </style>
+
+    <!--<style name="common_button_white" parent="common_button">-->
+    <!--<item name="android:background">@drawable/common_round_rect_pie_white</item>-->
+    <!--<item name="android:textColor">@android:color/black</item>-->
+    <!--</style>-->
+
+    <!--<style name="common_button_gray_dark" parent="common_button">-->
+    <!--<item name="android:background">@drawable/common_round_rect_pie_gray_dark</item>-->
+    <!--<item name="android:textColor">@android:color/white</item>-->
+    <!--</style>-->
+    <!---->
+    <!--<style name="common_button_red" parent="common_button">-->
+    <!--<item name="android:background">@drawable/common_round_rect_pie_red</item>-->
+    <!--<item name="android:textColor">@android:color/white</item>-->
+    <!--</style>-->
+
+
+    <style name="common_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <!--内容背景 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--窗口背景透明 -->
+        <item name="android:windowFrame">@null</item>
+        <!--边框 -->
+        <item name="android:windowNoTitle">true</item>
+        <!--无标题 -->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--半透明 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--模糊 -->
+        <item name="android:backgroundDimAmount">0.6</item>
+        <!--半透明背景灰度 -->
+        <!--<item name="android:windowAnimationStyle">@style/dialog_anim</item>-->
+        <!--动画-->
+    </style>
+
+    <style name="anim_dialog" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/view_in_alpha</item>
+        <item name="android:windowExitAnimation">@anim/view_out_alpha</item>
+    </style>
+
+    <style name="anim_dialogactivity" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/view_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/view_out_to_bottom</item>
+    </style>
+
+    <style name="anim_popup" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/head_in</item>
+        <item name="android:windowExitAnimation">@anim/head_out</item>
+    </style>
+
+</resources>

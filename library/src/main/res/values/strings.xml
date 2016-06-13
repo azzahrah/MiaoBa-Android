@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">library</string>
+
+    <string name="refresh_header_hint_normal">下拉刷新</string>
+    <string name="refresh_header_hint_ready">释放刷新</string>
+    <string name="refresh_succeed">刷新成功</string>
+    <string name="refresh_fail">刷新失败</string>
+    <string name="refreshing">刷新中…</string>
+    <string name="refresh_footer_hint_normal">上拉更多</string>
+    <string name="refresh_footer_hint_ready">释放加载</string>
+    <string name="load_succeed">加载成功</string>
+    <string name="load_fail">加载失败</string>
+    <string name="loading">加载中…</string>
+
+    <string name="scan_tips">将二维码图片对准扫描框即可自动扫描</string>
+</resources>

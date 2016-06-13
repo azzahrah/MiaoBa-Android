@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string-array name="genders">
+        <item>保密</item>
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+
+    <string-array name="paytype">
+        <item>alipay</item>
+        <item>wxpay</item>
+        <item>unionpay</item>
+        <!--<item>local</item>-->
+    </string-array>
+
+</resources>

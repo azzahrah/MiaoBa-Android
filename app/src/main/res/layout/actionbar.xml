@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/common_rect_match"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/actionbar_layout"
+        style="@style/common_rect_horizontal"
+        android:background="@color/common_theme_light"
+        android:paddingLeft="@dimen/common_dp_8"
+        android:paddingRight="@dimen/common_dp_8">
+
+        <ImageView
+            android:id="@+id/actionbar_back"
+            style="@style/common_imageview"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/common_dp_16"
+            android:src="@drawable/actionbar_back" />
+
+        <TextView
+            android:id="@+id/actionbar_title"
+            style="@style/common_textview_white_big"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/common_dp_72"
+            android:layout_marginRight="@dimen/common_dp_72"
+            android:text="@string/app_name" />
+
+        <LinearLayout
+            android:id="@+id/actionbar_menu"
+            style="@style/common_rect_horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/actionbar_back"
+            android:gravity="center_vertical|right"
+            android:orientation="horizontal"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/common_rect_match">
+
+        <FrameLayout
+            android:id="@+id/actionbar_content"
+            style="@style/common_rect_match"
+            android:background="@color/background_white_pressed" />
+
+        <LinearLayout
+            android:id="@+id/loading_layout"
+            style="@style/common_rect_match"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/loading"
+                style="@style/common_imageview" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
+

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_me"
+    style="@style/common_rect_match"
+    android:background="#F0F0F0">
+
+    <LinearLayout
+        style="@style/common_rect_match"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/common_rect_horizontal"
+            android:background="@color/common_theme_light"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/common_dp_8">
+
+            <ImageView
+                android:id="@+id/user_face"
+                style="@style/common_imageview"
+                android:src="@drawable/default_head" />
+
+            <TextView
+                android:id="@+id/user_leadid"
+                style="@style/common_textview_white"
+                android:layout_marginTop="@dimen/common_dp_8"
+                android:text="映客号:12345578" />
+
+            <LinearLayout
+                style="@style/common_rect_wrap"
+                android:layout_marginTop="@dimen/common_dp_8"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    style="@style/common_textview_white"
+                    android:layout_marginRight="@dimen/common_dp_4"
+                    android:text="Bining" />
+
+                <ImageView
+                    android:id="@+id/user_sex"
+                    style="@style/common_imageview"
+                    android:layout_marginRight="@dimen/common_dp_4"
+                    android:src="@drawable/global_female" />
+
+                <ImageView
+                    android:id="@+id/user_rank"
+                    style="@style/common_imageview"
+                    android:layout_marginRight="@dimen/common_dp_4"
+                    android:src="@drawable/rank_1" />
+
+                <ImageView
+                    android:id="@+id/user_info_edit"
+                    style="@style/common_imageview"
+                    android:src="@drawable/inke_btn_me_edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/user_social"
+                style="@style/common_textview_white"
+                android:layout_marginTop="@dimen/common_dp_8"
+                android:text="关注 0  |  粉丝 0" />
+
+            <TextView
+                android:id="@+id/user_autograph"
+                style="@style/common_textview_white"
+                android:layout_marginTop="@dimen/common_dp_8"
+                android:text="Ta好像忘记写签名了..." />
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/common_rect_horizontal"
+            android:layout_marginTop="@dimen/common_dp_4">
+
+            <RelativeLayout
+                android:id="@+id/user_live"
+                style="@style/common_rect_wrap"
+                android:layout_weight="1"
+                android:background="@color/common_white_dark">
+
+                <ImageView
+                    android:id="@+id/user_live_icon"
+                    style="@style/common_imageview"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/common_dp_30"
+                    android:src="@drawable/icon_my_live" />
+
+                <TextView
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_live_icon"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:text="直播" />
+
+                <TextView
+                    android:id="@+id/user_live_text"
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_live_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:text="0个" />
+            </RelativeLayout>
+
+            <View
+                style="@style/common_vertical_line"
+                android:layout_width="@dimen/common_dp_4"
+                android:background="#F0F0F0" />
+
+            <RelativeLayout
+                android:id="@+id/user_level"
+                style="@style/common_rect_wrap"
+                android:layout_weight="1"
+                android:background="@color/common_white_dark">
+
+                <ImageView
+                    android:id="@+id/user_level_icon"
+                    style="@style/common_imageview"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/common_dp_30"
+                    android:src="@drawable/icon_my_level" />
+
+                <TextView
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_level_icon"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:text="等级" />
+
+                <TextView
+                    android:id="@+id/user_level_text"
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_level_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:text="1级" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_gain"
+            style="@style/common_rect_horizontal"
+            android:layout_marginTop="@dimen/common_dp_4">
+
+            <RelativeLayout
+                style="@style/common_rect_wrap"
+                android:layout_weight="1"
+                android:background="@color/common_white_dark">
+
+                <ImageView
+                    android:id="@+id/user_gain_icon"
+                    style="@style/common_imageview"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/common_dp_30"
+                    android:src="@drawable/icon_my_gain" />
+
+                <TextView
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_gain_icon"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:text="收益" />
+
+                <TextView
+                    android:id="@+id/user_gain_text"
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_gain_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:text="0" />
+            </RelativeLayout>
+
+            <View
+                style="@style/common_vertical_line"
+                android:layout_width="@dimen/common_dp_4"
+                android:background="#F0F0F0" />
+
+            <RelativeLayout
+                android:id="@+id/user_account"
+                style="@style/common_rect_wrap"
+                android:layout_weight="1"
+                android:background="@color/common_white_dark">
+
+                <ImageView
+                    android:id="@+id/user_account_icon"
+                    style="@style/common_imageview"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/common_dp_30"
+                    android:src="@drawable/icon_my_account" />
+
+                <TextView
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_account_icon"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:text="账户" />
+
+                <TextView
+                    android:id="@+id/user_account_text"
+                    style="@style/common_textview_gray"
+                    android:layout_alignBottom="@+id/user_account_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="@dimen/common_dp_8"
+                    android:drawableRight="@drawable/icon_my_account_diamond"
+                    android:text="0" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_ticket"
+            style="@style/common_rect_horizontal"
+            android:layout_marginTop="@dimen/common_dp_8"
+            android:background="@color/common_white_dark"
+            android:gravity="center_vertical"
+            android:padding="@dimen/common_dp_8">
+
+            <TextView
+                style="@style/common_textview_gray"
+                android:layout_weight="1"
+                android:text="映票贡献榜" />
+
+            <ImageView
+                android:id="@+id/user_ticket_champion"
+                style="@style/common_imageview"
+                android:layout_marginRight="@dimen/common_dp_8"
+                android:src="@drawable/me_qiuzhan" />
+
+            <ImageView
+                android:id="@+id/user_ticket_runnerup"
+                style="@style/common_imageview"
+                android:layout_marginRight="@dimen/common_dp_8"
+                android:src="@drawable/me_qiuzhan" />
+
+            <ImageView
+                android:id="@+id/user_ticket_third"
+                style="@style/common_imageview"
+                android:layout_marginRight="@dimen/common_dp_8"
+                android:src="@drawable/me_qiuzhan" />
+
+            <ImageView
+                style="@style/common_imageview"
+                android:src="@drawable/me_next" />
+        </LinearLayout>
+
+        <View
+            style="@style/common_line"
+            android:background="#F0F0F0" />
+
+        <LinearLayout
+            android:id="@+id/user_auth"
+            style="@style/common_rect_horizontal"
+            android:background="@color/common_white_dark"
+            android:gravity="center_vertical"
+            android:padding="@dimen/common_dp_8">
+
+            <TextView
+                style="@style/common_textview_gray"
+                android:layout_weight="1"
+                android:text="认证" />
+
+            <ImageView
+                style="@style/common_imageview"
+                android:src="@drawable/me_qiuzhan"
+                android:visibility="invisible" />
+
+            <TextView
+                style="@style/common_textview_gray"
+                android:text="升级映客认证号" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_setting"
+            style="@style/common_rect_horizontal"
+            android:layout_marginBottom="@dimen/common_dp_16"
+            android:layout_marginTop="@dimen/common_dp_8"
+            android:background="@color/common_white_dark"
+            android:gravity="center_vertical"
+            android:padding="@dimen/common_dp_8">
+
+            <TextView
+                style="@style/common_textview_gray"
+                android:layout_weight="1"
+                android:text="设置" />
+
+            <ImageView
+                style="@style/common_imageview"
+                android:src="@drawable/me_qiuzhan"
+                android:visibility="invisible" />
+
+            <ImageView
+                style="@style/common_imageview"
+                android:src="@drawable/me_next" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
