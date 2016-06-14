@@ -1,11 +1,8 @@
 package cn.nodemedia.leadlive.utils;
 
-import android.support.annotation.Nullable;
-
 import com.alibaba.fastjson.JSON;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.callback.AbsCallback;
-import com.lzy.okhttputils.callback.StringCallback;
 import com.lzy.okhttputils.model.HttpParams;
 
 import java.util.Map;
@@ -14,8 +11,6 @@ import java.util.TreeMap;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.library.utils.Log;
 import cn.nodemedia.library.utils.MD5;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * 网络接口
@@ -47,19 +42,14 @@ public class HttpUtils {
      *
      * @param userid 登陆用户ID
      */
-    public static void getUserInfo(int userid) {
+    public static void getUserInfo(int userid, AbsCallback callback) {
         TreeMap<String, Object> sortMap = new TreeMap<>(new MapKeyComparator());
         sortMap.put("userid", userid);
 
         OkHttpUtils.get(Constants.HTTP_USERINFO_GET) // 请求方式和请求url
                 .tag(Constants.HTTP_USERINFO_GET) // 请求的 tag, 主要用于取消对应的请求
                 .params(getHttpParams(sortMap))
-                .execute(new StringCallback() {
-                    @Override
-                    public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-
-                    }
-                });
+                .execute(callback);
     }
 
     /**
@@ -80,7 +70,7 @@ public class HttpUtils {
      *               -- occupation 职业
      * @param val    修改值
      */
-    public static void postUserInfo(int userid, String key, String val) {
+    public static void postUserInfo(int userid, String key, String val, AbsCallback callback) {
         TreeMap<String, Object> sortMap = new TreeMap<>(new MapKeyComparator());
         sortMap.put("userid", userid);
         sortMap.put("key", key);
@@ -89,12 +79,7 @@ public class HttpUtils {
         OkHttpUtils.post(Constants.HTTP_USERINFO_POST) // 请求方式和请求url
                 .tag(Constants.HTTP_USERINFO_POST) // 请求的 tag, 主要用于取消对应的请求
                 .params(getHttpParams(sortMap))
-                .execute(new StringCallback() {
-                    @Override
-                    public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-
-                    }
-                });
+                .execute(callback);
     }
 
     /**
@@ -107,7 +92,7 @@ public class HttpUtils {
      * @param minid   数据标识ID
      * @param gettype 获取类型 follow 关注列表 fans粉丝列表
      */
-    public static void getFollowList(int userid, int type, int minid, String gettype) {
+    public static void getFollowList(int userid, int type, int minid, String gettype, AbsCallback callback) {
         TreeMap<String, Object> sortMap = new TreeMap<>(new MapKeyComparator());
         sortMap.put("userid", userid);
         sortMap.put("type", type);
@@ -117,12 +102,7 @@ public class HttpUtils {
         OkHttpUtils.get(Constants.HTTP_FOLLOW_GET) // 请求方式和请求url
                 .tag(Constants.HTTP_FOLLOW_GET) // 请求的 tag, 主要用于取消对应的请求
                 .params(getHttpParams(sortMap))
-                .execute(new StringCallback() {
-                    @Override
-                    public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-
-                    }
-                });
+                .execute(callback);
     }
 
     /**
@@ -131,7 +111,7 @@ public class HttpUtils {
      * @param userid   登陆用户ID
      * @param followid 被关注用户ID
      */
-    public static void postFollow(int userid, int followid) {
+    public static void postFollow(int userid, int followid, AbsCallback callback) {
         TreeMap<String, Object> sortMap = new TreeMap<>(new MapKeyComparator());
         sortMap.put("userid", userid);
         sortMap.put("followid", followid);
@@ -139,12 +119,7 @@ public class HttpUtils {
         OkHttpUtils.post(Constants.HTTP_FOLLOW_POST) // 请求方式和请求url
                 .tag(Constants.HTTP_FOLLOW_POST) // 请求的 tag, 主要用于取消对应的请求
                 .params(getHttpParams(sortMap))
-                .execute(new StringCallback() {
-                    @Override
-                    public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-
-                    }
-                });
+                .execute(callback);
     }
 
     /**

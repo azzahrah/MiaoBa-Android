@@ -2,48 +2,67 @@ package cn.nodemedia.leadlive.view;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
+import android.support.annotation.Nullable;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import java.text.SimpleDateFormat;
+import com.alibaba.fastjson.JSON;
+import com.lzy.okhttputils.callback.StringCallback;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.nodemedia.LivePlayer;
 import cn.nodemedia.LivePlayer.LivePlayerDelegate;
+import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
+import cn.nodemedia.leadlive.utils.HttpUtils;
+import cn.nodemedia.library.bean.Abs;
+import cn.nodemedia.library.utils.ScreenUtils;
 import cn.nodemedia.library.utils.SharedUtils;
 import cn.nodemedia.library.utils.ToastUtils;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class LivePlayerActivity extends AbsActivity {
 
-    // LinearLayout liner0;
-    boolean isPlaying;
-    int tsID;
-    String outTsPath;
-    SurfaceView sv;
-    float srcWidth;
-    float srcHeight;
-    DisplayMetrics dm;
+    @InjectView(R.id.player_surfacev)
+    SurfaceView playerSurfacev;
+    @InjectView(R.id.player_follow)
+    ImageView playerFollow;
 
+    private int userid;
     private LiveInfo liveInfo;
+    private float srcWidth;
+    private float srcHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        dm = getResources().getDisplayMetrics();
-        sv = (SurfaceView) findViewById(R.id.surfaceview1);
-        liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
+        ButterKnife.inject(this);
 
+        if (savedInstanceState != null) {
+            liveInfo = (LiveInfo) savedInstanceState.getSerializable("p0");
+        } else {
+            liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
+        }
+
+        initView();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("p0", liveInfo);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void initView() {
         LivePlayer.init(this);
         LivePlayer.setDelegate(new LivePlayerDelegate() {
             @Override
@@ -57,7 +76,7 @@ public class LivePlayerActivity extends AbsActivity {
             }
         });
 
-        LivePlayer.setUIVIew(sv);
+        LivePlayer.setUIVIew(playerSurfacev);
 
         /**
          * 设置缓冲区时长，与flash编程时一样，可以设置2个值
@@ -92,7 +111,7 @@ public class LivePlayerActivity extends AbsActivity {
          */
         LivePlayer.subscribe(true);
 
-        String playUrl = "rtmp://cdn.nodemedia.cn/live/stream_"+ liveInfo.userid;
+        String playUrl = "rtmp://cdn.nodemedia.cn/live/stream_" + liveInfo.userid;
         //SharedUtils.getString("playUrl", "rtmp://play.nodemedia.cn/NodeMedia/stream");// 获取上一页设置的播放地址，非sdk方法
         /**
          * 开始播放
@@ -103,7 +122,7 @@ public class LivePlayerActivity extends AbsActivity {
          * Demo调试用例，每200毫秒获取一次缓冲时长 单位毫秒
          */
 //		new Thread(new Runnable() {
-//			
+//
 //			@Override
 //			public void run() {
 //				while(!LivePlayerActivity.this.isFinishing()) {
@@ -116,8 +135,42 @@ public class LivePlayerActivity extends AbsActivity {
 //				}
 //			}
 //		}).start();
-//				
+//
+        userid = SharedUtils.getInt(Constants.USEROPENID, 0);
+        if (liveInfo.is_follow) {
+            playerFollow.setImageResource(R.drawable.me_yiguanzhu);
+        } else {
+            playerFollow.setImageResource(R.drawable.me_guanzhu);
+        }
+    }
 
+    @OnClick({R.id.player_follow})
+    public void onClick(View v) {
+        if (!isCanClick(v)) return;
+        switch (v.getId()) {
+            case R.id.player_follow:
+                HttpUtils.postFollow(userid, liveInfo.liveid, new StringCallback() {
+                    @Override
+                    public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
+                        Abs abs = JSON.parseObject(s, Abs.class);
+                        if (abs.isSuccess()) {
+                            liveInfo.is_follow = !liveInfo.is_follow;
+                            if (liveInfo.is_follow) {
+                                playerFollow.setImageResource(R.drawable.me_yiguanzhu);
+                            } else {
+                                playerFollow.setImageResource(R.drawable.me_guanzhu);
+                            }
+                        } else {
+                            if (liveInfo.is_follow) {
+                                ToastUtils.show(mActivity, "取消关注失败.");
+                            } else {
+                                ToastUtils.show(mActivity, "关注失败.");
+                            }
+                        }
+                    }
+                });
+                break;
+        }
     }
 
     @Override
@@ -140,8 +193,8 @@ public class LivePlayerActivity extends AbsActivity {
      * 视频画面高宽等比缩放，此SDK——demo 取屏幕高宽做最大高宽缩放
      */
     private void doVideoFix() {
-        float maxWidth = dm.widthPixels;
-        float maxHeight = dm.heightPixels;
+        float maxWidth = ScreenUtils.getScreenWidth();
+        float maxHeight = ScreenUtils.getScreenHeight();
         float fixWidth;
         float fixHeight;
         if (srcWidth / srcHeight <= maxWidth / maxHeight) {
@@ -151,11 +204,11 @@ public class LivePlayerActivity extends AbsActivity {
             fixWidth = maxWidth;
             fixHeight = srcHeight * maxWidth / srcWidth;
         }
-        ViewGroup.LayoutParams lp = sv.getLayoutParams();
+        ViewGroup.LayoutParams lp = playerSurfacev.getLayoutParams();
         lp.width = (int) fixWidth;
         lp.height = (int) fixHeight;
 
-        sv.setLayoutParams(lp);
+        playerSurfacev.setLayoutParams(lp);
     }
 
     private Handler handler = new Handler() {

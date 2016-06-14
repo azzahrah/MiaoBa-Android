@@ -12,11 +12,14 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.lzy.okhttputils.callback.StringCallback;
 
+import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.nodemedia.LivePublisher;
 import cn.nodemedia.LivePublisher.LivePublishDelegate;
 import cn.nodemedia.leadlive.Constants;
@@ -29,14 +32,24 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class LivePublisherActivity extends Activity implements OnClickListener, LivePublishDelegate {
-    private SurfaceView sv;
-    private Button micBtn, swtBtn, videoBtn, flashBtn, camBtn;
+
+    @InjectView(R.id.publisher_surface)
+    SurfaceView publisherSurface;
+    @InjectView(R.id.publisher_mic)
+    Button publisherMic;
+    @InjectView(R.id.publisher_sw)
+    Button publisherSw;
+    @InjectView(R.id.publisher_video)
+    Button publisherVideo;
+    @InjectView(R.id.publisher_cam)
+    Button publisherCam;
+    @InjectView(R.id.publisher_flash)
+    Button publisherFlash;
+
     private boolean isStarting = false;
     private boolean isMicOn = true;
     private boolean isCamOn = true;
     private boolean isFlsOn = true;
-
-    private Button capBtn;
 
     private int liveId;
     private int userId;
@@ -46,20 +59,6 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publisher);
         isStarting = false;
-        sv = (SurfaceView) findViewById(R.id.cameraView);
-        micBtn = (Button) findViewById(R.id.button_mic);
-        swtBtn = (Button) findViewById(R.id.button_sw);
-        videoBtn = (Button) findViewById(R.id.button_video);
-        flashBtn = (Button) findViewById(R.id.button_flash);
-        camBtn = (Button) findViewById(R.id.button_cam);
-        capBtn = (Button) findViewById(R.id.pub_cap_button);
-
-        micBtn.setOnClickListener(this);
-        swtBtn.setOnClickListener(this);
-        videoBtn.setOnClickListener(this);
-        flashBtn.setOnClickListener(this);
-        camBtn.setOnClickListener(this);
-        capBtn.setOnClickListener(this);
 
         LivePublisher.init(this); // 1.初始化
         LivePublisher.setDelegate(this); // 2.设置事件回调
@@ -88,12 +87,15 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
          * interfaceOrientation ： 程序界面的方向，也做调整摄像头旋转度数的参数， camId：
          * 摄像头初始id，LivePublisher.CAMERA_BACK 后置，LivePublisher.CAMERA_FRONT 前置
          */
-        LivePublisher.startPreview(sv, getWindowManager().getDefaultDisplay().getRotation(), LivePublisher.CAMERA_FRONT); // 5.开始预览
+        LivePublisher.startPreview(publisherSurface, getWindowManager().getDefaultDisplay().getRotation(), LivePublisher.CAMERA_FRONT); // 5.开始预览
         // 如果传null
         // 则只发布音频
+
+        userId = SharedUtils.getInt(Constants.USEROPENID, 0);
     }
 
     @Override
+
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // 注意：如果你的业务方案需求只做单一方向的视频直播，可以不处理这段
@@ -122,16 +124,10 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LivePublisher.stopPreview();
-        LivePublisher.stopPublish();
-    }
-
-    @Override
+    @OnClick({R.id.publisher_mic, R.id.publisher_sw, R.id.publisher_video, R.id.publisher_cam, R.id.publisher_flash, R.id.publisher_cap})
     public void onClick(View arg0) {
         switch (arg0.getId()) {
-            case R.id.pub_cap_button:
+            case R.id.publisher_cap:
                 String capFilePath = Environment.getExternalStorageDirectory().getPath() + "/pub_cap.jpg";
                 if (LivePublisher.capturePicture(capFilePath)) {
                     Toast.makeText(LivePublisherActivity.this, "截图保存到 " + capFilePath, Toast.LENGTH_SHORT).show();
@@ -140,7 +136,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                 }
 
                 break;
-            case R.id.button_mic:
+            case R.id.publisher_mic:
                 if (isStarting) {
                     isMicOn = !isMicOn;
                     LivePublisher.setMicEnable(isMicOn); // 设置是否打开麦克风
@@ -151,13 +147,13 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                     }
                 }
                 break;
-            case R.id.button_sw:
+            case R.id.publisher_sw:
                 LivePublisher.switchCamera();// 切换前后摄像头
                 LivePublisher.setFlashEnable(false);// 关闭闪光灯,前置不支持闪光灯
                 isFlsOn = false;
-                flashBtn.setBackgroundResource(R.drawable.ic_flash_off);
+                publisherFlash.setBackgroundResource(R.drawable.ic_flash_off);
                 break;
-            case R.id.button_video:
+            case R.id.publisher_video:
                 if (isStarting) {
                     HttpUtils.delLive(liveId, userId, new StringCallback() {
                         @Override
@@ -171,7 +167,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                         }
                     });
                 } else {
-                    userId = SharedUtils.getInt(Constants.USEROPENID, 0);
+
                     HttpUtils.postLive(userId, "重庆市", "我是Android直播测试", new StringCallback() {
                         @Override
                         public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
@@ -210,7 +206,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                     });
                 }
                 break;
-            case R.id.button_flash:
+            case R.id.publisher_flash:
                 int ret = -1;
                 if (isFlsOn) {
                     ret = LivePublisher.setFlashEnable(false);
@@ -221,15 +217,15 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                     // 无闪光灯,或处于前置摄像头,不支持闪光灯操作
                 } else if (ret == 0) {
                     // 闪光灯被关闭
-                    flashBtn.setBackgroundResource(R.drawable.ic_flash_off);
+                    publisherFlash.setBackgroundResource(R.drawable.ic_flash_off);
                     isFlsOn = false;
                 } else {
                     // 闪光灯被打开
-                    flashBtn.setBackgroundResource(R.drawable.ic_flash_on);
+                    publisherFlash.setBackgroundResource(R.drawable.ic_flash_on);
                     isFlsOn = true;
                 }
                 break;
-            case R.id.button_cam:
+            case R.id.publisher_cam:
                 if (isStarting) {
                     isCamOn = !isCamOn;
                     LivePublisher.setCamEnable(isCamOn);
@@ -261,7 +257,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                     break;
                 case 2001:
                     Toast.makeText(LivePublisherActivity.this, "视频发布成功", Toast.LENGTH_SHORT).show();
-                    videoBtn.setBackgroundResource(R.drawable.ic_video_start);
+                    publisherVideo.setBackgroundResource(R.drawable.ic_video_start);
                     isStarting = true;
                     break;
                 case 2002:
@@ -269,7 +265,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                     break;
                 case 2004:
                     Toast.makeText(LivePublisherActivity.this, "视频发布结束", Toast.LENGTH_SHORT).show();
-                    videoBtn.setBackgroundResource(R.drawable.ic_video_stop);
+                    publisherVideo.setBackgroundResource(R.drawable.ic_video_stop);
                     isStarting = false;
                     break;
                 case 2005:
@@ -285,22 +281,22 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                     break;
                 case 3100:
                     // mic off
-                    micBtn.setBackgroundResource(R.drawable.ic_mic_off);
+                    publisherMic.setBackgroundResource(R.drawable.ic_mic_off);
                     Toast.makeText(LivePublisherActivity.this, "麦克风静音", Toast.LENGTH_SHORT).show();
                     break;
                 case 3101:
                     // mic on
-                    micBtn.setBackgroundResource(R.drawable.ic_mic_on);
+                    publisherMic.setBackgroundResource(R.drawable.ic_mic_on);
                     Toast.makeText(LivePublisherActivity.this, "麦克风恢复", Toast.LENGTH_SHORT).show();
                     break;
                 case 3102:
                     // camera off
-                    camBtn.setBackgroundResource(R.drawable.ic_cam_off);
+                    publisherCam.setBackgroundResource(R.drawable.ic_cam_off);
                     Toast.makeText(LivePublisherActivity.this, "摄像头传输关闭", Toast.LENGTH_SHORT).show();
                     break;
                 case 3103:
                     // camera on
-                    camBtn.setBackgroundResource(R.drawable.ic_cam_on);
+                    publisherCam.setBackgroundResource(R.drawable.ic_cam_on);
                     Toast.makeText(LivePublisherActivity.this, "摄像头传输打开", Toast.LENGTH_SHORT).show();
                     break;
                 default:
@@ -309,4 +305,10 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LivePublisher.stopPreview();
+        LivePublisher.stopPublish();
+    }
 }

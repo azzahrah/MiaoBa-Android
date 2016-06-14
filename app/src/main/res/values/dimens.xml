@@ -17,6 +17,7 @@
     <dimen name="common_dp_28">28dp</dimen>
     <dimen name="common_dp_30">30dp</dimen>
     <dimen name="common_dp_36">36dp</dimen>
+    <dimen name="common_dp_42">42dp</dimen>
     <dimen name="common_dp_48">48dp</dimen>
     <dimen name="common_dp_52">52dp</dimen>
     <dimen name="common_dp_60">60dp</dimen>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_actionbar"
     style="@style/common_rect_horizontal"
     android:background="@color/common_theme_light"
     android:paddingLeft="@dimen/common_dp_8"
@@ -10,7 +9,7 @@
         android:id="@+id/main_chat"
         style="@style/common_imageview"
         android:layout_centerVertical="true"
-        android:padding="@dimen/common_dp_16"
+        android:padding="@dimen/common_dp_12"
         android:src="@drawable/actionbar_chat" />
 
     <ImageView
@@ -18,7 +17,7 @@
         style="@style/common_imageview"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:padding="@dimen/common_dp_16"
+        android:padding="@dimen/common_dp_12"
         android:src="@drawable/actionbar_search" />
 
     <TextView
@@ -26,26 +25,27 @@
         style="@style/common_textview_white_small"
         android:layout_centerInParent="true"
         android:drawableLeft="@drawable/me_harvest_exchange"
-        android:text="@string/app_name"
+        android:drawablePadding="@dimen/common_dp_4"
+        android:text="送出 0"
         android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/main_live_tab"
         style="@style/common_rect_wrap"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/common_dp_48"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             style="@style/common_rect_wrap"
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/live_follow"
                 style="@style/common_rect_wrap"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -56,19 +56,12 @@
                     android:paddingRight="@dimen/common_dp_12"
                     android:text="关注" />
 
-                <ImageView
-                    android:id="@+id/live_follow_icon"
-                    style="@style/common_imageview"
-                    android:layout_marginTop="@dimen/common_dp_2"
-                    android:src="@drawable/home_icn_drop_down"
-                    android:visibility="invisible" />
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/live_hot"
                 style="@style/common_rect_wrap"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -83,16 +76,16 @@
                 <ImageView
                     android:id="@+id/live_hot_icon"
                     style="@style/common_imageview"
-                    android:layout_marginTop="@dimen/common_dp_2"
+                    android:layout_below="@+id/live_hot_text"
+                    android:layout_centerHorizontal="true"
                     android:src="@drawable/home_icn_drop_down"
                     android:visibility="visible" />
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/live_new"
                 style="@style/common_rect_wrap"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -102,14 +95,7 @@
                     android:paddingLeft="@dimen/common_dp_12"
                     android:paddingRight="@dimen/common_dp_12"
                     android:text="最新" />
-
-                <ImageView
-                    android:id="@+id/live_new_icon"
-                    style="@style/common_imageview"
-                    android:layout_marginTop="@dimen/common_dp_2"
-                    android:src="@drawable/home_icn_drop_down"
-                    android:visibility="invisible" />
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <View

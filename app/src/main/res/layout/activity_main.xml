@@ -1,64 +1,54 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match">
 
-    <include layout="@layout/layout_main_actionbar" />
-
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/main_content"
         style="@style/common_rect_match"
-        android:layout_below="@+id/main_actionbar"
-        android:layout_marginBottom="@dimen/common_dp_48">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/main_live_viewpager"
-            style="@style/common_rect_match" />
-
-        <include layout="@layout/layout_main_me" />
-    </RelativeLayout>
+        android:layout_marginBottom="@dimen/common_dp_48" />
 
     <LinearLayout
         style="@style/common_rect_horizontal"
         android:layout_alignParentBottom="true"
         android:background="@drawable/tab_bg"
-        android:paddingBottom="@dimen/common_dp_8"
-        android:paddingTop="@dimen/common_dp_8">
+        android:gravity="center">
 
         <LinearLayout
             android:id="@+id/main_tab_live"
-            style="@style/common_rect_wrap"
-            android:layout_height="@dimen/common_dp_48"
+            style="@style/common_rect_match"
+            android:layout_marginTop="@dimen/common_dp_4"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/main_tab_live_icon"
                 style="@style/common_imageview"
-                android:src="@drawable/tab_live" />
+                android:src="@drawable/main_live" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/main_tab_room"
-            style="@style/common_rect_wrap"
-            android:layout_height="@dimen/common_dp_48"
+            style="@style/common_rect_match"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:padding="@dimen/common_dp_4">
 
             <ImageView
                 android:id="@+id/main_tab_room_icon"
                 style="@style/common_imageview"
-                android:src="@drawable/tab_room" />
+                android:src="@drawable/main_room" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/main_tab_me"
-            style="@style/common_rect_wrap"
-            android:layout_height="@dimen/common_dp_48"
+            style="@style/common_rect_match"
+            android:layout_marginTop="@dimen/common_dp_4"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/main_tab_me_icon"
                 style="@style/common_imageview"
-                android:src="@drawable/tab_me" />
+                android:src="@drawable/main_user" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

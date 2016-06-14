@@ -17,5 +17,6 @@ public class LiveInfo implements Serializable {
     public String faces;//头像
     public String userid;//用户ID（预留）
     public String images;//直播封面图
+    public boolean is_follow;//是否关注
 
 }

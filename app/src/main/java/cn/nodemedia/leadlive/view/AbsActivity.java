@@ -11,6 +11,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import cn.nodemedia.leadlive.MyApplication;
 import cn.nodemedia.leadlive.R;
@@ -179,7 +181,9 @@ public abstract class AbsActivity extends FragmentActivity {
      *
      * @param eventBusInfo
      */
-    public void onEventMainThread(EventBusInfo eventBusInfo) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSubEvent(EventBusInfo eventBusInfo) {
+        Log.e("onSubEvent>>title: " + eventBusInfo.getTitle() + " data: " + eventBusInfo.getData());
     }
 
     /**

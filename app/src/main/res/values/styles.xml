@@ -118,36 +118,38 @@
         <item name="android:textColorHint">@color/common_gray_light</item>
     </style>
 
-    <style name="common_edittext_less" parent="common_edittext">
-        <item name="android:maxLength">50</item>
+    <style name="common_edittext_more" parent="common_edittext">
+        <item name="android:maxLength">32</item>
         <item name="android:singleLine">false</item>
-        <item name="android:paddingBottom">@dimen/common_dp_12</item>
-        <item name="android:paddingLeft">@dimen/common_dp_16</item>
-        <item name="android:paddingRight">@dimen/common_dp_16</item>
-        <item name="android:paddingTop">@dimen/common_dp_12</item>
+        <item name="android:gravity">start</item>
+        <item name="android:paddingBottom">@dimen/common_dp_8</item>
+        <item name="android:paddingRight">@dimen/common_dp_4</item>
+        <item name="android:paddingTop">@dimen/common_dp_8</item>
+        <item name="android:paddingLeft">@dimen/common_dp_4</item>
+        <item name="android:background">@drawable/common_edit_white_background</item>
     </style>
 
     <style name="common_edit_user" parent="common_edittext">
         <item name="android:textSize">@dimen/common_sp_18</item>
-        <item name="android:background">@null</item>
-        <item name="android:paddingBottom">@dimen/common_dp_12</item>
+        <item name="android:paddingBottom">@dimen/common_dp_8</item>
         <item name="android:paddingRight">@dimen/common_dp_4</item>
-        <item name="android:paddingTop">@dimen/common_dp_12</item>
+        <item name="android:paddingTop">@dimen/common_dp_8</item>
         <item name="android:paddingLeft">@dimen/common_dp_4</item>
+        <item name="android:background">@drawable/common_edit_white_background</item>
     </style>
 
     <style name="common_edit_phone" parent="common_edit_user">
         <item name="android:maxLength">11</item>
         <item name="android:inputType">number</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/common_round_rect_line_gray_light</item>
+        <item name="android:background">@drawable/common_edit_line_gray_background</item>
     </style>
 
     <style name="common_edit_captcha" parent="common_edit_user">
         <item name="android:maxLength">4</item>
         <item name="android:inputType">number</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/common_round_rect_line_gray_light</item>
+        <item name="android:background">@drawable/common_edit_line_gray_background</item>
     </style>
 
     <style name="common_edit_password" parent="common_edit_user">
@@ -158,6 +160,7 @@
         </item>
         <item name="android:inputType">textPassword</item>
         <item name="android:password">true</item>
+        <item name="android:background">@null</item>
     </style>
 
     <style name="common_imageview" parent="common_rect_wrap">
@@ -168,10 +171,10 @@
     <style name="common_button" parent="common_rect_horizontal">
         <item name="android:paddingLeft">@dimen/common_dp_12</item>
         <item name="android:paddingRight">@dimen/common_dp_12</item>
-        <item name="android:paddingTop">@dimen/common_dp_12</item>
-        <item name="android:paddingBottom">@dimen/common_dp_12</item>
+        <item name="android:paddingTop">@dimen/common_dp_8</item>
+        <item name="android:paddingBottom">@dimen/common_dp_8</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/common_sp_18</item>
+        <item name="android:textSize">@dimen/common_sp_16</item>
     </style>
 
     <style name="common_button_theme_pie" parent="common_button">
@@ -198,7 +201,6 @@
     <!--<item name="android:background">@drawable/common_round_rect_pie_red</item>-->
     <!--<item name="android:textColor">@android:color/white</item>-->
     <!--</style>-->
-
 
     <style name="common_dialog" parent="android:style/Theme.Dialog">
         <item name="android:background">@android:color/transparent</item>
@@ -234,6 +236,36 @@
     <style name="anim_popup" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/head_in</item>
         <item name="android:windowExitAnimation">@anim/head_out</item>
+    </style>
+
+    <style name="user_property_key" parent="common_rect_wrap">
+        <item name="android:paddingBottom">@dimen/common_dp_16</item>
+        <item name="android:paddingTop">@dimen/common_dp_16</item>
+        <item name="android:paddingLeft">@dimen/common_dp_16</item>
+        <item name="android:paddingRight">@dimen/common_dp_16</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/common_black_light</item>
+        <item name="android:textSize">@dimen/common_sp_14</item>
+        <item name="android:text">@string/app_no</item>
+    </style>
+
+    <style name="user_property_value" parent="user_property_key">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/common_background</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:drawablePadding">@dimen/common_dp_8</item>
+        <item name="android:drawableRight">@drawable/icon_arrow_gray_light</item>
+        <item name="android:textColor">@color/common_gray_dark</item>
+        <item name="android:text">@string/not_set</item>
+    </style>
+
+    <style name="user_property_image" parent="common_imageview">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">@dimen/common_dp_16</item>
     </style>
 
 </resources>

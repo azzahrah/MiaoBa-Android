@@ -9,9 +9,7 @@
         <cn.nodemedia.library.widget.pulltorefresh.PullableListView
             android:id="@+id/live_follow_list"
             style="@style/common_listview"
-            android:dividerHeight="@dimen/common_dp_0"
-            android:layout_weight="1" />
-
+            android:layout_weight="1"
+            android:dividerHeight="@dimen/common_dp_0" />
     </cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView>
-
 </RelativeLayout>

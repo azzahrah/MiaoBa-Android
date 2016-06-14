@@ -36,7 +36,6 @@ public class LoginWayActivity extends AbsActionbarActivity {
         setContentView(R.layout.activity_login_way);
         ButterKnife.inject(this);
         hasActionBar(View.GONE);
-
     }
 
     @OnClick({R.id.login_way_qq, R.id.login_way_wx, R.id.login_way_xl, R.id.login_way_phone})

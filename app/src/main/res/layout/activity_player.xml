@@ -1,13 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#000000">
+    android:background="@color/common_black_dark">
 
     <SurfaceView
-        android:id="@+id/surfaceview1"
+        android:id="@+id/player_surfacev"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 
+    <ImageView
+        android:id="@+id/player_follow"
+        style="@style/common_rect_wrap"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/common_dp_16"
+        android:src="@drawable/me_guanzhu" />
 
 </RelativeLayout>

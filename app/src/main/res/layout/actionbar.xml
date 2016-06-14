@@ -14,7 +14,7 @@
             android:id="@+id/actionbar_back"
             style="@style/common_imageview"
             android:layout_centerVertical="true"
-            android:padding="@dimen/common_dp_16"
+            android:padding="@dimen/common_dp_12"
             android:src="@drawable/actionbar_back" />
 
         <TextView

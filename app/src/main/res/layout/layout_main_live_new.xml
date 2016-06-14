@@ -11,7 +11,5 @@
             style="@style/common_listview"
             android:layout_weight="1"
             android:dividerHeight="@dimen/common_dp_0" />
-
     </cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView>
-
 </RelativeLayout>
