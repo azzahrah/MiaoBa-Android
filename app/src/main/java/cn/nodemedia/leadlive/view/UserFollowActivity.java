@@ -3,6 +3,7 @@ package cn.nodemedia.leadlive.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -47,6 +48,7 @@ public class UserFollowActivity extends AbsActionbarActivity {
     private int page = 0;
     private int minid = 0;
     private UserAdapter userAdapter;
+    private FollowInfo followInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class UserFollowActivity extends AbsActionbarActivity {
             public void onRefresh(PullToRefreshView pullToRefreshLayout) {
                 page = 1;
                 if (userAdapter.getCount() > 0) {
-                    minid = userAdapter.getItem(0).userid;
+                    minid = userAdapter.getItem(0).id;
                 } else {
                     minid = 0;
                 }
@@ -76,7 +78,7 @@ public class UserFollowActivity extends AbsActionbarActivity {
             public void onLoadMore(PullToRefreshView pullToRefreshLayout) {
                 page++;
                 if (userAdapter.getCount() > 0) {
-                    minid = userAdapter.getItem(userAdapter.getCount() - 1).userid;
+                    minid = userAdapter.getItem(userAdapter.getCount() - 1).id;
                 } else {
                     minid = 0;
                 }
@@ -130,27 +132,41 @@ public class UserFollowActivity extends AbsActionbarActivity {
             ImageView userAuth = viewHolderHelper.getView(R.id.user_auth);
             TextView userName = viewHolderHelper.getView(R.id.user_name);
             TextView userInfo = viewHolderHelper.getView(R.id.user_info);
-
             ImageView userSex = viewHolderHelper.getView(R.id.user_sex);
             ImageView userRank = viewHolderHelper.getView(R.id.user_rank);
-            //ImageView userFollow = viewHolderHelper.getView(R.id.user_follow);
+            ImageView userFollow = viewHolderHelper.getView(R.id.user_follow);
 
             viewHolderHelper.setOnItemChildClickListener(this);
             viewHolderHelper.setItemChildClickListener(R.id.user_follow);
 
             Glide.with(mContext).load(model.faces).asBitmap().error(R.drawable.default_head).transform(new GlideCircleTransform(mContext)).into(userFace);
-
             userAuth.setImageResource(R.drawable.global_xing_1);
-
             userName.setText(model.nickname);
-            userInfo.setText("Ta很懒,什么介绍都没写...");
+            userInfo.setText(TextUtils.isEmpty(model.autograph) ? "Ta很懒,什么介绍都没写..." : model.autograph);
             userSex.setImageResource(model.sex == 2 ? R.drawable.global_female : R.drawable.global_male);
             userRank.setImageResource(R.drawable.rank_1);
-
+            userFollow.setImageResource(model.is_follow ? R.drawable.me_following : R.drawable.me_follow);
         }
 
         @Override
         public void onItemChildClick(View v, int position) {
+            followInfo = getItem(position);
+            HttpUtils.postFollow(userid, followInfo.userid, new StringCallback() {
+                @Override
+                public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
+                    Abs abs = JSON.parseObject(s, Abs.class);
+                    if (abs.isSuccess()) {
+                        followInfo.is_follow = !followInfo.is_follow;
+                        notifyDataSetChanged();
+                    } else {
+                        if (followInfo.is_follow) {
+                            ToastUtils.show(mActivity, "取消关注失败.");
+                        } else {
+                            ToastUtils.show(mActivity, "关注失败.");
+                        }
+                    }
+                }
+            });
         }
     }
 }

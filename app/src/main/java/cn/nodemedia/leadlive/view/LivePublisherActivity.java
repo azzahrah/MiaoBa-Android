@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.lzy.okhttputils.callback.StringCallback;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.LivePublisher;
@@ -45,6 +46,8 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
     Button publisherCam;
     @InjectView(R.id.publisher_flash)
     Button publisherFlash;
+    @InjectView(R.id.publisher_cap)
+    ImageView publisherCap;
 
     private boolean isStarting = false;
     private boolean isMicOn = true;
@@ -58,6 +61,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publisher);
+        ButterKnife.inject(this);
         isStarting = false;
 
         LivePublisher.init(this); // 1.初始化
@@ -167,7 +171,6 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                         }
                     });
                 } else {
-
                     HttpUtils.postLive(userId, "重庆市", "我是Android直播测试", new StringCallback() {
                         @Override
                         public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
@@ -308,6 +311,13 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (isStarting) {
+            HttpUtils.delLive(liveId, userId, new StringCallback() {
+                @Override
+                public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
+                }
+            });
+        }
         LivePublisher.stopPreview();
         LivePublisher.stopPublish();
     }
