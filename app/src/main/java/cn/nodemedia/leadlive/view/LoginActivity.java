@@ -15,7 +15,7 @@ import cn.nodemedia.library.widget.DrawableEditText;
  * 登陆界面
  * Created by Bining.
  */
-public class LoginActivity extends ActionbarActivity<LoginPresenter> implements LoginContract.View, View.OnClickListener {
+public class LoginActivity extends ActionbarActivity<LoginContract.Presenter> implements LoginContract.View, View.OnClickListener {
 
     @InjectView(R.id.phone)
     DrawableEditText phone;

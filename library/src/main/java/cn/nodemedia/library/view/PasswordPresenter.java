@@ -1,18 +1,12 @@
-package cn.nodemedia.leadlive.view;
+package cn.nodemedia.library.view;
 
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.view.BasePresenter;
-import cn.nodemedia.library.view.BaseView;
+import cn.nodemedia.library.R;
 
-public class PasswordPresenter<T extends BaseView> extends BasePresenter<T> {
-
-    @Override
-    public void onStart() {
-    }
+public abstract class PasswordPresenter<T extends BaseView> extends BasePresenter<T> {
 
     /**
      * 控制密码的显示隐藏
