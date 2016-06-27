@@ -405,7 +405,7 @@ public class SlideView extends RelativeLayout implements Runnable, OnPageChangeL
         public Object instantiateItem(View arg0, int arg1) {
             arg1 %= size;
             ImageView imageView = new ImageView(context);
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            //imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setOnClickListener(SlideView.this);
             if (urls != null) {

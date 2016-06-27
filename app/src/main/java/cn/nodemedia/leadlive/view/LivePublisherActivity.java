@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.View;
@@ -15,8 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.lzy.okhttputils.callback.StringCallback;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,12 +24,7 @@ import cn.nodemedia.LivePublisher;
 import cn.nodemedia.LivePublisher.LivePublishDelegate;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.bean.Abs;
 import cn.nodemedia.library.utils.SharedUtils;
-import cn.nodemedia.library.utils.ToastUtils;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class LivePublisherActivity extends Activity implements OnClickListener, LivePublishDelegate {
 
@@ -54,7 +48,6 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
     private boolean isCamOn = true;
     private boolean isFlsOn = true;
 
-    private int liveId;
     private int userId;
 
     @Override
@@ -159,54 +152,37 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                 break;
             case R.id.publisher_video:
                 if (isStarting) {
-                    HttpUtils.delLive(liveId, userId, new StringCallback() {
-                        @Override
-                        public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-                            Abs abs = JSON.parseObject(s, Abs.class);
-                            if (abs.isSuccess()) {
-                                LivePublisher.stopPublish();// 停止发布
-                            } else {
-                                ToastUtils.show(LivePublisherActivity.this, abs.getMsg());
-                            }
-                        }
-                    });
+                    LivePublisher.stopPublish();// 停止发布
                 } else {
-                    HttpUtils.postLive(userId, "重庆市", "我是Android直播测试", new StringCallback() {
-                        @Override
-                        public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-                            Abs abs = JSON.parseObject(s, Abs.class);
-                            if (abs.isSuccess()) {
-                                liveId = Integer.parseInt(abs.result);
+                    /**
+                     * 设置视频发布的方向，此方法为可选，如果不调用，则输出视频方向跟随界面方向，如果特定指出视频方向，
+                     * 在startPublish前调用设置 videoOrientation ： 视频方向 VIDEO_ORI_PORTRAIT
+                     * home键在 下 的 9:16 竖屏方向 VIDEO_ORI_LANDSCAPE home键在 右 的 16:9 横屏方向
+                     * VIDEO_ORI_PORTRAIT_REVERSE home键在 上 的 9:16 竖屏方向
+                     * VIDEO_ORI_LANDSCAPE_REVERSE home键在 左 的 16:9 横屏方向
+                     */
+                    // LivePublisher.setVideoOrientation(LivePublisher.VIDEO_ORI_PORTRAIT);
 
-                                /**
-                                 * 设置视频发布的方向，此方法为可选，如果不调用，则输出视频方向跟随界面方向，如果特定指出视频方向，
-                                 * 在startPublish前调用设置 videoOrientation ： 视频方向 VIDEO_ORI_PORTRAIT
-                                 * home键在 下 的 9:16 竖屏方向 VIDEO_ORI_LANDSCAPE home键在 右 的 16:9 横屏方向
-                                 * VIDEO_ORI_PORTRAIT_REVERSE home键在 上 的 9:16 竖屏方向
-                                 * VIDEO_ORI_LANDSCAPE_REVERSE home键在 左 的 16:9 横屏方向
-                                 */
-                                // LivePublisher.setVideoOrientation(LivePublisher.VIDEO_ORI_PORTRAIT);
+                    /**
+                     * 设置发布模式
+                     * 参考 rtmp_specification_1.0.pdf 7.2.2.6. publish
+                     * LivePublisher。PUBLISH_TYPE_LIVE			'live' 发布类型
+                     * LivePublisher。PUBLISH_TYPE_RECORD		'record' 发布类型
+                     * LivePublisher。PUBLISH_TYPE_APPEND		'append' 发布类型
+                     */
+                    // LivePublisher.setPublishType(LivePublisher.PUBLISH_TYPE_RECORD); //
 
-                                /**
-                                 * 设置发布模式
-                                 * 参考 rtmp_specification_1.0.pdf 7.2.2.6. publish
-                                 * LivePublisher。PUBLISH_TYPE_LIVE			'live' 发布类型
-                                 * LivePublisher。PUBLISH_TYPE_RECORD		'record' 发布类型
-                                 * LivePublisher。PUBLISH_TYPE_APPEND		'append' 发布类型
-                                 */
-                                // LivePublisher.setPublishType(LivePublisher.PUBLISH_TYPE_RECORD); //
+                    /**
+                     * 开始视频发布 rtmpUrl rtmp流地址
+                     */
+                    String pubUrl = "rtmp://alpush.nodemedia.cn/live/stream_" + SharedUtils.getInt(Constants.USEROPENID, 0) + "?vhost=cdn.nodemedia.cn&userid=" + userId + "&location=" + "重庆市" + "&title=" + "我是Android直播测试" + userId;
+                    //SharedUtils.getString("pubUrl", "rtmp://pub.nodemedia.cn/NodeMedia/stream_" + Math.round((Math.random() * 1000 + 1000))));
 
-                                /**
-                                 * 开始视频发布 rtmpUrl rtmp流地址
-                                 */
-                                String pubUrl = "rtmp://live.nodemedia.cn/live/stream_" + SharedUtils.getInt(Constants.USEROPENID, 0) + "?vhost=cdn.nodemedia.cn";
-                                //SharedUtils.getString("pubUrl", "rtmp://pub.nodemedia.cn/NodeMedia/stream_" + Math.round((Math.random() * 1000 + 1000))));
-                                LivePublisher.startPublish(pubUrl);
-                            } else {
-                                ToastUtils.show(LivePublisherActivity.this, abs.getMsg());
-                            }
-                        }
-                    });
+                    try {
+                        LivePublisher.startPublish(URLEncoder.encode(pubUrl, "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case R.id.publisher_flash:
@@ -311,13 +287,6 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (isStarting) {
-            HttpUtils.delLive(liveId, userId, new StringCallback() {
-                @Override
-                public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-                }
-            });
-        }
         LivePublisher.stopPreview();
         LivePublisher.stopPublish();
     }

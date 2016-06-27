@@ -1,9 +1,5 @@
 package cn.nodemedia.leadlive.view;
 
-import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,12 +8,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
+import cn.nodemedia.library.view.BaseActivity;
 
 /**
  * 登陆方式选择
  * Created by Bining.
  */
-public class LoginWayActivity extends AbsActionbarActivity {
+public class LoginWayActivity extends BaseActivity {
 
     @InjectView(R.id.login_way_qq)
     ImageView loginWayQq;
@@ -31,11 +28,17 @@ public class LoginWayActivity extends AbsActionbarActivity {
     TextView loginWayProtocol;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_way);
+    public int getLayoutId() {
+        return R.layout.activity_login_way;
+    }
+
+    @Override
+    public void initView() {
         ButterKnife.inject(this);
-        hasActionBar(View.GONE);
+    }
+
+    @Override
+    public void initPresenter() {
     }
 
     @OnClick({R.id.login_way_qq, R.id.login_way_wx, R.id.login_way_xl, R.id.login_way_phone})
@@ -55,9 +58,5 @@ public class LoginWayActivity extends AbsActionbarActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }
 

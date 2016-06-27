@@ -3,7 +3,6 @@ package cn.nodemedia.leadlive.view.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Spannable;
@@ -22,9 +21,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.lzy.okhttputils.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,22 +32,21 @@ import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.leadlive.view.AbsActivity;
 import cn.nodemedia.leadlive.view.LivePlayerActivity;
 import cn.nodemedia.library.adapter.AdapterViewAdapter;
 import cn.nodemedia.library.adapter.OnItemChildClickListener;
 import cn.nodemedia.library.adapter.ViewHolderHelper;
 import cn.nodemedia.library.adapter.ViewPagerAdapter;
-import cn.nodemedia.library.bean.Abs;
-import cn.nodemedia.library.bean.EventBusInfo;
+import cn.nodemedia.library.bean.AbsL;
 import cn.nodemedia.library.glide.GlideCircleTransform;
 import cn.nodemedia.library.utils.ScreenUtils;
 import cn.nodemedia.library.utils.ToastUtils;
 import cn.nodemedia.library.widget.SlideView;
 import cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView;
 import cn.nodemedia.library.widget.pulltorefresh.PullableListView;
-import okhttp3.Request;
-import okhttp3.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * 首页
@@ -171,7 +167,7 @@ public class HomeFragment extends AbsActionbarFragment {
         liveFollowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((AbsActivity) mActivity).StartActivity(LivePlayerActivity.class, liveFollowAdapter.getItem(i));
+                mActivity.StartActivity(LivePlayerActivity.class, liveFollowAdapter.getItem(i));
             }
         });
         liveFollowAdapter = new LiveAdapter(mActivity, 0);
@@ -183,9 +179,9 @@ public class HomeFragment extends AbsActionbarFragment {
     }
 
     private void getLiveFollowList() {
-        HttpUtils.getLiveList(2, liveFollowPage, new StringCallback() {
+        HttpUtils.getLiveList(2, liveFollowPage).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsL<LiveInfo>>() {
             @Override
-            public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
+            public void call(AbsL<LiveInfo> liveInfoAbsL) {
                 if (liveFollowPage == 1) {
                     liveFollowPulltorefresh.refreshFinish(true);
                     liveFollowAdapter.clearDatas();
@@ -193,14 +189,12 @@ public class HomeFragment extends AbsActionbarFragment {
                     liveFollowPulltorefresh.loadmoreFinish(true);
                 }
 
-                Abs abs = JSON.parseObject(s, Abs.class);
-                if (abs.isSuccess()) {
-                    List<LiveInfo> liveInfoList = JSON.parseArray(abs.result, LiveInfo.class);
-                    liveFollowAdapter.addDatas(liveInfoList);
-                    liveFollowPulltorefresh.setPullLoadEnable(liveInfoList != null && liveInfoList.size() == 20);
+                if (liveInfoAbsL.isSuccess()) {
+                    liveFollowAdapter.addDatas(liveInfoAbsL.result);
+                    liveFollowPulltorefresh.setPullLoadEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
                 } else {
                     liveFollowAdapter.notifyDataSetChanged();
-                    ToastUtils.show(mActivity, abs.getMsg());
+                    ToastUtils.show(mActivity, liveInfoAbsL.getMsg());
                 }
             }
         });
@@ -235,7 +229,7 @@ public class HomeFragment extends AbsActionbarFragment {
         liveHotList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((AbsActivity) mActivity).StartActivity(LivePlayerActivity.class, liveHotAdapter.getItem(i));
+                mActivity.StartActivity(LivePlayerActivity.class, liveHotAdapter.getItem(i));
             }
         });
         liveHotAdapter = new LiveAdapter(mActivity, 0);
@@ -247,9 +241,9 @@ public class HomeFragment extends AbsActionbarFragment {
     }
 
     private void getLiveHotList() {
-        HttpUtils.getLiveList(3, liveHotPage, new StringCallback() {
+        HttpUtils.getLiveList(3, liveHotPage).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsL<LiveInfo>>() {
             @Override
-            public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
+            public void call(AbsL<LiveInfo> liveInfoAbsL) {
                 if (liveHotPage == 1) {
                     liveHotPulltorefresh.refreshFinish(true);
                     liveHotAdapter.clearDatas();
@@ -257,14 +251,12 @@ public class HomeFragment extends AbsActionbarFragment {
                     liveHotPulltorefresh.loadmoreFinish(true);
                 }
 
-                Abs abs = JSON.parseObject(s, Abs.class);
-                if (abs.isSuccess()) {
-                    List<LiveInfo> liveInfoList = JSON.parseArray(abs.result, LiveInfo.class);
-                    liveHotAdapter.addDatas(liveInfoList);
-                    liveHotPulltorefresh.setPullLoadEnable(liveInfoList != null && liveInfoList.size() == 20);
+                if (liveInfoAbsL.isSuccess()) {
+                    liveHotAdapter.addDatas(liveInfoAbsL.result);
+                    liveHotPulltorefresh.setPullLoadEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
                 } else {
                     liveHotAdapter.notifyDataSetChanged();
-                    ToastUtils.show(mActivity, abs.getMsg());
+                    ToastUtils.show(mActivity, liveInfoAbsL.getMsg());
                 }
                 liveHotAdapter.changeListHeight(liveHotList);
             }
@@ -293,7 +285,7 @@ public class HomeFragment extends AbsActionbarFragment {
         liveNewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((AbsActivity) mActivity).StartActivity(LivePlayerActivity.class, liveNewAdapter.getItem(i));
+                mActivity.StartActivity(LivePlayerActivity.class, liveNewAdapter.getItem(i));
             }
         });
         liveNewAdapter = new LiveAdapter(mActivity, 0);
@@ -305,9 +297,9 @@ public class HomeFragment extends AbsActionbarFragment {
     }
 
     private void getLiveNewList() {
-        HttpUtils.getLiveList(1, liveNewPage, new StringCallback() {
+        HttpUtils.getLiveList(1, liveNewPage).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsL<LiveInfo>>() {
             @Override
-            public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
+            public void call(AbsL<LiveInfo> liveInfoAbsL) {
                 if (liveNewPage == 1) {
                     liveNewPulltorefresh.refreshFinish(true);
                     liveNewAdapter.clearDatas();
@@ -315,14 +307,12 @@ public class HomeFragment extends AbsActionbarFragment {
                     liveNewPulltorefresh.loadmoreFinish(true);
                 }
 
-                Abs abs = JSON.parseObject(s, Abs.class);
-                if (abs.isSuccess()) {
-                    List<LiveInfo> liveInfoList = JSON.parseArray(abs.result, LiveInfo.class);
-                    liveNewAdapter.addDatas(liveInfoList);
-                    liveNewPulltorefresh.setPullLoadEnable(liveInfoList != null && liveInfoList.size() == 20);
+                if (liveInfoAbsL.isSuccess()) {
+                    liveNewAdapter.addDatas(liveInfoAbsL.result);
+                    liveNewPulltorefresh.setPullLoadEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
                 } else {
                     liveNewAdapter.notifyDataSetChanged();
-                    ToastUtils.show(mActivity, abs.getMsg());
+                    ToastUtils.show(mActivity, liveInfoAbsL.getMsg());
                 }
             }
         });
@@ -401,16 +391,6 @@ public class HomeFragment extends AbsActionbarFragment {
                 mainLiveViewpager.setCurrentItem(2, false);
                 break;
         }
-    }
-
-    @Override
-    public boolean hasEventBus() {
-        return true;
-    }
-
-    @Override
-    public void onSubEvent(EventBusInfo eventBusInfo) {
-        super.onSubEvent(eventBusInfo);
     }
 
     @Override

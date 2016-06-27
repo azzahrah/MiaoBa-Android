@@ -1,7 +1,6 @@
 package cn.nodemedia.leadlive.view;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,10 +18,10 @@ import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.view.fragment.HomeFragment;
 import cn.nodemedia.leadlive.view.fragment.UserFragment;
-import cn.nodemedia.library.bean.EventBusInfo;
 import cn.nodemedia.library.utils.ToastUtils;
+import cn.nodemedia.library.view.BaseActivity;
 
-public class MainActivity extends AbsActionbarActivity implements OnClickListener {
+public class MainActivity extends BaseActivity implements OnClickListener {
 
     @InjectView(R.id.main_content)
     FrameLayout mainContent;
@@ -37,22 +36,15 @@ public class MainActivity extends AbsActionbarActivity implements OnClickListene
     private long clickTime;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
-        myApplication.exitOtherActivity(this);
-        hasActionBar(View.GONE);
-        initView();
+    public int getLayoutId() {
+        return R.layout.activity_main;
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selectIndex", selectIndex);
-        super.onSaveInstanceState(outState);
-    }
+    public void initView() {
+        ButterKnife.inject(this);
+        mApplication.exitOtherActivity(this);
 
-    private void initView() {
         fragmentList = new ArrayList<>();
         fragmentList.add(HomeFragment.newInstance());
         fragmentList.add(UserFragment.newInstance());
@@ -67,6 +59,10 @@ public class MainActivity extends AbsActionbarActivity implements OnClickListene
                 .commit();
 
         changeFooterState(0);
+    }
+
+    @Override
+    public void initPresenter() {
     }
 
     @OnClick({R.id.main_tab_live, R.id.main_tab_room, R.id.main_tab_me})
@@ -129,26 +125,16 @@ public class MainActivity extends AbsActionbarActivity implements OnClickListene
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addCategory(Intent.CATEGORY_HOME);
             startActivity(intent);
-            myApplication.exit();
+            mApplication.exit();
         } else {
             clickTime = newClickTime;
-            ToastUtils.show(mContext, getResources().getString(R.string.exit_hint));
+            ToastUtils.show(mActivity, getResources().getString(R.string.exit_hint));
         }
     }
 
     @Override
     public boolean hasSwipeFinish() {
         return false;
-    }
-
-    @Override
-    public boolean hasEventBus() {
-        return true;
-    }
-
-    @Override
-    public void onSubEvent(EventBusInfo eventBusInfo) {
-        super.onSubEvent(eventBusInfo);
     }
 
 }

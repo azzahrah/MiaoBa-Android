@@ -13,13 +13,14 @@ public class AbsS extends Abs {
         this(errCode, message, null);
     }
 
-    public AbsS(String errCode, String message, String target) {
+    public AbsS(String errCode, String message, String result) {
         this.errCode = errCode;
         this.message = message;
-        this.target = target;
+        this.result = result;
     }
 
-    public String target;
+    // public String target;
+    public String result;
 
     @Override
     public boolean isSuccess() {

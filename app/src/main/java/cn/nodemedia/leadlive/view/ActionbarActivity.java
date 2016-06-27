@@ -1,8 +1,6 @@
 package cn.nodemedia.leadlive.view;
 
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
-import java.util.List;
-
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.library.utils.ScreenUtils;
+import cn.nodemedia.library.view.BaseActivity;
+import cn.nodemedia.library.view.BasePresenter;
 
-public abstract class AbsActionbarActivity extends AbsActivity {
+public abstract class ActionbarActivity<T extends BasePresenter> extends BaseActivity<T> {
 
-    protected View mContainer;
     protected RelativeLayout mActionbarTitle;
     protected ImageView mActionBarTitleBack;
     protected TextView mActionBarTitleText;
@@ -31,20 +26,19 @@ public abstract class AbsActionbarActivity extends AbsActivity {
     private LinearLayout loadingLayout;
     private ImageView loading;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // 取消状态栏
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mContainer = getLayoutInflater().inflate(R.layout.actionbar, null);
-        mActionbarTitle = (RelativeLayout) mContainer.findViewById(R.id.actionbar_layout);
-        mActionBarTitleBack = (ImageView) mContainer.findViewById(R.id.actionbar_back);
-        mActionBarTitleText = (TextView) mContainer.findViewById(R.id.actionbar_title);
-        mActionBarTitleMenu = (LinearLayout) mContainer.findViewById(R.id.actionbar_menu);
-        mActionBarContent = (FrameLayout) mContainer.findViewById(R.id.actionbar_content);
-        loadingLayout = (LinearLayout) mContainer.findViewById(R.id.loading_layout);
-        loading = (ImageView) mContainer.findViewById(R.id.loading);
-        mContainer.setFitsSystemWindows(true);
+    public int getLayoutId() {
+        return R.layout.actionbar;
+    }
+
+    public void initView() {
+        // setFitsSystemWindows(true);
+        mActionbarTitle = (RelativeLayout) findViewById(R.id.actionbar_layout);
+        mActionBarTitleBack = (ImageView) findViewById(R.id.actionbar_back);
+        mActionBarTitleText = (TextView) findViewById(R.id.actionbar_title);
+        mActionBarTitleMenu = (LinearLayout) findViewById(R.id.actionbar_menu);
+        mActionBarContent = (FrameLayout) findViewById(R.id.actionbar_content);
+        loadingLayout = (LinearLayout) findViewById(R.id.loading_layout);
+        loading = (ImageView) findViewById(R.id.loading);
         mActionBarTitleBack.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -52,30 +46,17 @@ public abstract class AbsActionbarActivity extends AbsActivity {
                 Back();
             }
         });
+
         loadingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             }
         });
+
+        mActionBarContent.addView(getLayoutInflater().inflate(getContentView(), null), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
-    @Override
-    public void setContentView(int layoutResID) {
-        mActionBarContent.addView(getLayoutInflater().inflate(layoutResID, null), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        super.setContentView(mContainer);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        mActionBarContent.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        super.setContentView(mContainer);
-    }
-
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        mActionBarContent.addView(view, params);
-        super.setContentView(mContainer);
-    }
+    public abstract int getContentView();
 
     /**
      * 批量设置控件的显示状态
@@ -268,7 +249,7 @@ public abstract class AbsActionbarActivity extends AbsActivity {
      */
     public TextView addMenuTextItme(int textId, View.OnClickListener mOnClickListener) {
         TextView mTextView = new TextView(this);
-        mTextView.setTextAppearance(mContext, R.style.common_textview_black);
+        mTextView.setTextAppearance(mActivity, R.style.common_textview_black);
         mTextView.setText(textId);
         mTextView.setGravity(Gravity.CENTER);
         mTextView.setOnClickListener(mOnClickListener);
@@ -276,20 +257,6 @@ public abstract class AbsActionbarActivity extends AbsActivity {
         mTextView.setPadding(padding, padding, padding, padding);
         addMenuItme(mTextView);
         return mTextView;
-    }
-
-    /**
-     * 判断字符串是否为空
-     */
-    public boolean isNotEmpty(String string) {
-        return string != null && !string.isEmpty();
-    }
-
-    /**
-     * 判断集合是否为空
-     */
-    public <T> boolean isNotNull(List<T> objects) {
-        return objects != null && objects.size() > 0;
     }
 
 }

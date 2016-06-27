@@ -130,7 +130,7 @@
     </style>
 
     <style name="common_edit_user" parent="common_edittext">
-        <item name="android:textSize">@dimen/common_sp_18</item>
+        <item name="android:textSize">@dimen/common_sp_16</item>
         <item name="android:paddingBottom">@dimen/common_dp_8</item>
         <item name="android:paddingRight">@dimen/common_dp_4</item>
         <item name="android:paddingTop">@dimen/common_dp_8</item>

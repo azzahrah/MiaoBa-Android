@@ -1,4 +1,4 @@
-package cn.nodemedia.library.model;
+package cn.nodemedia.library.rxjava;
 
 /**
  * RxJava 使用示例 Created by Bining.

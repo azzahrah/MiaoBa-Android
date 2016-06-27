@@ -4,12 +4,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import org.greenrobot.eventbus.EventBus;
-
 import cn.nodemedia.library.App;
-import cn.nodemedia.library.bean.EventBusInfo;
 import cn.nodemedia.library.db.table.ColumnEntity;
 import cn.nodemedia.library.db.table.DbBase;
+import cn.nodemedia.library.rxjava.RxBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,7 +115,8 @@ public final class DbManagerImpl extends DbBase {
             }
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            RxBus.$().post(entity.getClass().getName());
         } finally {
             endTransaction();
         }
@@ -143,7 +142,8 @@ public final class DbManagerImpl extends DbBase {
             }
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            RxBus.$().post(entity.getClass().getName());
         } finally {
             endTransaction();
         }
@@ -169,7 +169,8 @@ public final class DbManagerImpl extends DbBase {
             }
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            RxBus.$().post(entity.getClass().getName());
         } finally {
             endTransaction();
         }
@@ -198,7 +199,8 @@ public final class DbManagerImpl extends DbBase {
             }
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            RxBus.$().post(entity.getClass().getName());
         } finally {
             endTransaction();
         }
@@ -215,7 +217,8 @@ public final class DbManagerImpl extends DbBase {
             execNonQuery(cn.nodemedia.library.db.sqlite.SqlInfoBuilder.buildDeleteSqlInfoById(table, idValue));
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entityType.getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entityType.getName()));
+            RxBus.$().post(entityType.getName());
         } finally {
             endTransaction();
         }
@@ -241,7 +244,8 @@ public final class DbManagerImpl extends DbBase {
             }
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            RxBus.$().post(entity.getClass().getName());
         } finally {
             endTransaction();
         }
@@ -263,7 +267,8 @@ public final class DbManagerImpl extends DbBase {
             result = executeUpdateDelete(cn.nodemedia.library.db.sqlite.SqlInfoBuilder.buildDeleteSqlInfo(table, whereBuilder));
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entityType.getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entityType.getName()));
+            RxBus.$().post(entityType.getName());
         } finally {
             endTransaction();
         }
@@ -290,7 +295,8 @@ public final class DbManagerImpl extends DbBase {
             }
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entity.getClass().getName()));
+            RxBus.$().post(entity.getClass().getName());
         } finally {
             endTransaction();
         }
@@ -308,7 +314,8 @@ public final class DbManagerImpl extends DbBase {
             result = executeUpdateDelete(cn.nodemedia.library.db.sqlite.SqlInfoBuilder.buildUpdateSqlInfo(table, whereBuilder, nameValuePairs));
 
             setTransactionSuccessful();
-            EventBus.getDefault().post(new EventBusInfo(entityType.getName()));
+            // EventBus.getDefault().post(new EventBusInfo(entityType.getName()));
+            RxBus.$().post(entityType.getName());
         } finally {
             endTransaction();
         }

@@ -1,33 +1,19 @@
 package cn.nodemedia.leadlive;
 
+import cn.nodemedia.library.BaseConstants;
+
 /**
  * 静态变量
  * Created by Bining.
  */
-public class Constants {
-
-    public final static String APPVERSION = "AppVersion";//App版本号（根据是否与当前版本号相符来判断是否第一次使用APP)）
-
-    public final static String USERACCOUNT = "UserAccount";//用户帐号
-    public final static String USERCAPTCHA = "UserCaptcha";//用户验证码
-    public final static String USERPWD = "UserPwd";//用户密码
-    public final static String USERPWDSAVE = "UserIsSavePwd";//用户密码是否保存
-    public final static String USEROPENID = "UserOpenId";//用户唯一开放ID
-    public final static String USERISPAYPWD = "UserIsPAYPwd";//用户是否设置支付密码
-    public final static String USERISLOGIN = "UserIsLogin";//用户是否已登陆
-    public final static String USERNICKNAME = "UserNickName";//用户昵称
-
-    public final static String PAYMENTWXPAY = "wxpay";//微信支付
-    public final static String PAYMENTALIPAY = "alipay";//支付宝支付
-    public final static String PAYMENTUnionPAY = "unionpay";//银联支付
-    public final static String PAYMENTLOCALPAY = "local";//本地支付
+public class Constants extends BaseConstants {
 
     public final static String DNS_ADDRESS = "http://api.nodemedia.cn"; // DEV
     // public final static String DNS_ADDRESS = "http://jiuhao.simpleway.com.cn"; // ONLINE
 
     // public final static String HTTP_ = "";//
 
-    public final static String HTTP_HOMECALL = DNS_ADDRESS + "/api/home/";
+    public final static String HTTP_HOMECALL = "/api/home/";
 
     public final static String HTTP_LOGIN = HTTP_HOMECALL + "login.html";//用户登陆 登陆帐号(String uname) 密码，加密后传递(String pwds) 登陆类型 1：注册用登陆 2：三方登陆(int type) 请求时间戳(int temptime) 签名加密串(String sign) >>UserInfo
 

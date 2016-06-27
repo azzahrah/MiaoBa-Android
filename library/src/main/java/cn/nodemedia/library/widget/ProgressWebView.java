@@ -5,9 +5,7 @@ import android.util.AttributeSet;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import org.greenrobot.eventbus.EventBus;
-
-import cn.nodemedia.library.bean.EventBusInfo;
+import cn.nodemedia.library.rxjava.RxBus;
 
 public class ProgressWebView extends WebView {
 
@@ -41,7 +39,8 @@ public class ProgressWebView extends WebView {
         public void onProgressChanged(WebView view, int newProgress) {
             if (newProgress == 100) {
                 progressbar.setVisibility(GONE);
-                EventBus.getDefault().post(new EventBusInfo(ProgressWebView.class.getName()));
+                // EventBus.getDefault().post(new EventBusInfo(ProgressWebView.class.getName()));
+                RxBus.$().post(ProgressWebView.class.getName());
             } else {
                 if (progressbar.getVisibility() == GONE)
                     progressbar.setVisibility(VISIBLE);

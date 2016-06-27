@@ -1,23 +1,24 @@
 package cn.nodemedia.leadlive.view;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
 import cn.nodemedia.leadlive.R;
+import cn.nodemedia.library.view.BaseActivity;
 
 /**
  * 启动页
  * Created by Bining.
  */
-public class LaunchActivity extends AbsActionbarActivity {
+public class LaunchActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launcher);
-        hasActionBar(View.GONE);
+    public int getLayoutId() {
+        return R.layout.activity_launcher;
+    }
 
+    @Override
+    public void initView() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -28,7 +29,7 @@ public class LaunchActivity extends AbsActionbarActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void initPresenter() {
     }
+
 }

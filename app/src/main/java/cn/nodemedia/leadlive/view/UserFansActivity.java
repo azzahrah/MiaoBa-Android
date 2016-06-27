@@ -1,19 +1,13 @@
 package cn.nodemedia.leadlive.view;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.lzy.okhttputils.callback.StringCallback;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,19 +19,21 @@ import cn.nodemedia.library.adapter.AdapterViewAdapter;
 import cn.nodemedia.library.adapter.OnItemChildClickListener;
 import cn.nodemedia.library.adapter.ViewHolderHelper;
 import cn.nodemedia.library.bean.Abs;
+import cn.nodemedia.library.bean.AbsL;
 import cn.nodemedia.library.glide.GlideCircleTransform;
 import cn.nodemedia.library.utils.SharedUtils;
 import cn.nodemedia.library.utils.ToastUtils;
 import cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView;
 import cn.nodemedia.library.widget.pulltorefresh.PullableListView;
-import okhttp3.Request;
-import okhttp3.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * 用户粉丝
  * Created by Bining.
  */
-public class UserFansActivity extends AbsActionbarActivity {
+public class UserFansActivity extends ActionbarActivity {
 
     @InjectView(R.id.common_pulltorefresh)
     PullToRefreshView commonPulltorefresh;
@@ -51,15 +47,15 @@ public class UserFansActivity extends AbsActionbarActivity {
     private FollowInfo followInfo;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_list_refresh);
-        ButterKnife.inject(this);
-        setTitle("我的粉丝");
-        initView();
+    public int getContentView() {
+        return R.layout.layout_list_refresh;
     }
 
-    private void initView() {
+    @Override
+    public void initView() {
+        super.initView();
+        ButterKnife.inject(this);
+        setTitle("我的粉丝");
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
 
         commonPulltorefresh.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
@@ -97,10 +93,14 @@ public class UserFansActivity extends AbsActionbarActivity {
         getFansList();
     }
 
+    @Override
+    public void initPresenter() {
+    }
+
     private void getFansList() {
-        HttpUtils.getFollowList(userid, page, minid, "fans", new StringCallback() {
+        HttpUtils.getFollowList(userid, page, minid, "fans").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsL<FollowInfo>>() {
             @Override
-            public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
+            public void call(AbsL<FollowInfo> followInfoAbsL) {
                 if (page == 1) {
                     commonPulltorefresh.refreshFinish(true);
                     userAdapter.clearDatas();
@@ -108,13 +108,11 @@ public class UserFansActivity extends AbsActionbarActivity {
                     commonPulltorefresh.loadmoreFinish(true);
                 }
 
-                Abs abs = JSON.parseObject(s, Abs.class);
-                if (abs.isSuccess()) {
-                    List<FollowInfo> liveInfoList = JSON.parseArray(abs.result, FollowInfo.class);
-                    userAdapter.addDatas(liveInfoList);
+                if (followInfoAbsL.isSuccess()) {
+                    userAdapter.addDatas(followInfoAbsL.result);
                 } else {
                     userAdapter.notifyDataSetChanged();
-                    ToastUtils.show(mActivity, abs.getMsg());
+                    ToastUtils.show(mActivity, followInfoAbsL.getMsg());
                 }
             }
         });
@@ -151,10 +149,9 @@ public class UserFansActivity extends AbsActionbarActivity {
         @Override
         public void onItemChildClick(View v, int position) {
             followInfo = getItem(position);
-            HttpUtils.postFollow(userid, followInfo.userid, new StringCallback() {
+            HttpUtils.postFollow(userid, followInfo.userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Abs>() {
                 @Override
-                public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-                    Abs abs = JSON.parseObject(s, Abs.class);
+                public void call(Abs abs) {
                     if (abs.isSuccess()) {
                         followInfo.is_follow = !followInfo.is_follow;
                         notifyDataSetChanged();

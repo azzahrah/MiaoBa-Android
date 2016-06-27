@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
-import com.lzy.okhttputils.callback.StringCallback;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,15 +20,23 @@ import cn.nodemedia.LivePlayer.LivePlayerDelegate;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
+import cn.nodemedia.leadlive.bean.UserInfo;
+import cn.nodemedia.leadlive.utils.DBUtils;
 import cn.nodemedia.leadlive.utils.HttpUtils;
 import cn.nodemedia.library.bean.Abs;
+import cn.nodemedia.library.bean.AbsT;
+import cn.nodemedia.library.db.DbException;
 import cn.nodemedia.library.utils.ScreenUtils;
 import cn.nodemedia.library.utils.SharedUtils;
 import cn.nodemedia.library.utils.ToastUtils;
+import cn.nodemedia.library.view.BaseActivity;
 import okhttp3.Request;
 import okhttp3.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
-public class LivePlayerActivity extends AbsActivity {
+public class LivePlayerActivity extends BaseActivity {
 
     @InjectView(R.id.player_surfacev)
     SurfaceView playerSurfacev;
@@ -41,19 +48,20 @@ public class LivePlayerActivity extends AbsActivity {
     private float srcWidth;
     private float srcHeight;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_player);
-        ButterKnife.inject(this);
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_player;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             liveInfo = (LiveInfo) savedInstanceState.getSerializable("p0");
         } else {
             liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
         }
-
-        initView();
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -62,7 +70,9 @@ public class LivePlayerActivity extends AbsActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private void initView() {
+    @Override
+    public void initView() {
+        ButterKnife.inject(this);
         LivePlayer.init(this);
         LivePlayer.setDelegate(new LivePlayerDelegate() {
             @Override
@@ -111,7 +121,7 @@ public class LivePlayerActivity extends AbsActivity {
          */
         LivePlayer.subscribe(true);
 
-        String playUrl = "rtmp://cdn.nodemedia.cn/live/stream_" + liveInfo.userid;
+        String playUrl = "rtmp://alplay.nodemedia.cn/live/stream_" + liveInfo.userid;
         //SharedUtils.getString("playUrl", "rtmp://play.nodemedia.cn/NodeMedia/stream");// 获取上一页设置的播放地址，非sdk方法
         /**
          * 开始播放
@@ -144,15 +154,19 @@ public class LivePlayerActivity extends AbsActivity {
         }
     }
 
+    @Override
+    public void initPresenter() {
+
+    }
+
     @OnClick({R.id.player_follow})
     public void onClick(View v) {
         if (!isCanClick(v)) return;
         switch (v.getId()) {
             case R.id.player_follow:
-                HttpUtils.postFollow(userid, liveInfo.liveid, new StringCallback() {
+                HttpUtils.postFollow(userid, liveInfo.liveid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Abs>() {
                     @Override
-                    public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-                        Abs abs = JSON.parseObject(s, Abs.class);
+                    public void call(Abs abs) {
                         if (abs.isSuccess()) {
                             liveInfo.is_follow = !liveInfo.is_follow;
                             if (liveInfo.is_follow) {

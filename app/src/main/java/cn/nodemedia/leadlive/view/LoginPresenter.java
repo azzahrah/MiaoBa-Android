@@ -1,46 +1,35 @@
 package cn.nodemedia.leadlive.view;
 
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
-
-import com.alibaba.fastjson.JSON;
-import com.lzy.okhttputils.callback.StringCallback;
-
-import org.greenrobot.eventbus.EventBus;
 
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
 import cn.nodemedia.leadlive.utils.DBUtils;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.bean.Abs;
-import cn.nodemedia.library.bean.EventBusInfo;
+import cn.nodemedia.library.bean.AbsT;
 import cn.nodemedia.library.db.DbException;
 import cn.nodemedia.library.utils.SharedUtils;
 import cn.nodemedia.library.utils.ValidUtils;
-import okhttp3.Request;
-import okhttp3.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
-public class LoginPresenter extends PasswordPresenter {
+public class LoginPresenter extends LoginContract.Presenter {
 
-    private LoginView loginView;
-
-    public LoginPresenter(LoginView loginView) {
-        super(loginView);
-        this.loginView = loginView;
-    }
-
-    public void initData() {
-        if (loginView != null) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mView != null) {
             String account = SharedUtils.getString(Constants.USERACCOUNT, "");
             if (!TextUtils.isEmpty(account))
-                loginView.setUsername(account);
+                mView.setUsername(account);
             boolean isSavePsd = SharedUtils.getBoolean(Constants.USERPWDSAVE, false);
             if (isSavePsd) {
                 String password = SharedUtils.getString(Constants.USERPWD, "");
                 if (!TextUtils.isEmpty(password))
-                    loginView.setPassword(password);
+                    mView.setPassword(password);
             }
         }
     }
@@ -50,10 +39,10 @@ public class LoginPresenter extends PasswordPresenter {
             onUsernameError(R.string.error_field_required);
             return;
         }
-//        if (!ValidUtils.isMobileNO(username)) {
-//            onUsernameError(R.string.error_field_format);
-//            return;
-//        }
+        // if (!ValidUtils.isMobileNO(username)) {
+        // onUsernameError(R.string.error_field_format);
+        // return;
+        // }
         if (TextUtils.isEmpty(password)) {
             onPasswordError(R.string.error_field_required);
             return;
@@ -67,50 +56,48 @@ public class LoginPresenter extends PasswordPresenter {
         SharedUtils.put(Constants.USERPWD, password);
         SharedUtils.put(Constants.USERPWDSAVE, isSave);
 
-        HttpUtils.login(username, password, 1, new StringCallback() {
+        HttpUtils.login(username, password, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsT<UserInfo>>() {
             @Override
-            public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-                Abs abs = JSON.parseObject(s, Abs.class);
-                if (abs.isSuccess()) {
-                    UserInfo userInfo = JSON.parseObject(abs.result, UserInfo.class);
-                    SharedUtils.put(Constants.USEROPENID, userInfo.userid);
+            public void call(AbsT<UserInfo> userInfoAbsT) {
+                if (userInfoAbsT.isSuccess()) {
+                    SharedUtils.put(Constants.USEROPENID, userInfoAbsT.result.userid);
                     try {
-                        DBUtils.getInstance().saveOrUpdate(userInfo);
+                        DBUtils.getInstance().saveOrUpdate(userInfoAbsT.result);
                         SharedUtils.put(Constants.USERISLOGIN, true);
-                        EventBus.getDefault().post(new EventBusInfo(Constants.USERISLOGIN));
+                        mRxManage.post(Constants.USERISLOGIN, true);
                         onSucc();
                     } catch (DbException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    onFail(abs.getMsg());
+                    onFail(userInfoAbsT.getMsg());
                 }
             }
         });
     }
 
     public void onUsernameError(@StringRes int strRes) {
-        if (loginView != null)
-            loginView.setUsernameError(context.getString(strRes));
+        if (mView != null)
+            mView.setUsernameError(context.getString(strRes));
     }
 
     public void onPasswordError(@StringRes int strRes) {
-        if (loginView != null)
-            loginView.setPasswordError(context.getString(strRes));
+        if (mView != null)
+            mView.setPasswordError(context.getString(strRes));
     }
 
     public void onSucc() {
         super.onSucc();
-        if (loginView != null) {
-            loginView.goNextView();
-            loginView.exitActivity();
+        if (mView != null) {
+            mView.goNextView();
+            mView.exit();
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        loginView = null;
+        mView = null;
     }
 
 }

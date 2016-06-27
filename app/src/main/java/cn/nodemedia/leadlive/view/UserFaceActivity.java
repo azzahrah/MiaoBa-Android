@@ -21,7 +21,7 @@ import cn.nodemedia.library.utils.ScreenUtils;
  * 设置头像
  * Created by Bining.
  */
-public class UserFaceActivity extends AbsActionbarActivity {
+public class UserFaceActivity extends ActionbarActivity {
 
     @InjectView(R.id.face_preview)
     ImageView facePreview;
@@ -30,26 +30,38 @@ public class UserFaceActivity extends AbsActionbarActivity {
     private Uri photoUri = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_userface);
-        ButterKnife.inject(this);
+    public void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             faces = savedInstanceState.getString("p0", "");
         } else {
             faces = getIntent().getStringExtra("p0");
         }
-        setTitle("设置头像");
-
-        int width = ScreenUtils.getScreenWidth();
-        facePreview.setLayoutParams(new LinearLayout.LayoutParams(width, width));
-        Glide.with(mContext).load(faces).asBitmap().error(R.drawable.mr_720).into(facePreview);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString("p0", faces);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public int getContentView() {
+        return R.layout.activity_userface;
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
+        ButterKnife.inject(this);
+        setTitle("设置头像");
+        int width = ScreenUtils.getScreenWidth();
+        facePreview.setLayoutParams(new LinearLayout.LayoutParams(width, width));
+        Glide.with(mActivity).load(faces).asBitmap().error(R.drawable.mr_720).into(facePreview);
+    }
+
+    @Override
+    public void initPresenter() {
     }
 
     @OnClick({R.id.face_source_album, R.id.face_source_photo})

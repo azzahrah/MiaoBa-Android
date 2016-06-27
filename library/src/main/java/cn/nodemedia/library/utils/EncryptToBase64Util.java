@@ -88,13 +88,13 @@ public class EncryptToBase64Util {
      */
     public static byte[] encryptMessageData(long dateTime, byte[] message, String authToken) {
         // 压缩
-        byte[] dataValue = EncryptToBase64Util.compressData(message);
+        //byte[] dataValue = EncryptToBase64Util.compressData(message);
 
         // 加密识别码
-        byte[] secretKey = EncryptToBase64Util.secretDataKey(authToken, dataValue);
+        byte[] secretKey = EncryptToBase64Util.secretDataKey(authToken, message);
 
         // 加密
-        byte[] secretData = EncryptToBase64Util.encryptDataValue(dataValue, authToken);
+        byte[] secretData = EncryptToBase64Util.xorBytesWithKey(message, authToken);
 
         // 合并
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -253,13 +253,6 @@ public class EncryptToBase64Util {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * 数据加密
-     */
-    public static byte[] encryptDataValue(byte[] data, String key) {
-        return xorBytesWithKey(data, key);
     }
 
     /**

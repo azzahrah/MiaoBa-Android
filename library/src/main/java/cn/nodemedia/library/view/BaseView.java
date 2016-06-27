@@ -1,9 +1,8 @@
-package cn.nodemedia.leadlive.view;
+package cn.nodemedia.library.view;
 
 import android.content.Context;
 
 /**
- * 基础视图实现
  * Created by Bining.
  */
 public interface BaseView {
@@ -14,6 +13,5 @@ public interface BaseView {
 
     void hideProgress();
 
-    void exitActivity();
-
+    void exit();
 }

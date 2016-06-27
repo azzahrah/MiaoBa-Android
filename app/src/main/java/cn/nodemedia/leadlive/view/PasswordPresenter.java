@@ -5,11 +5,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import cn.nodemedia.leadlive.R;
+import cn.nodemedia.library.view.BasePresenter;
+import cn.nodemedia.library.view.BaseView;
 
-public class PasswordPresenter extends BasePresenter {
+public class PasswordPresenter<T extends BaseView> extends BasePresenter<T> {
 
-    public PasswordPresenter(BaseView view) {
-        super(view);
+    @Override
+    public void onStart() {
     }
 
     /**
@@ -24,4 +26,5 @@ public class PasswordPresenter extends BasePresenter {
             passwordEye.setImageResource(R.drawable.icon_eye_show);
         }
     }
+
 }

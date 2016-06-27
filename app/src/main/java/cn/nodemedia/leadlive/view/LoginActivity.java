@@ -1,7 +1,6 @@
 package cn.nodemedia.leadlive.view;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +15,7 @@ import cn.nodemedia.library.widget.DrawableEditText;
  * 登陆界面
  * Created by Bining.
  */
-public class LoginActivity extends AbsActionbarActivity implements LoginView, View.OnClickListener {
+public class LoginActivity extends ActionbarActivity<LoginPresenter> implements LoginContract.View, View.OnClickListener {
 
     @InjectView(R.id.phone)
     DrawableEditText phone;
@@ -29,20 +28,21 @@ public class LoginActivity extends AbsActionbarActivity implements LoginView, Vi
     @InjectView(R.id.login_button)
     TextView loginButton;
 
-    private LoginPresenter presenter;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
-        setTitle(R.string.login);
-        initView();
+    public int getContentView() {
+        return R.layout.activity_login;
     }
 
-    private void initView() {
-        presenter = new LoginPresenter(this);
-        presenter.initData();
+    @Override
+    public void initView() {
+        super.initView();
+        ButterKnife.inject(this);
+        setTitle(R.string.login);
+    }
+
+    @Override
+    public void initPresenter() {
+        mPresenter.initPresenter(this);
     }
 
     @Override
@@ -51,13 +51,13 @@ public class LoginActivity extends AbsActionbarActivity implements LoginView, Vi
         if (!isCanClick(view)) return;
         switch (view.getId()) {
             case R.id.password_eye:
-                presenter.switchPasswordEye(password, passwordEye);
+                mPresenter.switchPasswordEye(password, passwordEye);
                 break;
             case R.id.login_text:
                 //StartActivity(UserPwdForgotActivity.class);
                 break;
             case R.id.login_button:
-                presenter.attemptLogin(phone.getText().toString(), password.getText().toString(), true);
+                mPresenter.attemptLogin(phone.getText().toString(), password.getText().toString(), true);
                 break;
         }
     }
@@ -103,14 +103,8 @@ public class LoginActivity extends AbsActionbarActivity implements LoginView, Vi
     }
 
     @Override
-    public void exitActivity() {
+    public void exit() {
         Back();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDestroy();
-        presenter = null;
-    }
 }

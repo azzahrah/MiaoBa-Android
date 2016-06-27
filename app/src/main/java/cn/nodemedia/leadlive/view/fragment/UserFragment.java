@@ -18,15 +18,15 @@ import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
 import cn.nodemedia.leadlive.utils.DBUtils;
-import cn.nodemedia.leadlive.view.AbsActivity;
 import cn.nodemedia.leadlive.view.UserActivity;
 import cn.nodemedia.leadlive.view.UserFaceActivity;
 import cn.nodemedia.leadlive.view.UserFansActivity;
 import cn.nodemedia.leadlive.view.UserFollowActivity;
-import cn.nodemedia.library.bean.EventBusInfo;
 import cn.nodemedia.library.db.DbException;
 import cn.nodemedia.library.glide.GlideCircleTransform;
+import cn.nodemedia.library.rxjava.RxManage;
 import cn.nodemedia.library.utils.SharedUtils;
+import rx.functions.Action1;
 
 /**
  * 个人中心
@@ -75,6 +75,8 @@ public class UserFragment extends AbsActionbarFragment {
     private int userid;
     private UserInfo userInfo;
 
+    public RxManage mRxManage;
+
     public static UserFragment newInstance() {
         return new UserFragment();
     }
@@ -91,6 +93,15 @@ public class UserFragment extends AbsActionbarFragment {
         hasActionBar(View.GONE);
         initView();
         initUserData();
+
+        mRxManage = new RxManage();
+
+        mRxManage.on(UserInfo.class.getName(), new Action1<Object>() {
+            @Override
+            public void call(Object o) {
+                initUserData();
+            }
+        });
     }
 
     private void initView() {
@@ -137,16 +148,16 @@ public class UserFragment extends AbsActionbarFragment {
                 //((AbsActivity) mActivity).StartActivity(MessageListActivity.class);
                 break;
             case R.id.user_face:
-                ((AbsActivity) mActivity).StartActivity(UserFaceActivity.class, userInfo.faces);
+                mActivity.StartActivity(UserFaceActivity.class, userInfo.faces);
                 break;
             case R.id.user_info_edit:
-                ((AbsActivity) mActivity).StartActivity(UserActivity.class);
+                mActivity.StartActivity(UserActivity.class);
                 break;
             case R.id.user_follow:
-                ((AbsActivity) mActivity).StartActivity(UserFollowActivity.class);
+                mActivity.StartActivity(UserFollowActivity.class);
                 break;
             case R.id.user_fans:
-                ((AbsActivity) mActivity).StartActivity(UserFansActivity.class);
+                mActivity.StartActivity(UserFansActivity.class);
                 break;
             case R.id.user_live:
                 break;
@@ -166,22 +177,10 @@ public class UserFragment extends AbsActionbarFragment {
     }
 
     @Override
-    public boolean hasEventBus() {
-        return true;
-    }
-
-    @Override
-    public void onSubEvent(EventBusInfo eventBusInfo) {
-        super.onSubEvent(eventBusInfo);
-        if (eventBusInfo.equals(UserInfo.class.getName())) {
-            initUserData();
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+        mRxManage.clear();
     }
 
 }

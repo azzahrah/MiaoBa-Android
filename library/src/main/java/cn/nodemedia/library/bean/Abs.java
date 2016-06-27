@@ -13,7 +13,7 @@ public class Abs implements Serializable {
     //public boolean success;//是否成功 (result复用参数)
     //public String userAttrId;//会话ID
     //public String invokeId;//是否异步回调 (result参数)
-    public String result;//结果
+    //public String result;//结果
 
     public boolean isSuccess() {
         return !TextUtils.isEmpty(errCode) && errCode.equals("1");

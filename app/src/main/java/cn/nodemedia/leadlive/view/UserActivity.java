@@ -1,15 +1,11 @@
 package cn.nodemedia.leadlive.view;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.lzy.okhttputils.callback.StringCallback;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -19,19 +15,19 @@ import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
 import cn.nodemedia.leadlive.utils.DBUtils;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.bean.Abs;
-import cn.nodemedia.library.bean.EventBusInfo;
+import cn.nodemedia.library.bean.AbsT;
 import cn.nodemedia.library.db.DbException;
 import cn.nodemedia.library.glide.GlideCircleTransform;
 import cn.nodemedia.library.utils.SharedUtils;
-import okhttp3.Request;
-import okhttp3.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * 个人信息
  * Created by Bining.
  */
-public class UserActivity extends AbsActionbarActivity {
+public class UserActivity extends ActionbarActivity {
 
     @InjectView(R.id.user_face)
     ImageView userFace;
@@ -58,9 +54,13 @@ public class UserActivity extends AbsActionbarActivity {
     private UserInfo userInfo;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+    public int getContentView() {
+        return R.layout.activity_user;
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
         ButterKnife.inject(this);
         setTitle("个人信息");
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
@@ -68,18 +68,23 @@ public class UserActivity extends AbsActionbarActivity {
         getUsetInfo();
     }
 
+    @Override
+    public void initPresenter() {
+    }
+
     private void getUsetInfo() {
-        HttpUtils.getUserInfo(userid, new StringCallback() {
+        HttpUtils.getUserInfo(userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsT<UserInfo>>() {
             @Override
-            public void onResponse(boolean isFromCache, String s, Request request, @Nullable Response response) {
-                Abs abs = JSON.parseObject(s, Abs.class);
-                if (abs.isSuccess()) {
-                    UserInfo userInfo = JSON.parseObject(abs.result, UserInfo.class);
+            public void call(AbsT<UserInfo> userInfoAbsT) {
+                if (userInfoAbsT.isSuccess()) {
+                    SharedUtils.put(Constants.USEROPENID, userInfoAbsT.result.userid);
                     try {
                         DBUtils.getInstance().saveOrUpdate(userInfo);
                     } catch (DbException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    //onFail(userInfoAbsT.getMsg());
                 }
             }
         });
@@ -108,7 +113,7 @@ public class UserActivity extends AbsActionbarActivity {
         if (!isCanClick(v)) return;
         switch (v.getId()) {
             case R.id.user_face_layout:
-                ((AbsActivity) mActivity).StartActivity(UserFaceActivity.class, userInfo.faces);
+                StartActivity(UserFaceActivity.class, userInfo.faces);
                 break;
             case R.id.user_name:
                 break;
@@ -133,18 +138,18 @@ public class UserActivity extends AbsActionbarActivity {
         }
     }
 
-    @Override
-    public boolean hasEventBus() {
-        return true;
-    }
-
-    @Override
-    public void onSubEvent(EventBusInfo eventBusInfo) {
-        super.onSubEvent(eventBusInfo);
-        if (eventBusInfo.equals(UserInfo.class.getName())) {
-            initUserData();
-        }
-    }
+//    @Override
+//    public boolean hasEventBus() {
+//        return true;
+//    }
+//
+//    @Override
+//    public void onSubEvent(EventBusInfo eventBusInfo) {
+//        super.onSubEvent(eventBusInfo);
+//        if (eventBusInfo.equals(UserInfo.class.getName())) {
+//            initUserData();
+//        }
+//    }
 
     @Override
     protected void onDestroy() {

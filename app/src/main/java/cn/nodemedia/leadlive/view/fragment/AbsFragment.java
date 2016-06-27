@@ -1,23 +1,17 @@
 package cn.nodemedia.leadlive.view.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import butterknife.ButterKnife;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.bean.EventBusInfo;
-import cn.nodemedia.library.utils.Log;
+import cn.nodemedia.library.view.BaseActivity;
 
 public abstract class AbsFragment extends Fragment {
 
-    protected Activity mActivity;
+    protected BaseActivity mActivity;
 
     private long oldClickTime = 0;
     private boolean isOnClick = true;
@@ -25,10 +19,7 @@ public abstract class AbsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity = getActivity();
-        if (hasEventBus() && !EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+        mActivity = (BaseActivity) getActivity();
     }
 
     @Override
@@ -41,7 +32,7 @@ public abstract class AbsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (mActivity == null) {
-            mActivity = getActivity();
+            mActivity = (BaseActivity) getActivity();
         }
     }
 
@@ -61,9 +52,6 @@ public abstract class AbsFragment extends Fragment {
 
     public void onDestroy() {
         super.onDestroy();
-        if (hasEventBus() && EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
     }
 
     /**
@@ -88,23 +76,6 @@ public abstract class AbsFragment extends Fragment {
         oldClickTime = newClickTime;
 
         return view.getId() == R.id.actionbar_back || isOnClick;
-    }
-
-    /**
-     * 是否注册EventBus
-     */
-    public boolean hasEventBus() {
-        return false;
-    }
-
-    /**
-     * EventBus回调到主线程
-     *
-     * @param eventBusInfo
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSubEvent(EventBusInfo eventBusInfo) {
-        Log.e("onSubEvent>>title: " + eventBusInfo.getTitle() + " data: " + eventBusInfo.getData());
     }
 
     /**
