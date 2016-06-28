@@ -15,7 +15,7 @@ import cn.nodemedia.library.utils.ScreenUtils;
 import java.util.List;
 
 /**
- * 很多搜索界面弹出来的提示语
+ * 搜索界面热门词汇
  * Created by Bining.
  */
 public class SearchTipsView extends LinearLayout {
