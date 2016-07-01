@@ -33,17 +33,17 @@ import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
 import cn.nodemedia.leadlive.utils.HttpUtils;
 import cn.nodemedia.leadlive.view.LivePlayerActivity;
-import cn.nodemedia.library.adapter.AdapterViewAdapter;
-import cn.nodemedia.library.adapter.OnItemChildClickListener;
-import cn.nodemedia.library.adapter.ViewHolderHelper;
-import cn.nodemedia.library.adapter.ViewPagerAdapter;
+import cn.nodemedia.library.view.adapter.BaseListAdapter;
+import cn.nodemedia.library.view.adapter.listener.OnItemChildClickListener;
+import cn.nodemedia.library.view.adapter.ViewHolderHelper;
+import cn.nodemedia.library.view.adapter.BasePagerAdapter;
 import cn.nodemedia.library.bean.AbsL;
 import cn.nodemedia.library.glide.GlideCircleTransform;
 import cn.nodemedia.library.utils.ScreenUtils;
 import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.widget.SlideView;
-import cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView;
-import cn.nodemedia.library.widget.pulltorefresh.PullableListView;
+import cn.nodemedia.library.view.widget.SlideView;
+import cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView;
+import cn.nodemedia.library.view.widget.pulltorefresh.PullableListView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -139,7 +139,7 @@ public class HomeFragment extends AbsActionbarFragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mainLiveViewpager.setAdapter(new ViewPagerAdapter(viewList));
+        mainLiveViewpager.setAdapter(new BasePagerAdapter(viewList));
 
         changeView(1);
         mainLiveViewpager.setCurrentItem(1);
@@ -399,7 +399,7 @@ public class HomeFragment extends AbsActionbarFragment {
         ButterKnife.reset(this);
     }
 
-    public class LiveAdapter extends AdapterViewAdapter<LiveInfo> implements OnItemChildClickListener {
+    public class LiveAdapter extends BaseListAdapter<LiveInfo> implements OnItemChildClickListener {
 
         private int liveType;
 

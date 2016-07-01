@@ -6,6 +6,10 @@ import android.widget.ImageView;
 
 import cn.nodemedia.library.R;
 
+/**
+ * 密码显示隐藏
+ * Created by Bining on 16/6/28.
+ */
 public abstract class PasswordPresenter<T extends BaseView> extends BasePresenter<T> {
 
     /**

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
+<cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/live_hot_pulltorefresh"
     style="@style/common_rect_match">
 
-    <cn.nodemedia.library.widget.pulltorefresh.PullableScrollView style="@style/common_rect_match">
+    <cn.nodemedia.library.view.widget.pulltorefresh.PullableScrollView style="@style/common_rect_match">
 
         <LinearLayout style="@style/common_rect_match">
 
-            <cn.nodemedia.library.widget.SlideView
+            <cn.nodemedia.library.view.widget.SlideView
                 android:id="@+id/live_hot_banner"
                 style="@style/common_rect_horizontal"
                 android:visibility="visible"
@@ -26,5 +26,5 @@
                 style="@style/common_listview"
                 android:dividerHeight="@dimen/common_dp_0" />
         </LinearLayout>
-    </cn.nodemedia.library.widget.pulltorefresh.PullableScrollView>
-</cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView>
+    </cn.nodemedia.library.view.widget.pulltorefresh.PullableScrollView>
+</cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView>

@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import cn.nodemedia.library.BaseApplication;
 import cn.nodemedia.library.R;
 import cn.nodemedia.library.utils.Log;
-import cn.nodemedia.library.widget.SwipeBackLayout;
+import cn.nodemedia.library.view.widget.SwipeBackLayout;
 
 /**
  * Created by Bining.

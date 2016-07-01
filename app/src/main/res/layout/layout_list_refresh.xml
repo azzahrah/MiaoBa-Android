@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match">
 
-    <cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView
+    <cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView
         android:id="@+id/common_pulltorefresh"
         style="@style/common_rect_match">
 
-        <cn.nodemedia.library.widget.pulltorefresh.PullableListView
+        <cn.nodemedia.library.view.widget.pulltorefresh.PullableListView
             android:id="@+id/common_list"
             style="@style/common_listview" />
-    </cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView>
+    </cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView>
 </RelativeLayout>

@@ -4,12 +4,12 @@
     android:orientation="vertical"
     android:padding="@dimen/common_dp_30">
 
-    <cn.nodemedia.library.widget.DrawableEditText
+    <cn.nodemedia.library.view.widget.DrawableEditText
         android:id="@+id/user_edit_les"
         style="@style/common_edit_user"
         android:inputType="text" />
 
-    <cn.nodemedia.library.widget.DrawableEditText
+    <cn.nodemedia.library.view.widget.DrawableEditText
         android:id="@+id/common_edittext_more"
         style="@style/common_edit_user"
         android:layout_height="@dimen/common_dp_72"

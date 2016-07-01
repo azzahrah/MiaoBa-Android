@@ -8,17 +8,15 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
 import cn.nodemedia.library.bean.ImagePath;
 import cn.nodemedia.library.utils.ImageUtils;
 import cn.nodemedia.library.utils.Log;
 import cn.nodemedia.library.utils.ScreenUtils;
-import cn.nodemedia.library.widget.BubbleImageView;
+import cn.nodemedia.library.view.widget.BubbleImageView;
 
 import java.io.File;
-import java.io.InputStream;
 
 /**
  * Glide 图片加载封装

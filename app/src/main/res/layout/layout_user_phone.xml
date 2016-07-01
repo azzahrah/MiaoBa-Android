@@ -16,7 +16,7 @@
             android:text="@string/phone"
             android:visibility="gone" />
 
-        <cn.nodemedia.library.widget.DrawableEditText
+        <cn.nodemedia.library.view.widget.DrawableEditText
             android:id="@+id/phone"
             style="@style/common_edit_phone"
             android:hint="@string/phone_hint" />
@@ -42,7 +42,7 @@
             android:text="@string/captcha"
             android:visibility="gone" />
 
-        <cn.nodemedia.library.widget.DrawableEditText
+        <cn.nodemedia.library.view.widget.DrawableEditText
             style="@style/common_edit_captcha"
             android:hint="@string/captcha_hint" />
     </LinearLayout>

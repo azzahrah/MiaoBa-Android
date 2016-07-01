@@ -15,16 +15,16 @@ import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.FollowInfo;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.adapter.AdapterViewAdapter;
-import cn.nodemedia.library.adapter.OnItemChildClickListener;
-import cn.nodemedia.library.adapter.ViewHolderHelper;
+import cn.nodemedia.library.view.adapter.BaseListAdapter;
+import cn.nodemedia.library.view.adapter.listener.OnItemChildClickListener;
+import cn.nodemedia.library.view.adapter.ViewHolderHelper;
 import cn.nodemedia.library.bean.Abs;
 import cn.nodemedia.library.bean.AbsL;
 import cn.nodemedia.library.glide.GlideCircleTransform;
 import cn.nodemedia.library.utils.SharedUtils;
 import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.widget.pulltorefresh.PullToRefreshView;
-import cn.nodemedia.library.widget.pulltorefresh.PullableListView;
+import cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView;
+import cn.nodemedia.library.view.widget.pulltorefresh.PullableListView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -118,7 +118,7 @@ public class UserFollowActivity extends ActionbarActivity {
         });
     }
 
-    public class UserAdapter extends AdapterViewAdapter<FollowInfo> implements OnItemChildClickListener {
+    public class UserAdapter extends BaseListAdapter<FollowInfo> implements OnItemChildClickListener {
 
         public UserAdapter(Context context) {
             super(context, R.layout.item_user);

@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.widget.DrawableEditText;
+import cn.nodemedia.library.view.widget.DrawableEditText;
 
 /**
  * 登陆界面
