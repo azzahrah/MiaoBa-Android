@@ -24,18 +24,11 @@ import cn.nodemedia.library.R;
  */
 public class PullToRefreshView extends RelativeLayout {
 
-    // 初始状态
-    private static final int INIT = 0;
-    // 释放刷新
-    private static final int RELEASE_TO_REFRESH = 1;
-    // 正在刷新
-    private static final int REFRESHING = 2;
-    // 释放加载
-    private static final int RELEASE_TO_LOAD = 3;
-    // 正在加载
-    private static final int LOADING = 4;
-    // 操作完毕
-    private static final int DONE = 5;
+    private static final int INIT = 0;// 初始状态
+    private static final int RELEASE_TO_REFRESH = 1; // 释放刷新
+    private static final int REFRESHING = 2; // 正在刷新
+    private static final int RELEASE_TO_LOAD = 3;// 释放加载
+    private static final int LOADING = 4;// 正在加载
 
     private Context mContext;
     // 刷新回调接口
@@ -71,28 +64,25 @@ public class PullToRefreshView extends RelativeLayout {
     // 加载状态文字
     private TextView loadTextView;
 
+    // 这两个变量用来控制pull的方向，如果不加控制，当情况满足可上拉又可下拉时没法下拉
+    private boolean canRefresh = true;
+    private boolean canLoadMore = true;
+
     // 是否第一次执行布局
     private boolean isLayout = true;
-
     // 触发刷新的Y轴移动距离
     private float refreshYDist = 0;
 
-    //下拉或上拉的距离（大于0为下拉,小于0为上拉）
-    private float pullYDist = 0;
-
     //记录上次的触摸点Y坐标
     private float lastY;
-
+    //下拉或上拉的距离（大于0为下拉,小于0为上拉）
+    private float pullYDist = 0;
     // 过滤多点触碰
-    private int mEvents;
-
-    // 这两个变量用来控制pull的方向，如果不加控制，当情况满足可上拉又可下拉时没法下拉
-    private boolean canPullUp = true;
-
-    // 当前状态
-    private int mState = INIT;
+    private boolean isPointerDown;
     // 手指滑动距离与下拉头的滑动距离比，中间会随正切函数变化
     private float radio = 2;
+    // 当前状态
+    private int mState = INIT;
 
     public PullToRefreshView(Context context) {
         super(context);
@@ -111,9 +101,7 @@ public class PullToRefreshView extends RelativeLayout {
 
     private void initView(Context context) {
         mContext = context;
-
         mScroller = new Scroller(context, new DecelerateInterpolator());
-
         mRotateUpAnim = new RotateAnimation(0.0f, -180.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         mRotateUpAnim.setDuration(180);
         mRotateUpAnim.setFillAfter(true);
@@ -136,95 +124,107 @@ public class PullToRefreshView extends RelativeLayout {
             refreshingView = (ProgressBar) refreshView.findViewById(R.id.refresh_header_progressbar);
             refreshStateView = (ImageView) refreshView.findViewById(R.id.refresh_hander_state);
             refreshTextView = (TextView) refreshView.findViewById(R.id.refresh_header_text);
-            addView(refreshView, 0);
             refreshView.setLayoutParams(lp);
+            addView(refreshView);
 
-            if (canPullUp) {
-                loadmoreView = LayoutInflater.from(mContext).inflate(R.layout.layout_refresh_footer, null);
-                loadmoreArrowView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_arrow);
-                loadingView = (ProgressBar) loadmoreView.findViewById(R.id.refresh_footer_progressbar);
-                loadTextView = (TextView) loadmoreView.findViewById(R.id.refresh_footer_text);
-                loadStateView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_state);
-                addView(loadmoreView);
-                loadmoreView.setLayoutParams(lp);
-            }
+            loadmoreView = LayoutInflater.from(mContext).inflate(R.layout.layout_refresh_footer, null);
+            loadmoreArrowView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_arrow);
+            loadingView = (ProgressBar) loadmoreView.findViewById(R.id.refresh_footer_progressbar);
+            loadTextView = (TextView) loadmoreView.findViewById(R.id.refresh_footer_text);
+            loadStateView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_state);
+            loadmoreView.setLayoutParams(lp);
+            addView(loadmoreView);
         }
 
         if (refreshYDist <= 10) {
             refreshYDist = ((ViewGroup) refreshView).getChildAt(0).getMeasuredHeight() + 10;
         }
 
-        if (!canPullUp && pullYDist < 0) {
-            pullYDist = 0;
-        }
-
+        pullableView.layout(0, (int) pullYDist, pullableView.getMeasuredWidth(), (int) pullYDist + pullableView.getMeasuredHeight());
         // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
         if (refreshView != null)
             refreshView.layout(0, (int) pullYDist - refreshView.getMeasuredHeight(), refreshView.getMeasuredWidth(), (int) pullYDist);
-        pullableView.layout(0, (int) pullYDist, pullableView.getMeasuredWidth(), (int) pullYDist + pullableView.getMeasuredHeight());
         if (loadmoreView != null)
             loadmoreView.layout(0, (int) pullYDist + pullableView.getMeasuredHeight(), loadmoreView.getMeasuredWidth(), (int) pullYDist + pullableView.getMeasuredHeight() + loadmoreView.getMeasuredHeight());
     }
 
-    /*
+    @Override
+    public void computeScroll() {
+        if (mScroller.computeScrollOffset()) {
+            pullYDist = mScroller.getCurrY();
+            requestLayout();
+            //postInvalidate();
+        }
+        super.computeScroll();
+    }
+
+    /**
      * （非 Javadoc）由父控件决定是否分发事件，防止事件冲突
      *
      * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)
+     * dispatchTouchEvent是处理触摸事件分发,事件(多数情况)是从Activity的dispatchTouchEvent开始的。执行super.dispatchTouchEvent(ev)，事件向下分发。
+     * onInterceptTouchEvent是ViewGroup提供的方法，默认返回false，返回true表示拦截。
+     * onTouchEvent是View中提供的方法，ViewGroup也有这个方法，view中不提供onInterceptTouchEvent。view中默认返回true，表示消费了这个事件。
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        // ACTION_DOWN: 第一个点按下时触发
+        // ACTION_UP: 屏幕上唯一的一个点抬起时触发
+        // ACTION_MOVE: 当屏幕上的点移动时触发。
+        // ACTION_POINTER_DOWN: 当屏幕上已经有一点按住，再按下其他点便会触发该事件。
+        // ACTION_POINTER_UP: 当屏幕上有多个点被按住，松开其中的点时触发（非最后一个点，最后一个点触发ACTION_UP）。
+        // ACTION_CANCEL：当前的手势被释放时会触发，当前手势指的是从ACTION_DOWN开始以及后面一系列的ACTION_MOVE、ACTION_POINTER_DOWN、ACTION_POINTER_UP操作。
         switch (ev.getActionMasked()) {
-            case MotionEvent.ACTION_POINTER_DOWN:
-                mEvents = -1;
-                break;
             case MotionEvent.ACTION_DOWN:
-                mEvents = 0;
+                isPointerDown = false;
                 lastY = ev.getY();
                 break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                isPointerDown = true;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                if (ev.getPointerCount() == 1) {
+                    isPointerDown = true;
+                    lastY = ev.getY();
+                } else {
+                    isPointerDown = false;
+                }
+                break;
             case MotionEvent.ACTION_MOVE:
-                if (mEvents == 0) {
+                if (isPointerDown) {
                     // 计算Y轴偏移量,对实际滑动距离做缩小，造成用力拉的感觉
                     pullYDist = pullYDist + (ev.getY() - lastY) / radio;
                     // 记录当前触摸Y坐标
                     lastY = ev.getY();
                     // 根据下拉距离改变比例
                     radio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight() * Math.abs(pullYDist)));
-                    if (pullYDist > 0 && (((Pullable) pullableView).canPullDown() && mState != LOADING)) {
-                        // 可以下拉，正在加载时不能下拉
+
+                    if ((mState == INIT || mState == RELEASE_TO_REFRESH) && pullYDist > 0 && ((Pullable) pullableView).canPullDown() && canRefresh) {
                         if (pullYDist > getMeasuredHeight())
                             pullYDist = getMeasuredHeight();
 
-                        if (pullYDist <= refreshYDist && (mState == RELEASE_TO_REFRESH || mState == DONE)) {
-                            // 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新
+                        if (pullYDist < refreshYDist && mState == RELEASE_TO_REFRESH) {
                             changeState(INIT);
-                        }
-
-                        if (pullYDist >= refreshYDist && mState == INIT) {
-                            // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
+                        } else if (pullYDist > refreshYDist && mState == INIT) {
                             changeState(RELEASE_TO_REFRESH);
                         }
 
                         requestLayout();
-
                         if (Math.abs(pullYDist) > 8) {
                             // 防止下拉过程中误触发长按事件和点击事件
                             ev.setAction(MotionEvent.ACTION_CANCEL);
                         }
-                    } else if (pullYDist < 0 && (((Pullable) pullableView).canPullUp() && canPullUp && mState != REFRESHING)) {
-                        // 可以上拉，正在刷新时不能上拉
+                    } else if ((mState == INIT || mState == RELEASE_TO_LOAD) && pullYDist < 0 && (((Pullable) pullableView).canPullUp() && canLoadMore)) {
                         if (pullYDist < -getMeasuredHeight())
                             pullYDist = -getMeasuredHeight();
 
-                        if (-pullYDist <= refreshYDist && (mState == RELEASE_TO_LOAD || mState == DONE)) {
+                        if (-pullYDist < refreshYDist && mState == RELEASE_TO_LOAD) {
                             changeState(INIT);
-                        }
-
-                        if (-pullYDist >= refreshYDist && mState == INIT) {
+                        } else if (-pullYDist > refreshYDist && mState == INIT) {
                             changeState(RELEASE_TO_LOAD);
                         }
 
                         requestLayout();
-
                         if (Math.abs(pullYDist) > 8) {
                             // 防止下拉过程中误触发长按事件和点击事件
                             ev.setAction(MotionEvent.ACTION_CANCEL);
@@ -232,18 +232,11 @@ public class PullToRefreshView extends RelativeLayout {
                     }
                 }
                 break;
-            case MotionEvent.ACTION_POINTER_UP:
-                if ((((Pullable) pullableView).canPullDown() && pullYDist > 0) || (((Pullable) pullableView).canPullUp() && canPullUp && pullYDist < 0)) {
-                    changeDist();
-                }
-                break;
             case MotionEvent.ACTION_UP:
-                if ((((Pullable) pullableView).canPullDown() && pullYDist > 0) || (((Pullable) pullableView).canPullUp() && canPullUp && pullYDist < 0)) {
+            case MotionEvent.ACTION_CANCEL:
+                if (pullYDist != 0) {
                     changeDist();
-                } else {
-                    pullYDist = 0;
                 }
-            default:
                 break;
         }
         // 事件分发交给父类
@@ -331,21 +324,18 @@ public class PullToRefreshView extends RelativeLayout {
         mState = toState;
     }
 
-    @Override
-    public void computeScroll() {
-        if (mScroller.computeScrollOffset()) {
-            pullYDist = mScroller.getCurrY();
-            requestLayout();
-            //postInvalidate();
-        }
-        super.computeScroll();
+    /**
+     * 设置是否可以下拉刷新
+     */
+    public void setRefreshEnable(boolean canRefresh) {
+        this.canRefresh = canRefresh;
     }
 
     /**
      * 设置是否可以加载更多
      */
-    public void setPullLoadEnable(boolean canPullUp) {
-        this.canPullUp = canPullUp;
+    public void setLoadMoreEnable(boolean canLoadMore) {
+        this.canLoadMore = canLoadMore;
     }
 
     /**
@@ -367,7 +357,7 @@ public class PullToRefreshView extends RelativeLayout {
                 refreshTextView.setText(R.string.refresh_fail);
             }
 
-            mState = DONE;
+            mState = INIT;
 //            if (pullYDist >= refreshYDist) {
 //                new Handler() {
 //                    @Override
@@ -400,7 +390,7 @@ public class PullToRefreshView extends RelativeLayout {
                 loadTextView.setText(R.string.load_fail);
             }
 
-            mState = DONE;
+            mState = INIT;
 //            if (pullYDist <= -refreshYDist) {
 //                new Handler() {
 //                    @Override

@@ -2,6 +2,5 @@
 <resources>
 
     <item name="back" type="id" />
-    <item name="slide_viewpager" type="id" />
 
 </resources>

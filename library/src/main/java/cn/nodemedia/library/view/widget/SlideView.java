@@ -119,31 +119,27 @@ public class SlideView extends RelativeLayout implements Runnable, OnPageChangeL
         }
 
         viewPager = new ViewPager(getContext());
-        viewPager.setId(R.id.slide_viewpager);
         viewPager.addOnPageChangeListener(this);
-
         contentsList = new ArrayList<>();
         pagerAdapter = new ViewPagerAdapter(contentsList);
         viewPager.setAdapter(pagerAdapter);
-
         initViewPagerScroll();
-
-        addView(viewPager, new LayoutParams(ScreenUtils.getScreenWidth(), (int) (ScreenUtils.getScreenWidth() * aspectRatio)));
+        addView(viewPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         if (isShowDots) {
             dotsLayout = new LinearLayout(getContext());
             LayoutParams dotsLayoutLP = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             switch (dotsPosition) {
                 case 0:
-                    dotsLayoutLP.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.slide_viewpager);
                     dotsLayoutLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                    dotsLayoutLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
                     break;
                 case 1:
-                    dotsLayoutLP.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.slide_viewpager);
+                    dotsLayoutLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
                     dotsLayoutLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
                     break;
                 case 2:
-                    dotsLayoutLP.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.slide_viewpager);
+                    dotsLayoutLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
                     dotsLayoutLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
                     break;
             }
@@ -217,7 +213,7 @@ public class SlideView extends RelativeLayout implements Runnable, OnPageChangeL
 
     private ImageView getImageView() {
         ImageView imageView = new ImageView(getContext());
-        imageView.setLayoutParams(new LayoutParams(ScreenUtils.getScreenWidth(), (int) (ScreenUtils.getScreenWidth() * aspectRatio)));
+        imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setOnClickListener(SlideView.this);
         return imageView;
@@ -248,6 +244,13 @@ public class SlideView extends RelativeLayout implements Runnable, OnPageChangeL
             isAutoPlay = true;
             postDelayed(this, 1000);
         }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = View.MeasureSpec.getSize(widthMeasureSpec);
+        int height = (int) (width * aspectRatio);
+        setMeasuredDimension(width, height);
     }
 
     @Override

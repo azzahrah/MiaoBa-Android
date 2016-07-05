@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="SwipeMenu">
+        <!-- 布局方向 -->
+        <attr name="orientation">
+            <enum name="horizontal" value="1" />
+            <enum name="vertical" value="2" />
+        </attr>
+        <!-- 布局方向 -->
+        <attr name="menuLocation">
+            <enum name="all" value="0" />
+            <enum name="begin" value="1" />
+            <enum name="end" value="2" />
+        </attr>
+        <!-- 打开比例 -->
+        <attr name="openPercent" format="float" />
+        <!-- 滑动持续时间 -->
+        <attr name="scrollerDuration" format="integer" />
+        <!-- 滑动动画指示器 -->
+        <attr name="scrollerInterpolator" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="BubbleImageView">
         <!-- 是否进行气泡剪切 -->
         <attr name="bivIsBubble" format="boolean" />
@@ -95,5 +115,6 @@
         <attr name="spotColor" format="reference|color" />
         <attr name="animate" format="reference|boolean" />
     </declare-styleable>
+
 
 </resources>

@@ -19,6 +19,12 @@ public class PullableListView extends ListView implements Pullable {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, expandSpec);
+    }
+
+    @Override
     public boolean canPullDown() {
         if (getCount() == 0 || (getFirstVisiblePosition() == 0 && getChildAt(0).getTop() >= 0)) {
             // 没有item的时候也可以下拉刷新

@@ -6,6 +6,8 @@ import android.widget.ScrollView;
 
 public class PullableScrollView extends ScrollView implements Pullable {
 
+    private ScrollViewListener scrollViewListener = null;
+
     public PullableScrollView(Context context) {
         super(context);
     }
@@ -19,6 +21,14 @@ public class PullableScrollView extends ScrollView implements Pullable {
     }
 
     @Override
+    protected void onScrollChanged(int x, int y, int oldx, int oldy) {
+        super.onScrollChanged(x, y, oldx, oldy);
+        if (scrollViewListener != null) {
+            scrollViewListener.onScrollChanged(this, x, y, oldx, oldy);
+        }
+    }
+
+    @Override
     public boolean canPullDown() {
         return getScrollY() == 0;
     }
@@ -28,18 +38,8 @@ public class PullableScrollView extends ScrollView implements Pullable {
         return false;
     }
 
-    private ScrollViewListener scrollViewListener = null;
-
     public void setScrollViewListener(ScrollViewListener scrollViewListener) {
         this.scrollViewListener = scrollViewListener;
-    }
-
-    @Override
-    protected void onScrollChanged(int x, int y, int oldx, int oldy) {
-        super.onScrollChanged(x, y, oldx, oldy);
-        if (scrollViewListener != null) {
-            scrollViewListener.onScrollChanged(this, x, y, oldx, oldy);
-        }
     }
 
     public interface ScrollViewListener {
