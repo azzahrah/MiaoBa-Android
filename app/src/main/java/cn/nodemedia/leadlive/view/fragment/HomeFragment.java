@@ -42,8 +42,8 @@ import cn.nodemedia.library.glide.GlideCircleTransform;
 import cn.nodemedia.library.utils.ScreenUtils;
 import cn.nodemedia.library.utils.ToastUtils;
 import cn.nodemedia.library.view.widget.SlideView;
-import cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView;
-import cn.nodemedia.library.view.widget.pulltorefresh.PullableListView;
+import cn.nodemedia.library.view.widget.PullToRefreshView;
+import cn.nodemedia.library.view.widget.AutoListView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -75,7 +75,7 @@ public class HomeFragment extends AbsActionbarFragment {
     private int cursorIndex = 0;
 
     private PullToRefreshView liveFollowPulltorefresh;
-    private PullableListView liveFollowList;
+    private AutoListView liveFollowList;
     private LiveAdapter liveFollowAdapter;
     private int liveFollowPage = 1;
 
@@ -86,7 +86,7 @@ public class HomeFragment extends AbsActionbarFragment {
     private int liveHotPage = 1;
 
     private PullToRefreshView liveNewPulltorefresh;
-    private PullableListView liveNewList;
+    private AutoListView liveNewList;
     private LiveAdapter liveNewAdapter;
     private int liveNewPage = 1;
 
@@ -155,7 +155,8 @@ public class HomeFragment extends AbsActionbarFragment {
                 liveFollowPage = 1;
                 getLiveFollowList();
             }
-
+        });
+        liveFollowPulltorefresh.setOnLoadMoreListener(new PullToRefreshView.OnLoadMoreListener() {
             @Override
             public void onLoadMore(PullToRefreshView pullToRefreshLayout) {
                 liveFollowPage++;
@@ -163,7 +164,7 @@ public class HomeFragment extends AbsActionbarFragment {
             }
         });
 
-        liveFollowList = (PullableListView) view.findViewById(R.id.live_follow_list);
+        liveFollowList = (AutoListView) view.findViewById(R.id.live_follow_list);
         liveFollowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -191,7 +192,7 @@ public class HomeFragment extends AbsActionbarFragment {
 
                 if (liveInfoAbsL.isSuccess()) {
                     liveFollowAdapter.addDatas(liveInfoAbsL.result);
-                    liveFollowPulltorefresh.setPullLoadEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
+                    liveFollowPulltorefresh.setLoadMoreEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
                 } else {
                     liveFollowAdapter.notifyDataSetChanged();
                     ToastUtils.show(mActivity, liveInfoAbsL.getMsg());
@@ -210,7 +211,8 @@ public class HomeFragment extends AbsActionbarFragment {
                 liveHotPage = 1;
                 getLiveHotList();
             }
-
+        });
+        liveHotPulltorefresh.setOnLoadMoreListener(new PullToRefreshView.OnLoadMoreListener() {
             @Override
             public void onLoadMore(PullToRefreshView pullToRefreshLayout) {
                 liveHotPage++;
@@ -253,7 +255,7 @@ public class HomeFragment extends AbsActionbarFragment {
 
                 if (liveInfoAbsL.isSuccess()) {
                     liveHotAdapter.addDatas(liveInfoAbsL.result);
-                    liveHotPulltorefresh.setPullLoadEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
+                    liveHotPulltorefresh.setLoadMoreEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
                 } else {
                     liveHotAdapter.notifyDataSetChanged();
                     ToastUtils.show(mActivity, liveInfoAbsL.getMsg());
@@ -273,7 +275,8 @@ public class HomeFragment extends AbsActionbarFragment {
                 liveNewPage = 1;
                 getLiveNewList();
             }
-
+        });
+        liveNewPulltorefresh.setOnLoadMoreListener(new PullToRefreshView.OnLoadMoreListener() {
             @Override
             public void onLoadMore(PullToRefreshView pullToRefreshLayout) {
                 liveNewPage++;
@@ -281,7 +284,7 @@ public class HomeFragment extends AbsActionbarFragment {
             }
         });
 
-        liveNewList = (PullableListView) view.findViewById(R.id.live_new_list);
+        liveNewList = (AutoListView) view.findViewById(R.id.live_new_list);
         liveNewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -309,7 +312,7 @@ public class HomeFragment extends AbsActionbarFragment {
 
                 if (liveInfoAbsL.isSuccess()) {
                     liveNewAdapter.addDatas(liveInfoAbsL.result);
-                    liveNewPulltorefresh.setPullLoadEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
+                    liveNewPulltorefresh.setLoadMoreEnable(liveInfoAbsL.result != null && liveInfoAbsL.result.size() == 20);
                 } else {
                     liveNewAdapter.notifyDataSetChanged();
                     ToastUtils.show(mActivity, liveInfoAbsL.getMsg());

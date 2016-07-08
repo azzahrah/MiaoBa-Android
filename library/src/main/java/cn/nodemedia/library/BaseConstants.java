@@ -14,6 +14,7 @@ public class BaseConstants {
     public final static String USERPWD = "UserPwd";//用户密码
     public final static String USERPWDSAVE = "UserIsSavePwd";//用户密码是否保存
     public final static String USEROPENID = "UserOpenId";//用户唯一开放ID
+    public final static String USERAUTHTOKEN = "UserAuthToken";//用户AuthToken
     public final static String USERISPAYPWD = "UserIsPAYPwd";//用户是否设置支付密码
     public final static String USERISLOGIN = "UserIsLogin";//用户是否已登陆
     public final static String USERNICKNAME = "UserNickName";//用户昵称

@@ -23,8 +23,8 @@ import cn.nodemedia.library.bean.AbsL;
 import cn.nodemedia.library.glide.GlideCircleTransform;
 import cn.nodemedia.library.utils.SharedUtils;
 import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.view.widget.pulltorefresh.PullToRefreshView;
-import cn.nodemedia.library.view.widget.pulltorefresh.PullableListView;
+import cn.nodemedia.library.view.widget.PullToRefreshView;
+import cn.nodemedia.library.view.widget.AutoListView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -38,7 +38,7 @@ public class UserFollowActivity extends ActionbarActivity {
     @InjectView(R.id.common_pulltorefresh)
     PullToRefreshView commonPulltorefresh;
     @InjectView(R.id.common_list)
-    PullableListView commonList;
+    AutoListView commonList;
 
     private int userid;
     private int page = 0;
@@ -69,7 +69,8 @@ public class UserFollowActivity extends ActionbarActivity {
                 }
                 getFollowList();
             }
-
+        });
+        commonPulltorefresh.setOnLoadMoreListener(new PullToRefreshView.OnLoadMoreListener() {
             @Override
             public void onLoadMore(PullToRefreshView pullToRefreshLayout) {
                 page++;
@@ -110,6 +111,7 @@ public class UserFollowActivity extends ActionbarActivity {
 
                 if (followInfoAbsL.isSuccess()) {
                     userAdapter.addDatas(followInfoAbsL.result);
+                    commonPulltorefresh.setLoadMoreEnable(followInfoAbsL.result != null && followInfoAbsL.result.size() >= 20);
                 } else {
                     userAdapter.notifyDataSetChanged();
                     ToastUtils.show(mActivity, followInfoAbsL.getMsg());

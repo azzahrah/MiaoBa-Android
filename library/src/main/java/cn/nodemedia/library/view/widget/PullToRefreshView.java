@@ -1,18 +1,22 @@
-package cn.nodemedia.library.view.widget.pulltorefresh;
+package cn.nodemedia.library.view.widget;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
@@ -31,11 +35,7 @@ public class PullToRefreshView extends RelativeLayout {
     private static final int LOADING = 4;// 正在加载
 
     private Context mContext;
-    // 刷新回调接口
-    private OnRefreshListener mListener;
-    // 滚动驱动类
     private Scroller mScroller;
-
     private RotateAnimation mRotateUpAnim;//箭头旋转动画(向上)
     private RotateAnimation mRotateDownAnim;//箭头旋转动画(向下)
 
@@ -51,7 +51,7 @@ public class PullToRefreshView extends RelativeLayout {
     private TextView refreshTextView;
 
     // 实现了Pullable接口的内容View
-    private View pullableView;
+    private View contentView;
 
     // 上拉视图
     private View loadmoreView;
@@ -64,9 +64,13 @@ public class PullToRefreshView extends RelativeLayout {
     // 加载状态文字
     private TextView loadTextView;
 
-    // 这两个变量用来控制pull的方向，如果不加控制，当情况满足可上拉又可下拉时没法下拉
-    private boolean canRefresh = true;
-    private boolean canLoadMore = true;
+    // 刷新回调接口
+    private OnRefreshListener onRefreshListener;
+    // 加载更多回调接口
+    private OnLoadMoreListener onLoadMoreListener;
+
+    private boolean canRefresh;
+    private boolean canLoadMore;
 
     // 是否第一次执行布局
     private boolean isLayout = true;
@@ -115,7 +119,11 @@ public class PullToRefreshView extends RelativeLayout {
         if (isLayout) {
             isLayout = false;
 
-            pullableView = getChildAt(0);
+            if (getChildCount() > 1) {
+                throw new IllegalArgumentException("Only allowed to have a sub view");
+            }
+
+            contentView = getChildAt(0);
 
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -127,25 +135,32 @@ public class PullToRefreshView extends RelativeLayout {
             refreshView.setLayoutParams(lp);
             addView(refreshView);
 
-            loadmoreView = LayoutInflater.from(mContext).inflate(R.layout.layout_refresh_footer, null);
-            loadmoreArrowView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_arrow);
-            loadingView = (ProgressBar) loadmoreView.findViewById(R.id.refresh_footer_progressbar);
-            loadTextView = (TextView) loadmoreView.findViewById(R.id.refresh_footer_text);
-            loadStateView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_state);
-            loadmoreView.setLayoutParams(lp);
-            addView(loadmoreView);
+            canRefresh = true;
+
+            if (contentView instanceof AdapterView) {
+                canLoadMore = true;
+                loadmoreView = LayoutInflater.from(mContext).inflate(R.layout.layout_refresh_footer, null);
+                loadmoreArrowView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_arrow);
+                loadingView = (ProgressBar) loadmoreView.findViewById(R.id.refresh_footer_progressbar);
+                loadTextView = (TextView) loadmoreView.findViewById(R.id.refresh_footer_text);
+                loadStateView = (ImageView) loadmoreView.findViewById(R.id.refresh_footer_state);
+                loadmoreView.setLayoutParams(lp);
+                addView(loadmoreView);
+            } else {
+                canLoadMore = false;
+            }
         }
 
         if (refreshYDist <= 10) {
-            refreshYDist = ((ViewGroup) refreshView).getChildAt(0).getMeasuredHeight() + 10;
+            refreshYDist = refreshView.getMeasuredHeight() + 10;
         }
 
-        pullableView.layout(0, (int) pullYDist, pullableView.getMeasuredWidth(), (int) pullYDist + pullableView.getMeasuredHeight());
+        contentView.layout(0, (int) pullYDist, contentView.getMeasuredWidth(), (int) pullYDist + contentView.getMeasuredHeight());
         // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
         if (refreshView != null)
             refreshView.layout(0, (int) pullYDist - refreshView.getMeasuredHeight(), refreshView.getMeasuredWidth(), (int) pullYDist);
         if (loadmoreView != null)
-            loadmoreView.layout(0, (int) pullYDist + pullableView.getMeasuredHeight(), loadmoreView.getMeasuredWidth(), (int) pullYDist + pullableView.getMeasuredHeight() + loadmoreView.getMeasuredHeight());
+            loadmoreView.layout(0, (int) pullYDist + contentView.getMeasuredHeight(), loadmoreView.getMeasuredWidth(), (int) pullYDist + contentView.getMeasuredHeight() + loadmoreView.getMeasuredHeight());
     }
 
     @Override
@@ -178,20 +193,21 @@ public class PullToRefreshView extends RelativeLayout {
             case MotionEvent.ACTION_DOWN:
                 isPointerDown = false;
                 lastY = ev.getY();
+                changeState(INIT);
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 isPointerDown = true;
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 if (ev.getPointerCount() == 1) {
-                    isPointerDown = true;
+                    isPointerDown = false;
                     lastY = ev.getY();
                 } else {
-                    isPointerDown = false;
+                    isPointerDown = true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isPointerDown) {
+                if (!isPointerDown) {
                     // 计算Y轴偏移量,对实际滑动距离做缩小，造成用力拉的感觉
                     pullYDist = pullYDist + (ev.getY() - lastY) / radio;
                     // 记录当前触摸Y坐标
@@ -199,7 +215,7 @@ public class PullToRefreshView extends RelativeLayout {
                     // 根据下拉距离改变比例
                     radio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight() * Math.abs(pullYDist)));
 
-                    if ((mState == INIT || mState == RELEASE_TO_REFRESH) && pullYDist > 0 && ((Pullable) pullableView).canPullDown() && canRefresh) {
+                    if ((mState == INIT || mState == RELEASE_TO_REFRESH) && pullYDist > 0 && canPullDown() && canRefresh) {
                         if (pullYDist > getMeasuredHeight())
                             pullYDist = getMeasuredHeight();
 
@@ -208,13 +224,7 @@ public class PullToRefreshView extends RelativeLayout {
                         } else if (pullYDist > refreshYDist && mState == INIT) {
                             changeState(RELEASE_TO_REFRESH);
                         }
-
-                        requestLayout();
-                        if (Math.abs(pullYDist) > 8) {
-                            // 防止下拉过程中误触发长按事件和点击事件
-                            ev.setAction(MotionEvent.ACTION_CANCEL);
-                        }
-                    } else if ((mState == INIT || mState == RELEASE_TO_LOAD) && pullYDist < 0 && (((Pullable) pullableView).canPullUp() && canLoadMore)) {
+                    } else if ((mState == INIT || mState == RELEASE_TO_LOAD) && pullYDist < 0 && canPullUp() && canLoadMore) {
                         if (pullYDist < -getMeasuredHeight())
                             pullYDist = -getMeasuredHeight();
 
@@ -223,12 +233,14 @@ public class PullToRefreshView extends RelativeLayout {
                         } else if (-pullYDist > refreshYDist && mState == INIT) {
                             changeState(RELEASE_TO_LOAD);
                         }
+                    } else {
+                        pullYDist = 0;
+                    }
 
-                        requestLayout();
-                        if (Math.abs(pullYDist) > 8) {
-                            // 防止下拉过程中误触发长按事件和点击事件
-                            ev.setAction(MotionEvent.ACTION_CANCEL);
-                        }
+                    requestLayout();
+                    if (Math.abs(pullYDist) > 8) {
+                        // 防止下拉过程中误触发长按事件和点击事件
+                        ev.setAction(MotionEvent.ACTION_CANCEL);
                     }
                 }
                 break;
@@ -247,8 +259,8 @@ public class PullToRefreshView extends RelativeLayout {
         switch (mState) {
             case RELEASE_TO_REFRESH:
                 changeState(REFRESHING);
-                if (mListener != null)
-                    mListener.onRefresh(this);
+                if (onRefreshListener != null)
+                    onRefreshListener.onRefresh(this);
                 mScroller.startScroll(0, (int) pullYDist, 0, (int) (refreshYDist - pullYDist));
                 break;
             case REFRESHING:
@@ -256,8 +268,8 @@ public class PullToRefreshView extends RelativeLayout {
                 break;
             case RELEASE_TO_LOAD:
                 changeState(LOADING);
-                if (mListener != null)
-                    mListener.onLoadMore(this);
+                if (onLoadMoreListener != null)
+                    onLoadMoreListener.onLoadMore(this);
                 mScroller.startScroll(0, (int) pullYDist, 0, (int) -(pullYDist + refreshYDist));
                 break;
             case LOADING:
@@ -274,16 +286,18 @@ public class PullToRefreshView extends RelativeLayout {
         switch (toState) {
             case INIT:
                 // 下拉布局初始状态
-                refreshTextView.setText(R.string.refresh_header_hint_normal);
-                refreshArrowView.setVisibility(View.VISIBLE);
-                refreshStateView.setVisibility(View.INVISIBLE);
-                refreshingView.setVisibility(View.GONE);
+                if (refreshView != null) {
+                    refreshTextView.setText(R.string.refresh_header_hint_normal);
+                    refreshArrowView.setVisibility(View.VISIBLE);
+                    refreshStateView.setVisibility(View.GONE);
+                    refreshingView.setVisibility(View.GONE);
+                }
 
                 // 上拉布局初始状态
                 if (loadmoreView != null) {
                     loadTextView.setText(R.string.refresh_footer_hint_normal);
                     loadmoreArrowView.setVisibility(View.VISIBLE);
-                    loadStateView.setVisibility(View.INVISIBLE);
+                    loadStateView.setVisibility(View.GONE);
                     loadingView.setVisibility(View.GONE);
                 }
 
@@ -304,7 +318,7 @@ public class PullToRefreshView extends RelativeLayout {
             case REFRESHING:
                 // 正在刷新状态
                 refreshingView.setVisibility(View.VISIBLE);
-                refreshArrowView.setVisibility(View.INVISIBLE);
+                refreshArrowView.setVisibility(View.GONE);
                 refreshArrowView.clearAnimation();
                 refreshTextView.setText(R.string.refreshing);
                 break;
@@ -316,12 +330,58 @@ public class PullToRefreshView extends RelativeLayout {
             case LOADING:
                 // 正在加载状态
                 loadingView.setVisibility(View.VISIBLE);
-                loadmoreArrowView.setVisibility(View.INVISIBLE);
+                loadmoreArrowView.setVisibility(View.GONE);
                 loadmoreArrowView.clearAnimation();
                 loadTextView.setText(R.string.loading);
                 break;
         }
         mState = toState;
+    }
+
+    public boolean canPullDown() {
+        if (contentView instanceof AdapterView) {
+            if (((AdapterView) contentView).getCount() == 0) {
+                return true;
+            } else {
+                int firstVisiblePosition = ((AdapterView) contentView).getFirstVisiblePosition();
+                return firstVisiblePosition == 0 && getChildAt(firstVisiblePosition).getTop() >= 0;
+            }
+        } else if (contentView instanceof RecyclerView) {
+            RecyclerView.LayoutManager layoutManager = ((RecyclerView) contentView).getLayoutManager();
+            if (layoutManager.getItemCount() == 0) {
+                return true;
+            } else {
+                int firstVisibleItemPosition;
+                if (layoutManager instanceof StaggeredGridLayoutManager) {
+                    firstVisibleItemPosition = ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(null)[0];
+                } else {
+                    firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                }
+                return firstVisibleItemPosition == 0 && layoutManager.findViewByPosition(firstVisibleItemPosition).getTop() >= 0;
+            }
+        } else if (contentView instanceof ScrollView) {
+            return getScrollY() == 0;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean canPullUp() {
+        if (contentView instanceof AdapterView) {
+            int chlidCount = ((AdapterView) contentView).getCount();
+            if (chlidCount == 0) {
+                return false;
+            } else {
+                int lastVisiblePosition = ((AdapterView) contentView).getLastVisiblePosition();
+                return lastVisiblePosition == chlidCount - 1 && getChildAt(lastVisiblePosition).getBottom() <= contentView.getMeasuredHeight();
+            }
+        } else if (contentView instanceof RecyclerView) {
+            return false;
+        } else if (contentView instanceof ScrollView) {
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -443,39 +503,37 @@ public class PullToRefreshView extends RelativeLayout {
         protected void onPostExecute(String result) {
             changeState(REFRESHING);
             // 刷新操作
-            if (mListener != null)
-                mListener.onRefresh(PullToRefreshView.this);
+            if (onRefreshListener != null)
+                onRefreshListener.onRefresh(PullToRefreshView.this);
         }
     }
 
-    /**
-     * 自动加载
-     */
-    public void autoLoad() {
-        pullYDist = -refreshYDist;
-        requestLayout();
-        changeState(LOADING);
-        // 加载操作
-        if (mListener != null)
-            mListener.onLoadMore(this);
-    }
-
     public void setOnRefreshListener(OnRefreshListener listener) {
-        mListener = listener;
+        onRefreshListener = listener;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener listener) {
+        onLoadMoreListener = listener;
     }
 
     /**
-     * 刷新加载回调接口
+     * 刷新回调接口
      */
     public interface OnRefreshListener {
         /**
          * 刷新操作
          */
         void onRefresh(PullToRefreshView pullToRefreshLayout);
+    }
 
+    /**
+     * 加载更多回调接口
+     */
+    public interface OnLoadMoreListener {
         /**
          * 加载操作
          */
         void onLoadMore(PullToRefreshView pullToRefreshLayout);
     }
+
 }

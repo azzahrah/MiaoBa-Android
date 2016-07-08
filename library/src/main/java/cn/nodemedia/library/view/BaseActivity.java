@@ -1,9 +1,12 @@
 package cn.nodemedia.library.view;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,6 +17,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import cn.nodemedia.library.BaseApplication;
+import cn.nodemedia.library.MQTTService;
+import cn.nodemedia.library.MQTTServiceAIDL;
 import cn.nodemedia.library.R;
 import cn.nodemedia.library.utils.Log;
 import cn.nodemedia.library.view.widget.SwipeBackLayout;
@@ -27,11 +32,25 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected Context mAppContext;
     protected BaseApplication mApplication;
 
+    public MQTTServiceAIDL myServiceAIDL;
+
     public T mPresenter;
 
     private boolean isOnClick = true;
     private int oldClickView = 0;
     private long oldClickTime = 0;
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            myServiceAIDL = MQTTServiceAIDL.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            myServiceAIDL = null;
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +69,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         // }
         if (hasBindServer()) {
             Log.d("绑定Server");
+            //连接远程Service和Activity
+            Intent binderIntent = new Intent(this, MQTTService.class);
+            bindService(binderIntent, serviceConnection, BIND_AUTO_CREATE);
         }
     }
 
@@ -106,6 +128,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         mPresenter = null;
         if (hasBindServer()) {
             Log.d("解绑Server");
+            unbindService(serviceConnection);
         }
         // if (hasEventBus() && EventBus.getDefault().isRegistered(this)) {
         // EventBus.getDefault().unregister(this);

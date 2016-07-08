@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.nodemedia.library.view.widget.pulltorefresh.Pullable;
-
-public class SwipeMenuRecyclerView extends RecyclerView implements Pullable {
+public class SwipeMenuRecyclerView extends RecyclerView {
 
     protected ViewConfiguration mViewConfig;
 
@@ -104,17 +102,5 @@ public class SwipeMenuRecyclerView extends RecyclerView implements Pullable {
             for (int i = 0; i < childCount; i++) unvisited.add(group.getChildAt(i));
         }
         return itemView;
-    }
-
-    @Override
-    public boolean canPullDown() {
-        // LinearLayoutManager lm = (LinearLayoutManager) getLayoutManager();
-        // return lm.findViewByPosition(lm.findFirstVisibleItemPosition()).getTop() == 0 && lm.findFirstVisibleItemPosition() == 0;
-        return getScaleY() == 0;
-    }
-
-    @Override
-    public boolean canPullUp() {
-        return false;
     }
 }

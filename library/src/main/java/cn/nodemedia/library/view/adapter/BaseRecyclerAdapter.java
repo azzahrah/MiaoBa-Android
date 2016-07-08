@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.nodemedia.library.R;
+import cn.nodemedia.library.utils.Log;
 import cn.nodemedia.library.view.adapter.animation.AlphaInAnimation;
 import cn.nodemedia.library.view.adapter.animation.BaseAnimation;
 import cn.nodemedia.library.view.adapter.animation.ScaleInAnimation;
@@ -118,11 +119,13 @@ public abstract class BaseRecyclerAdapter<M> extends RecyclerView.Adapter<BaseRe
 
     @Override
     public int getItemCount() {
-        int count = getDataCount() + getHeaderViewsCount() + getFooterViewsCount() + getLoadMoreViewCount();
+        int count = getDataCount() + getHeaderViewsCount() + getFooterViewsCount();
         if (getDataCount() == 0) {
             if (count == 0 || mHeadOrFoorAndEmptyEnable) {
                 count += getEmptyViewCount();
             }
+        } else {
+            count += getLoadMoreViewCount();
         }
         return count;
     }
@@ -189,6 +192,8 @@ public abstract class BaseRecyclerAdapter<M> extends RecyclerView.Adapter<BaseRe
 
     @Override
     public BaseRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        Log.e("viewType:" + viewType);
 
         View itemView;
         switch (viewType) {
@@ -273,8 +278,6 @@ public abstract class BaseRecyclerAdapter<M> extends RecyclerView.Adapter<BaseRe
         int viewType = viewHolder.getItemViewType();
 
         switch (viewType) {
-            case 0:
-                break;
             case LOADING_VIEW:
                 if (!mLoadingMoreEnable) {
                     mLoadingMoreEnable = true;
@@ -534,6 +537,15 @@ public abstract class BaseRecyclerAdapter<M> extends RecyclerView.Adapter<BaseRe
     }
 
     /**
+     * 打开加载更多功能
+     */
+    public void openLoadMore() {
+        setLoadingView(R.layout.layout_loading);
+        setLoadMoreEnable(true);
+        setPageSize(20);
+    }
+
+    /**
      * 设置加载更多View
      */
     public void setLoadingView(@LayoutRes int layoutId) {
@@ -545,13 +557,13 @@ public abstract class BaseRecyclerAdapter<M> extends RecyclerView.Adapter<BaseRe
      */
     public void setLoadingView(View loadingView) {
         this.mLoadingView = loadingView;
-        this.mNextLoadEnable = true;
+        mLoadingView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     /**
-     * 设置是否打开加载更多功能
+     * 设置加载更多标志
      */
-    public void openLoadMore(boolean enable) {
+    public void setLoadMoreEnable(boolean enable) {
         mNextLoadEnable = enable;
     }
 

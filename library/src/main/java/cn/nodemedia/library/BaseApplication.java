@@ -46,26 +46,6 @@ public class BaseApplication extends Application {
 //        //.setCookieStore(new PersistentCookieStore())                       //cookie持久化存储，如果cookie不过期，则一直有效
 //        //.addCommonHeaders(headers)                                         //设置全局公共头
 //        //.addCommonParams(params);                                          //设置全局公共参数
-
-        //注册广播
-        MyBroadcastReceiver myBroadcastReceiver = new MyBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_TIME_TICK);// 时间改变广播,每分钟发出一次
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(myBroadcastReceiver, intentFilter);
-    }
-
-    public class MyBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(final Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-                RxBus.$().post(ConnectivityManager.CONNECTIVITY_ACTION);
-            } else {
-                //时间改变广播
-            }
-        }
     }
 
     public void addActivity(Activity activity) {
