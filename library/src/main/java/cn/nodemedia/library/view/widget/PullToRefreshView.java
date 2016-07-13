@@ -155,10 +155,10 @@ public class PullToRefreshView extends RelativeLayout {
             refreshYDist = refreshView.getMeasuredHeight() + 10;
         }
 
-        contentView.layout(0, (int) pullYDist, contentView.getMeasuredWidth(), (int) pullYDist + getMeasuredHeight());
+        contentView.layout(0, (int) pullYDist, contentView.getMeasuredWidth(), (int) pullYDist + contentView.getMeasuredHeight());
         // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
         if (refreshView != null)
-            refreshView.layout(0, (int) pullYDist - getMeasuredHeight(), refreshView.getMeasuredWidth(), (int) pullYDist);
+            refreshView.layout(0, (int) pullYDist - refreshView.getMeasuredHeight(), refreshView.getMeasuredWidth(), (int) pullYDist);
         if (loadmoreView != null)
             loadmoreView.layout(0, (int) pullYDist + getMeasuredHeight(), loadmoreView.getMeasuredWidth(), (int) pullYDist + getMeasuredHeight() + loadmoreView.getMeasuredHeight());
     }
