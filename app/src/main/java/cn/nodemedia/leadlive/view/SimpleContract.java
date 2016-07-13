@@ -108,12 +108,6 @@ public interface SimpleContract {
                 }
             });
         }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            mView = null;
-        }
     }
 
     class SimpleAdapter extends BaseRecyclerAdapter<String> {

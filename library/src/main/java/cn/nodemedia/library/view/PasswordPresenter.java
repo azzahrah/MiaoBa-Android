@@ -1,6 +1,8 @@
 package cn.nodemedia.library.view;
 
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -11,6 +13,8 @@ import cn.nodemedia.library.R;
  * Created by Bining on 16/6/28.
  */
 public abstract class PasswordPresenter<T extends BaseView> extends BasePresenter<T> {
+
+    private boolean isSetTextChanged = false;
 
     /**
      * 控制密码的显示隐藏
@@ -23,6 +27,43 @@ public abstract class PasswordPresenter<T extends BaseView> extends BasePresente
             password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             passwordEye.setImageResource(R.drawable.icon_eye_show);
         }
-    }
 
+        if (!isSetTextChanged) {
+            isSetTextChanged = true;
+            password.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable edt) {
+                    try {
+                        String temp = edt.toString();
+                        String tem = temp.substring(temp.length() - 1, temp.length());
+                        char[] temC = tem.toCharArray();
+                        int mid = temC[0];
+                        if (mid >= 48 && mid <= 57) {//数字
+                            return;
+                        }
+                        if (mid >= 65 && mid <= 90) {//大写字母
+                            return;
+                        }
+                        if (mid > 97 && mid <= 122) {//小写字母
+                            return;
+                        }
+                        if (mid == '_') {
+                            return;
+                        }
+                        edt.delete(temp.length() - 1, temp.length());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
 }

@@ -203,7 +203,7 @@ public class App {
      */
     public static boolean isServiceRunning(String serviceName) {
         ActivityManager activityManager = (ActivityManager) app().getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> serviceInfoList = activityManager.getRunningServices(50);
+        List<ActivityManager.RunningServiceInfo> serviceInfoList = activityManager.getRunningServices(Integer.MAX_VALUE);
         if (serviceInfoList != null && serviceInfoList.size() > 0) {
             for (ActivityManager.RunningServiceInfo serviceInfo : serviceInfoList) {
                 if (serviceInfo.service.getClassName().equals(serviceName)) {

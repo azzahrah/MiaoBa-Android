@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
+import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
 /**
@@ -32,11 +35,13 @@ import android.text.TextUtils;
  */
 public class FileUtils {
 
-    public static final String FILE_CACHE = "Cache";
-    public static final String FILE_IMAGE = "Image";
-    public static final String FILE_FILE = "File";
-    public static final String FILE_VIDEO = "Video";
-    public static final String FILE_SOUND = "Sound";
+    public static final int FILE_CACHE = 0X00000001;
+    public static final int FILE_FILE = 0X00000002;
+
+    @IntDef({FILE_CACHE, FILE_FILE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface FileType {
+    }
 
     /**
      * 判断是否存在SD卡
@@ -56,23 +61,55 @@ public class FileUtils {
 
     /**
      * 获取App默认文件路径
-     *
-     * @param dirName Pass {@link #FILE_CACHE} {@link #FILE_IMAGE}
-     *                {@link #FILE_FILE} {@link #FILE_VIDEO} {@link #FILE_SOUND}.
-     *                Default value is {@link #FILE_CACHE}.
      */
-    public static String getAppDefPath(String dirName) {
-        File result;
-        if (isSDCardEnable()) {
-            StringBuilder appDefPath = new StringBuilder();
-            appDefPath.append(getSDCardPath()).append(App.getAppName()).append(File.separator).append(dirName);
-            result = createDirectory(appDefPath.toString());
-        } else {
-            result = App.app().getCacheDir();
+    public static String getAppDefPath() {
+        return getAppDefPath(FILE_CACHE);
+    }
+
+    /**
+     * 获取App默认文件路径
+     */
+    public static String getAppDefPath(@FileType int fileType) {
+        File result = null;
+        switch (fileType) {
+            case FILE_CACHE:
+                result = App.app().getCacheDir();
+                break;
+            case FILE_FILE:
+                result = App.app().getFilesDir();
+                break;
         }
 
-        if (isFileExists(result)) {
+        if (result != null) {
             return result.getPath();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取App SD卡文件路径
+     * 注意:Android 6.0 以上需要申请权限
+     */
+    public static String getAppSdPath(@FileType int fileType) {
+        if (isSDCardEnable()) {
+            String fileName = null;
+            switch (fileType) {
+                case FILE_CACHE:
+                    fileName = "cache";
+                    break;
+                case FILE_FILE:
+                    fileName = "file";
+                    break;
+            }
+
+            File result = createDirectory(getSDCardPath() + App.getAppName() + File.separator + fileName);
+
+            if (isFileExists(result)) {
+                return result.getPath();
+            } else {
+                return null;
+            }
         } else {
             return null;
         }

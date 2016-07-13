@@ -5,22 +5,12 @@ import android.text.TextUtils;
 
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.leadlive.bean.UserInfo;
-import cn.nodemedia.leadlive.utils.DBUtils;
-import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.bean.AbsT;
-import cn.nodemedia.library.db.DbException;
 import cn.nodemedia.library.utils.SharedUtils;
 import cn.nodemedia.library.utils.ValidUtils;
-import cn.nodemedia.library.view.BaseView;
-import cn.nodemedia.library.view.PasswordPresenter;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
-public interface LoginContract {
+public interface LoginTradContract {
 
-    interface View extends BaseView {
+    interface View extends LoginBaseContract.View {
         void setUsername(String username);
 
         void setPassword(String passwoed);
@@ -28,11 +18,9 @@ public interface LoginContract {
         void setUsernameError(String message);
 
         void setPasswordError(String message);
-
-        void goNextView();
     }
 
-    class Presenter extends PasswordPresenter<View> {
+    class Presenter extends LoginBaseContract.Presenter<View> {
 
         @Override
         public void onStart() {
@@ -71,24 +59,7 @@ public interface LoginContract {
             SharedUtils.put(Constants.USERPWD, password);
             SharedUtils.put(Constants.USERPWDSAVE, isSave);
 
-            HttpUtils.login(username, password, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsT<UserInfo>>() {
-                @Override
-                public void call(AbsT<UserInfo> userInfoAbsT) {
-                    if (userInfoAbsT.isSuccess()) {
-                        SharedUtils.put(Constants.USEROPENID, userInfoAbsT.result.userid);
-                        try {
-                            DBUtils.getInstance().saveOrUpdate(userInfoAbsT.result);
-                            SharedUtils.put(Constants.USERISLOGIN, true);
-                            mRxManage.post(Constants.USERISLOGIN, true);
-                            onSucc();
-                        } catch (DbException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        onFail(userInfoAbsT.getMsg());
-                    }
-                }
-            });
+            login(username, password, 1);
         }
 
         public void onUsernameError(@StringRes int strRes) {
@@ -101,18 +72,9 @@ public interface LoginContract {
                 mView.setPasswordError(context.getString(strRes));
         }
 
-        public void onSucc() {
-            super.onSucc();
-            if (mView != null) {
-                mView.goNextView();
-                mView.exit();
-            }
-        }
-
         @Override
-        public void onDestroy() {
-            super.onDestroy();
-            mView = null;
+        public void getBindUserInfo() {
+            onFail("登陆遇到问题:为获取到用户数据.");
         }
     }
 }

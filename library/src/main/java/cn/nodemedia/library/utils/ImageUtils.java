@@ -50,7 +50,7 @@ public class ImageUtils {
      * @return 图片路径
      */
     public static String saveImageToCache(Bitmap bitmap) {
-        return saveImageToCache(System.currentTimeMillis() + ".jpg", bitmap);
+        return saveImageToCache("IMG_" + System.currentTimeMillis() + ".jpg", bitmap);
     }
 
     /**
@@ -74,21 +74,20 @@ public class ImageUtils {
      */
     public static String saveImageToCache(String fileName, Bitmap bitmap, int quality) {
         if (!TextUtils.isEmpty(fileName) && bitmap != null) {
-            String filePath = App.app().getCacheDir().getPath() + File.separator + fileName;
+            String filePath = FileUtils.getAppDefPath(FileUtils.FILE_FILE) + File.separator + fileName;
             return saveImage(filePath, bitmap, quality);
         }
         return null;
     }
 
     /**
-     * 保存Image至SD卡APP默认目录
+     * 保存Image至APP SD卡目录
      *
      * @param bitmap Bitmap
      * @return 图片路径
      */
     public static String saveImage(Bitmap bitmap) {
-        String filePath = FileUtils.getAppDefPath(FileUtils.FILE_IMAGE) + File.separator + "IMG_"
-                + System.currentTimeMillis() + ".jpg";
+        String filePath = FileUtils.getAppSdPath(FileUtils.FILE_FILE) + File.separator + "IMG_" + System.currentTimeMillis() + ".jpg";
         return saveImage(filePath, bitmap);
     }
 

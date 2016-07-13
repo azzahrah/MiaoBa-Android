@@ -2,16 +2,15 @@ package cn.nodemedia.library;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
+
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.tauth.Tencent;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.nodemedia.library.rxjava.RxBus;
 import cn.nodemedia.library.utils.Log;
 
 /**
@@ -21,6 +20,10 @@ import cn.nodemedia.library.utils.Log;
 public class BaseApplication extends Application {
 
     private List<Activity> activityList = new LinkedList<>();
+
+    public IWXAPI mWeixinAPI;
+    public Tencent mTencent;
+    public AuthInfo mAuthInfo;
 
     @Override
     public void onCreate() {
@@ -46,6 +49,28 @@ public class BaseApplication extends Application {
 //        //.setCookieStore(new PersistentCookieStore())                       //cookie持久化存储，如果cookie不过期，则一直有效
 //        //.addCommonHeaders(headers)                                         //设置全局公共头
 //        //.addCommonParams(params);                                          //设置全局公共参数
+    }
+
+    public IWXAPI getIWXAPI() {
+        if (mWeixinAPI == null) {
+            mWeixinAPI = WXAPIFactory.createWXAPI(this, "appid", false);
+            mWeixinAPI.registerApp("appid");
+        }
+        return mWeixinAPI;
+    }
+
+    public Tencent getTencent() {
+        if (mTencent == null) {
+            mTencent = Tencent.createInstance("appid", this);
+        }
+        return mTencent;
+    }
+
+    public AuthInfo getWeibo() {
+        if (mAuthInfo == null) {
+            mAuthInfo = new AuthInfo(this, "1331670181", "https://api.weibo.com/oauth2/default.html", "email,direct_messages_read,direct_messages_write,friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write");
+        }
+        return mAuthInfo;
     }
 
     public void addActivity(Activity activity) {

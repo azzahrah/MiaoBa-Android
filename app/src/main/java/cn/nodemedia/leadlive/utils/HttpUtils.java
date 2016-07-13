@@ -1,5 +1,7 @@
 package cn.nodemedia.leadlive.utils;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 
 import java.io.File;
@@ -138,6 +140,10 @@ public class HttpUtils {
         @POST(Constants.HTTP_LOGIN)
         Observable<AbsT<UserInfo>> login(@Field("json") String param);
 
+        @FormUrlEncoded
+        @POST(Constants.HTTP_REGISTER)
+        Observable<AbsT<UserInfo>> register(@Field("json") String param);
+
         @GET(Constants.HTTP_USERINFO_GET)
         Observable<AbsT<UserInfo>> getUserInfo(@Query("json") String json);
 
@@ -154,6 +160,15 @@ public class HttpUtils {
 
         @GET(Constants.HTTP_LIVE_GET)
         Observable<AbsL<LiveInfo>> getLiveList(@Query("json") String json);
+
+        @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
+        Observable<String> getWXToken(@Query("appid") String appid, @Query("secret") String secret, @Query("code") String code, @Query("grant_type") String grant_type);
+
+        @GET("https://api.weixin.qq.com/sns/userinfo")
+        Observable<String> getWXUserInfo(@Query("access_token") String access_token, @Query("openid") String openid);
+
+        @GET("https://api.weibo.com/2/users/show.json")
+        Observable<String> getSinaUserInfo(@Query("access_token") String access_token, @Query("uid") String uid);
 
         @GET("get/{id}")
         Call<Object> getCall(@Path("id") int groupId, @Query("param") String param, @QueryMap Map<String, String> params);
@@ -192,17 +207,37 @@ public class HttpUtils {
     /**
      * 用户登陆
      *
-     * @param uname 登陆帐号
+     * @param uname 登陆帐号或OpenId
      * @param pwds  密码
      * @param type  登陆类型 1：注册用登陆 2：三方登陆
      */
     public static Observable<AbsT<UserInfo>> login(String uname, String pwds, int type) {
         Map<String, Object> sortMap = new HashMap<>();
         sortMap.put("uname", uname);
-        sortMap.put("pwds", MD5.md5(pwds));
+        sortMap.put("pwds", TextUtils.isEmpty(pwds) ? "" : MD5.md5(pwds));
         sortMap.put("type", type);
 
         return getApiService().login(getHttpParams(sortMap));
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param uname 登陆帐号或OpenId
+     * @param pwds  密码
+     * @param nick  昵称
+     * @param faces 头像
+     * @param utype 注册类型 QQ WeiXin Sina RenRen DouBan
+     */
+    public static Observable<AbsT<UserInfo>> register(String uname, String pwds, String nick, String faces, String utype) {
+        Map<String, Object> sortMap = new HashMap<>();
+        sortMap.put("uname", uname);
+        sortMap.put("pwds", TextUtils.isEmpty(pwds) ? "" : MD5.md5(pwds));
+        sortMap.put("nick", nick);
+        sortMap.put("faces", faces);
+        sortMap.put("utype", utype);
+
+        return getApiService().register(getHttpParams(sortMap));
     }
 
     /**
@@ -316,6 +351,18 @@ public class HttpUtils {
         treeMap.put("sign", MD5.md5(tempStr));
 
         return JSON.toJSONString(treeMap);
+    }
+
+    public static Observable<String> getWXToken(String code) {
+        return getApiService().getWXToken("", "", code, "authorization_code");
+    }
+
+    public static Observable<String> getWXUserInfo(String authToken, String openId) {
+        return getApiService().getWXUserInfo(authToken, openId);
+    }
+
+    public static Observable<String> getSinaUserInfo(String authToken, String uid) {
+        return getApiService().getSinaUserInfo(authToken, uid);
     }
 
     private static class JsonInfo {

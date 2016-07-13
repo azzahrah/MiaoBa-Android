@@ -12,11 +12,23 @@
         <!-- android:enabled  Android系统能否实例化应用程序中的各组件 -->
         <service
             android:name=".MQTTService"
+            android:enabled="true"
             android:exported="false"
-            android:process=":remote">
+            android:process=":mqtt">
             <intent-filter android:priority="1000">
                 <!--  指定调用AIDL服务的ID  -->
                 <action android:name="cn.nodemedia.library.MqttService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".GuardService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":guard">
+            <intent-filter android:priority="1000">
+                <!--  指定调用AIDL服务的ID  -->
+                <action android:name="cn.nodemedia.library.GuardService" />
             </intent-filter>
         </service>
 
