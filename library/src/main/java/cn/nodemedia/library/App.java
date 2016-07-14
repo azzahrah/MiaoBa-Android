@@ -23,6 +23,7 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import cn.nodemedia.library.utils.Log;
 import dalvik.system.DexFile;
 
 /**
@@ -206,6 +207,7 @@ public class App {
         List<ActivityManager.RunningServiceInfo> serviceInfoList = activityManager.getRunningServices(Integer.MAX_VALUE);
         if (serviceInfoList != null && serviceInfoList.size() > 0) {
             for (ActivityManager.RunningServiceInfo serviceInfo : serviceInfoList) {
+                Log.e(serviceInfo.service.getClassName());
                 if (serviceInfo.service.getClassName().equals(serviceName)) {
                     return true;
                 }

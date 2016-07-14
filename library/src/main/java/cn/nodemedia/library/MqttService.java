@@ -79,7 +79,7 @@ public class MQTTService extends Service implements MqttCallback {
      * Start MQTT Client
      */
     public static void actionConnect(Context context) {
-        Intent i = new Intent(context, GuardService.class);
+        Intent i = new Intent(context, MQTTService.class);
         i.setAction(ACTION_CONNECT);
         context.startService(i);
     }
@@ -88,7 +88,7 @@ public class MQTTService extends Service implements MqttCallback {
      * Reconnect MQTT Client
      */
     public static void actionReconnect(Context context) {
-        Intent i = new Intent(context, GuardService.class);
+        Intent i = new Intent(context, MQTTService.class);
         i.setAction(ACTION_RECONNECT);
         context.startService(i);
     }
@@ -164,9 +164,13 @@ public class MQTTService extends Service implements MqttCallback {
                 stopConnectAlives();
             }
             return;
+        } else {
+            if (!hasConnectAlives()) {
+                starConnectAlives();
+            }
         }
 
-        openId = SharedUtils.getString(BaseConstants.USEROPENID, null);
+        openId = SharedUtils.getInt(BaseConstants.USEROPENID, 0) + "";
         authToken = SharedUtils.getString(BaseConstants.USERAUTHTOKEN, null);
 
         if (TextUtils.isEmpty(openId) || TextUtils.isEmpty(authToken)) {
@@ -207,8 +211,6 @@ public class MQTTService extends Service implements MqttCallback {
                     // MqttTopic topics = mqttClient.getTopic(Constants.COMMONTOPIC);
                     // options.setWill(topics, message.getBytes(), 0, false);
                     Log.d("MQTT服务连接成功");
-
-                    starConnectAlives();
                 } catch (MqttException exception) {
                     Log.e("MQTT服务异常:" + exception.getMessage());
                     if (exception.getReasonCode() == 4) {
@@ -259,7 +261,7 @@ public class MQTTService extends Service implements MqttCallback {
 
     private void starConnectAlives() {
         Intent i = new Intent();
-        i.setClass(this, GuardService.class);
+        i.setClass(this, MQTTService.class);
         i.setAction(ACTION_CONNECT);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + MQTT_CONNECT_ALIVE, MQTT_CONNECT_ALIVE, pi);
@@ -267,7 +269,7 @@ public class MQTTService extends Service implements MqttCallback {
 
     private void stopConnectAlives() {
         Intent i = new Intent();
-        i.setClass(this, GuardService.class);
+        i.setClass(this, MQTTService.class);
         i.setAction(ACTION_CONNECT);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         mAlarmManager.cancel(pi);
@@ -275,7 +277,7 @@ public class MQTTService extends Service implements MqttCallback {
 
     private synchronized boolean hasConnectAlives() {
         Intent i = new Intent();
-        i.setClass(this, GuardService.class);
+        i.setClass(this, MQTTService.class);
         i.setAction(ACTION_CONNECT);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_NO_CREATE);
         return pi != null;

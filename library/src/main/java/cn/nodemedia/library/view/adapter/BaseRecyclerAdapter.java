@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.nodemedia.library.R;
-import cn.nodemedia.library.utils.Log;
 import cn.nodemedia.library.view.adapter.animation.AlphaInAnimation;
 import cn.nodemedia.library.view.adapter.animation.BaseAnimation;
 import cn.nodemedia.library.view.adapter.animation.ScaleInAnimation;
@@ -192,9 +191,6 @@ public abstract class BaseRecyclerAdapter<M> extends RecyclerView.Adapter<BaseRe
 
     @Override
     public BaseRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        Log.e("viewType:" + viewType);
-
         View itemView;
         switch (viewType) {
             case HEADER_VIEW:

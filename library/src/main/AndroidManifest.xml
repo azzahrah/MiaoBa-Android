@@ -17,7 +17,7 @@
             android:process=":mqtt">
             <intent-filter android:priority="1000">
                 <!--  指定调用AIDL服务的ID  -->
-                <action android:name="cn.nodemedia.library.MqttService" />
+                <action android:name="cn.nodemedia.library.MQTTService" />
             </intent-filter>
         </service>
 

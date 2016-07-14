@@ -87,7 +87,7 @@ public interface SimpleContract {
                     }
 
                     List<String> data = new ArrayList<>();
-                    for (int i = 1; i < 21; i++) {
+                    for (int i = 1; i < 2; i++) {
                         data.add("测试数据:" + i);
                     }
 

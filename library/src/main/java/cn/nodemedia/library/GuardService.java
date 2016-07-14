@@ -11,7 +11,7 @@ import cn.nodemedia.library.utils.Log;
 
 public class GuardService extends Service {
 
-    private static final int MQTT_CONNECT_ALIVE = 60000; // ConnectAlive Interval in MS
+    private static final int MQTT_CONNECT_ALIVE = 120000; // ConnectAlive Interval in MS
 
     private Context context;
     private AlarmManager mAlarmManager; // Alarm manager to perform repeating tasks
@@ -34,7 +34,7 @@ public class GuardService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("GuardService onStartCommand");
-        if (!App.isServiceRunning("cn.nodemedia.library.MqttService")) {
+        if (!App.isServiceRunning("cn.nodemedia.library.MQTTService")) {
             MQTTService.actionConnect(this);
         }
         flags = START_STICKY;// or START_REDELIVER_INTENT
