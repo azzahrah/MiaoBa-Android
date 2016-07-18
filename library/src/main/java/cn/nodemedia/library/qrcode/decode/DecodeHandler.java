@@ -6,7 +6,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.zbar.lib.ZbarManager;
+import cn.nodemedia.library.qrcode.Zbar;
 import cn.nodemedia.library.qrcode.decode.bitmap.PlanarYUVLuminanceSource;
 
 import java.io.File;
@@ -45,7 +45,7 @@ final class DecodeHandler extends Handler {
         width = height;
         height = tmp;
 
-        ZbarManager manager = new ZbarManager();
+        Zbar manager = new Zbar();
         String result = manager.decode(rotatedData, width, height, true, handler.getX(), handler.getY(), handler.getCropWidth(), handler.getCropHeight());
 
         if (result != null) {
