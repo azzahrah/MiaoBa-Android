@@ -63,7 +63,7 @@ public class EncryptToBase64Util {
         System.arraycopy(message, 8 + 16, secretData, 0, secretData.length);
 
         // 解密
-        byte[] dataValue = EncryptToBase64Util.decryptDataValue(secretData, authToken);
+        byte[] dataValue = EncryptToBase64Util.xorBytesWithKey(secretData, authToken);
 
         // 验证解密后数据是否正确
         byte[] checkKey = EncryptToBase64Util.secretDataKey(authToken, dataValue);
@@ -73,7 +73,8 @@ public class EncryptToBase64Util {
         }
 
         // 解压
-        return EncryptToBase64Util.decompressData(dataValue);
+        // return EncryptToBase64Util.decompressData(dataValue);
+        return dataValue;
     }
 
     /**
@@ -90,7 +91,7 @@ public class EncryptToBase64Util {
         // 压缩
         //byte[] dataValue = EncryptToBase64Util.compressData(message);
 
-        // 加密识别码
+        // 加盐
         byte[] secretKey = EncryptToBase64Util.secretDataKey(authToken, message);
 
         // 加密
@@ -216,13 +217,6 @@ public class EncryptToBase64Util {
     }
 
     /**
-     * 数据解密
-     */
-    public static byte[] decryptDataValue(byte[] data, String key) {
-        return xorBytesWithKey(data, key);
-    }
-
-    /**
      * 异或加密解密
      */
     private static byte[] xorBytesWithKey(byte[] data, String key) {
@@ -238,11 +232,9 @@ public class EncryptToBase64Util {
             while (step < data.length) {
                 for (int i = 0; i < bufKey.length; i++) {
                     byte keyB = bufKey[i];
-
                     if (step + i == data.length) {
                         return dataNew;
                     }
-
                     dataNew[step + i] = (byte) (keyB ^ data[step + i]);
                 }
 

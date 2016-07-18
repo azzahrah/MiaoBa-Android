@@ -1,7 +1,13 @@
 package cn.nodemedia.leadlive.view;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.support.v7.widget.RecyclerView;
+import android.view.SurfaceView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -39,7 +45,6 @@ public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> imple
     public Context getContext() {
         return mActivity;
     }
-
 
     @Override
     public PullToRefreshView getRefreshView() {

@@ -39,6 +39,10 @@ import cn.nodemedia.library.utils.Log;
 import cn.nodemedia.library.utils.NetUtils;
 import cn.nodemedia.library.utils.SharedUtils;
 
+/**
+ * MQTT消息进程
+ * Created by Bining.
+ */
 public class MQTTService extends Service implements MqttCallback {
 
     public static final int MQTT_QOS_0 = 0; // QOS Level 0 ( Delivery Once no confirmation )

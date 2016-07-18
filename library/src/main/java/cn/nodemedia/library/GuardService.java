@@ -9,6 +9,10 @@ import android.os.IBinder;
 
 import cn.nodemedia.library.utils.Log;
 
+/**
+ * 守护进程
+ * Created by Bining.
+ */
 public class GuardService extends Service {
 
     private static final int MQTT_CONNECT_ALIVE = 120000; // ConnectAlive Interval in MS

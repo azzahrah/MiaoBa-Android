@@ -202,7 +202,7 @@ public class GlideUtils {
         int sealeHeight = imagePath.imageHeight * sealeWidth / imagePath.imageWidth;
 
         Log.e("Image sealewidth:" + sealeWidth + " sealeheight : " + sealeHeight);
-        imageView.setImageScaledSize(sealeWidth, sealeHeight);
+        //imageView.setImageScaledSize(sealeWidth, sealeHeight);
         imageView.setLayoutParams(new RelativeLayout.LayoutParams(sealeWidth, sealeHeight));
 
         getIamgeToUrl(activity, imagePath, imageView, resId, IMAGE_TYPE_NORMAL);
@@ -216,7 +216,7 @@ public class GlideUtils {
         int sealeHeight = imagePath.imageHeight * sealeWidth / imagePath.imageWidth;
 
         Log.e("Image sealewidth:" + sealeWidth + " sealeheight : " + sealeHeight);
-        imageView.setImageScaledSize(sealeWidth, sealeHeight);
+        //imageView.setImageScaledSize(sealeWidth, sealeHeight);
         imageView.setLayoutParams(new RelativeLayout.LayoutParams(sealeWidth, sealeHeight));
 
         getIamgeToUrl(activity, imagePath, imageView, resId, IMAGE_TYPE_NORMAL);

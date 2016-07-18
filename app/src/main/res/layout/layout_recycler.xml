@@ -10,4 +10,5 @@
             android:id="@+id/common_recycler"
             style="@style/common_listview" />
     </cn.nodemedia.library.view.widget.PullToRefreshView>
+
 </RelativeLayout>

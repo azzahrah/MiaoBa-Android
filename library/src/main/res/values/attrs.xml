@@ -21,22 +21,27 @@
         <attr name="scrollerInterpolator" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="BubbleImageView">
-        <!-- 是否进行气泡剪切 -->
-        <attr name="bivIsBubble" format="boolean" />
-        <!-- 圆角矩形弧度 -->
-        <attr name="bivRadius" format="dimension" />
-        <!-- 三角指向方向 -->
-        <attr name="bivOrientation">
-            <enum name="right" value="0" />
-            <enum name="left" value="1" />
+    <declare-styleable name="BubbleView">
+        <!--圆角弧度-->
+        <attr name="angle" format="dimension" />
+        <!--气泡颜色-->
+        <attr name="bubbleColor" format="color" />
+        <!--箭头斜边长度 注:剪头为直角三角形 -->
+        <attr name="arrowHypotenuse" format="dimension" />
+        <!--箭头位置-->
+        <attr name="arrowPosition" format="dimension" />
+        <!--箭头方向-->
+        <attr name="arrowLocation" format="enum">
+            <enum name="left" value="0x00000001" />
+            <enum name="right" value="0x00000002" />
+            <enum name="top" value="0x00000003" />
+            <enum name="bottom" value="0x00000004" />
         </attr>
-        <!-- 三角X轴投影 -->
-        <attr name="bivVertexXDis" format="dimension" />
-        <!-- 三角Y轴投影 -->
-        <attr name="bivVertexYDis" format="dimension" />
-        <!-- 三角底边长度 -->
-        <attr name="bivHelineLength" format="dimension" />
+
+        <!--边框宽度-->
+        <attr name="strokeWidth" format="dimension" />
+        <!--边框颜色-->
+        <attr name="strokeColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="CountdownView">

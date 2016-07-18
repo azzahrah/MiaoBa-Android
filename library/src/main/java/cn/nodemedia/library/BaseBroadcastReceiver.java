@@ -9,7 +9,7 @@ import cn.nodemedia.library.utils.NetUtils;
 
 /**
  * 广播监听
- * Created by Bining on 16/7/8.
+ * Created by Bining.
  */
 public class BaseBroadcastReceiver extends BroadcastReceiver {
 

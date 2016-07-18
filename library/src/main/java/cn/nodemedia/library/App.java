@@ -27,7 +27,8 @@ import cn.nodemedia.library.utils.Log;
 import dalvik.system.DexFile;
 
 /**
- * 应用操作 Created by Bining.
+ * 应用操作
+ * Created by Bining.
  */
 public class App {
 
@@ -65,8 +66,7 @@ public class App {
                 Context context = (Context) method.invoke(null);
                 Ext.app = new MockApplication(context);
             } catch (Throwable ignored) {
-                throw new RuntimeException("please invoke x.Ext.init(app) on Application#onCreate()"
-                        + " and register your Application in manifest.");
+                throw new RuntimeException("please invoke x.Ext.init(app) on Application#onCreate() and register your Application in manifest.");
             }
         }
         return Ext.app;
