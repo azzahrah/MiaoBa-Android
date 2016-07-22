@@ -21,8 +21,8 @@
     </style>
 
     <style name="common_progressbar" parent="common_rect_wrap">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">@dimen/common_dp_24</item>
+        <item name="android:layout_height">@dimen/common_dp_24</item>
         <item name="android:indeterminateBehavior">repeat</item>
         <item name="android:indeterminateDrawable">@drawable/refresh_progress</item>
         <item name="android:indeterminateOnly">true</item>

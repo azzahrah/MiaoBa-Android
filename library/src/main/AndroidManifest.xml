@@ -7,6 +7,7 @@
         android:normalScreens="true"
         android:smallScreens="true" />
 
+    <!-- 运行监听开机广播 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
