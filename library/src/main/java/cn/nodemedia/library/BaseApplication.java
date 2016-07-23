@@ -29,7 +29,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //LeakCanary.install(this);
-        App.Ext.init(this, true);
+        App.Ext.init(this);
     }
 
     public IWXAPI getIWXAPI() {

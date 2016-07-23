@@ -52,8 +52,8 @@ public class MQTTService extends Service implements MqttCallback {
     private static final String MQTT_URL_FORMAT = "tcp://%s:%d";
     private static final String MQTT_CLIENT_ID = "%s-APP";
 
-    private static final String MQTT_BROKER = "test.simpleway.com.cn";
-    private static final int MQTT_PORT = 9400;
+    private static final String MQTT_BROKER = "nodemedia.com.cn";
+    private static final int MQTT_PORT = 8300;
 
     private static final String ACTION_CONNECT = "MQTTService.START"; // Action to start
     private static final String ACTION_RECONNECT = "MQTTService.RECONNECT"; // Action to reconnect

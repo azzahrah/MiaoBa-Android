@@ -46,14 +46,11 @@ public class App {
         }
 
         public static void init(Application app) {
-            init(app, false);
-        }
-
-        public static void init(Application app, boolean debug) {
             if (Ext.app == null) {
                 Ext.app = app;
             }
-            Ext.debug = debug;
+            ApplicationInfo info = app.getApplicationInfo();
+            Ext.debug = ((info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         }
     }
 
