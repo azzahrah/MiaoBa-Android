@@ -1,6 +1,7 @@
 package cn.nodemedia.leadlive.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,25 +10,25 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.FollowInfo;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.view.adapter.BaseListAdapter;
-import cn.nodemedia.library.view.adapter.listener.OnItemChildClickListener;
-import cn.nodemedia.library.view.adapter.ViewHolderHelper;
-import cn.nodemedia.library.bean.Abs;
-import cn.nodemedia.library.bean.AbsL;
-import cn.nodemedia.library.glide.GlideCircleTransform;
-import cn.nodemedia.library.utils.SharedUtils;
-import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.view.widget.PullToRefreshView;
-import cn.nodemedia.library.view.widget.AutoListView;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import xyz.tanwb.treasurechest.bean.Abs;
+import xyz.tanwb.treasurechest.bean.AbsL;
+import xyz.tanwb.treasurechest.glide.GlideManager;
+import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
+import xyz.tanwb.treasurechest.utils.SharedUtils;
+import xyz.tanwb.treasurechest.utils.ToastUtils;
+import xyz.tanwb.treasurechest.view.adapter.BaseListAdapter;
+import xyz.tanwb.treasurechest.view.adapter.ViewHolderHelper;
+import xyz.tanwb.treasurechest.view.adapter.listener.OnItemChildClickListener;
+import xyz.tanwb.treasurechest.view.widget.AutoListView;
+import xyz.tanwb.treasurechest.view.widget.PullToRefreshView;
 
 /**
  * 用户粉丝
@@ -35,9 +36,9 @@ import rx.schedulers.Schedulers;
  */
 public class UserFansActivity extends ActionbarActivity {
 
-    @InjectView(R.id.common_pulltorefresh)
+    @BindView(R.id.common_pulltorefresh)
     PullToRefreshView commonPulltorefresh;
-    @InjectView(R.id.common_list)
+    @BindView(R.id.common_list)
     AutoListView commonList;
 
     private int userid;
@@ -52,9 +53,9 @@ public class UserFansActivity extends ActionbarActivity {
     }
 
     @Override
-    public void initView() {
-        super.initView();
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        super.initView(bundle);
+        ButterKnife.bind(this);
         setTitle("我的粉丝");
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
 
@@ -140,7 +141,7 @@ public class UserFansActivity extends ActionbarActivity {
             viewHolderHelper.setOnItemChildClickListener(this);
             viewHolderHelper.setItemChildClickListener(R.id.user_follow);
 
-            Glide.with(mContext).load(model.faces).asBitmap().error(R.drawable.default_head).transform(new GlideCircleTransform(mContext)).into(userFace);
+            GlideManager.load(mContext, model.faces).placeholder(R.drawable.default_head).error(R.drawable.default_head).setTransform(GlideManager.IMAGE_TYPE_CIRCLE).into(userFace);
             userAuth.setImageResource(R.drawable.global_xing_1);
             userName.setText(model.nickname);
             userInfo.setText(TextUtils.isEmpty(model.autograph) ? "Ta很懒,什么介绍都没写..." : model.autograph);

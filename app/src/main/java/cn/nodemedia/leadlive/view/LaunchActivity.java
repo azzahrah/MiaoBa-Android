@@ -1,10 +1,10 @@
 package cn.nodemedia.leadlive.view;
 
+import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.view.BaseActivity;
+import xyz.tanwb.treasurechest.view.BaseActivity;
 
 /**
  * 启动页
@@ -18,7 +18,7 @@ public class LaunchActivity extends BaseActivity {
     }
 
     @Override
-    public void initView() {
+    public void initView(Bundle bundle) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -1,7 +1,7 @@
 package cn.nodemedia.leadlive.utils;
 
-import cn.nodemedia.library.db.DbManager;
-import cn.nodemedia.library.db.DbManagerImpl;
+import xyz.tanwb.treasurechest.db.DbManager;
+import xyz.tanwb.treasurechest.db.DbManagerImpl;
 
 /**
  * 数据库辅助

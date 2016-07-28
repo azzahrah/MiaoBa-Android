@@ -8,7 +8,8 @@
         style="@style/common_rect_horizontal"
         android:background="@color/common_theme_light"
         android:paddingLeft="@dimen/common_dp_8"
-        android:paddingRight="@dimen/common_dp_8">
+        android:paddingRight="@dimen/common_dp_8"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/actionbar_back"
@@ -37,23 +38,9 @@
 
     </RelativeLayout>
 
-    <RelativeLayout style="@style/common_rect_match">
-
-        <FrameLayout
-            android:id="@+id/actionbar_content"
-            style="@style/common_rect_match"
-            android:background="@color/background_white_pressed" />
-
-        <LinearLayout
-            android:id="@+id/loading_layout"
-            style="@style/common_rect_match"
-            android:gravity="center"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/loading"
-                style="@style/common_imageview" />
-        </LinearLayout>
-    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/actionbar_content"
+        style="@style/common_rect_match"
+        android:background="@color/background_white_pressed" />
 </LinearLayout>
 

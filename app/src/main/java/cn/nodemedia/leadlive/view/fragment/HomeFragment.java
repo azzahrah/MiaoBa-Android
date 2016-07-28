@@ -9,7 +9,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -26,27 +25,27 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
 import cn.nodemedia.leadlive.utils.HttpUtils;
 import cn.nodemedia.leadlive.view.LivePlayerActivity;
-import cn.nodemedia.library.view.adapter.BaseListAdapter;
-import cn.nodemedia.library.view.adapter.listener.OnItemChildClickListener;
-import cn.nodemedia.library.view.adapter.ViewHolderHelper;
-import cn.nodemedia.library.view.adapter.BasePagerAdapter;
-import cn.nodemedia.library.bean.AbsL;
-import cn.nodemedia.library.glide.GlideCircleTransform;
-import cn.nodemedia.library.utils.ScreenUtils;
-import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.view.widget.SlideView;
-import cn.nodemedia.library.view.widget.PullToRefreshView;
-import cn.nodemedia.library.view.widget.AutoListView;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import xyz.tanwb.treasurechest.bean.AbsL;
+import xyz.tanwb.treasurechest.glide.GlideManager;
+import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
+import xyz.tanwb.treasurechest.utils.ScreenUtils;
+import xyz.tanwb.treasurechest.utils.ToastUtils;
+import xyz.tanwb.treasurechest.view.adapter.BaseListAdapter;
+import xyz.tanwb.treasurechest.view.adapter.BasePagerAdapter;
+import xyz.tanwb.treasurechest.view.adapter.ViewHolderHelper;
+import xyz.tanwb.treasurechest.view.adapter.listener.OnItemChildClickListener;
+import xyz.tanwb.treasurechest.view.widget.AutoListView;
+import xyz.tanwb.treasurechest.view.widget.PullToRefreshView;
+import xyz.tanwb.treasurechest.view.widget.SlideView;
 
 /**
  * 首页
@@ -54,21 +53,31 @@ import rx.schedulers.Schedulers;
  */
 public class HomeFragment extends AbsActionbarFragment {
 
-    @InjectView(R.id.live_follow_text)
-    TextView liveFollowText;
-    @InjectView(R.id.live_hot_text)
-    TextView liveHotText;
-    @InjectView(R.id.live_hot_icon)
-    ImageView liveHotIcon;
-    @InjectView(R.id.live_new_text)
-    TextView liveNewText;
-    @InjectView(R.id.live_cursor)
-    View liveCursor;
-    @InjectView(R.id.main_live_tab)
-    LinearLayout mainLiveTab;
-    @InjectView(R.id.main_me_diamonds)
+    @BindView(R.id.main_chat)
+    ImageView mainChat;
+    @BindView(R.id.main_search)
+    ImageView mainSearch;
+    @BindView(R.id.main_me_diamonds)
     TextView mainMeDiamonds;
-    @InjectView(R.id.main_live_viewpager)
+    @BindView(R.id.live_follow_text)
+    TextView liveFollowText;
+    @BindView(R.id.live_follow)
+    RelativeLayout liveFollow;
+    @BindView(R.id.live_hot_text)
+    TextView liveHotText;
+    @BindView(R.id.live_hot_icon)
+    ImageView liveHotIcon;
+    @BindView(R.id.live_hot)
+    RelativeLayout liveHot;
+    @BindView(R.id.live_new_text)
+    TextView liveNewText;
+    @BindView(R.id.live_new)
+    RelativeLayout liveNew;
+    @BindView(R.id.live_cursor)
+    View liveCursor;
+    @BindView(R.id.main_live_tab)
+    LinearLayout mainLiveTab;
+    @BindView(R.id.main_live_viewpager)
     ViewPager mainLiveViewpager;
 
     private int titleWidth = 0;
@@ -95,21 +104,14 @@ public class HomeFragment extends AbsActionbarFragment {
     }
 
     @Override
-    public View onCreateView(Bundle savedInstanceState, ViewGroup container, LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.fragment_live, container, false);
-        ButterKnife.inject(this, view);
-        return view;
+    public int getContentView() {
+        return R.layout.fragment_live;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+    public void initView(View view, Bundle bundle) {
         hasActionBar(View.GONE);
-        initView();
-    }
 
-    private void initView() {
         mainLiveTab.setVisibility(View.VISIBLE);
         mainMeDiamonds.setVisibility(View.GONE);
 
@@ -143,6 +145,11 @@ public class HomeFragment extends AbsActionbarFragment {
 
         changeView(1);
         mainLiveViewpager.setCurrentItem(1);
+    }
+
+    @Override
+    public void initPresenter() {
+
     }
 
     public View initLiveFollowView() {
@@ -180,7 +187,7 @@ public class HomeFragment extends AbsActionbarFragment {
     }
 
     private void getLiveFollowList() {
-        HttpUtils.getLiveList(2, liveFollowPage).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsL<LiveInfo>>() {
+        HttpUtils.getLiveList(2, liveFollowPage).subscribe(new Action1<AbsL<LiveInfo>>() {
             @Override
             public void call(AbsL<LiveInfo> liveInfoAbsL) {
                 if (liveFollowPage == 1) {
@@ -197,6 +204,11 @@ public class HomeFragment extends AbsActionbarFragment {
                     liveFollowAdapter.notifyDataSetChanged();
                     ToastUtils.show(mActivity, liveInfoAbsL.getMsg());
                 }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                ToastUtils.show(mActivity, throwable.getMessage());
             }
         });
     }
@@ -262,6 +274,11 @@ public class HomeFragment extends AbsActionbarFragment {
                 }
                 liveHotAdapter.changeListHeight(liveHotList);
             }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                ToastUtils.show(mActivity, throwable.getMessage());
+            }
         });
     }
 
@@ -317,6 +334,11 @@ public class HomeFragment extends AbsActionbarFragment {
                     liveNewAdapter.notifyDataSetChanged();
                     ToastUtils.show(mActivity, liveInfoAbsL.getMsg());
                 }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                ToastUtils.show(mActivity, throwable.getMessage());
             }
         });
     }
@@ -396,12 +418,6 @@ public class HomeFragment extends AbsActionbarFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
-
     public class LiveAdapter extends BaseListAdapter<LiveInfo> implements OnItemChildClickListener {
 
         private int liveType;
@@ -429,7 +445,7 @@ public class HomeFragment extends AbsActionbarFragment {
 
             //viewHolderHelper.setOnItemChildClickListener(this);
             //viewHolderHelper.setItemChildClickListener(R.id.user_live);
-            Glide.with(mContext).load(model.faces).asBitmap().error(R.drawable.default_head).transform(new GlideCircleTransform(mContext)).into(userFace);
+            GlideManager.load(mContext, model.faces).placeholder(R.drawable.default_head).error(R.drawable.default_head).setTransform(GlideManager.IMAGE_TYPE_CIRCLE).into(userFace);
 
             userAuth.setImageResource(R.drawable.global_xing_1);
 

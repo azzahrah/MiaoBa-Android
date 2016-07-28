@@ -3,9 +3,20 @@
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
     <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--ActionBar底色-->
     <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--状态栏底色-->
     <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--ActionBar文字颜色-->
+    <!--<item name="textColorPrimary">@color/colorPrimaryDark</item>-->
+    <!--各控制元件(如：check box、switch 或是 radoi) 被勾选 (checked) 或是选定 (selected) 的颜色-->
     <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--各控制元件的预设颜色-->
+    <!--<item name="colorControlNormal">@color/colorAccent</item>-->
+    <!--App的背景色-->
+    <!--<item name="windowBackground">@color/colorAccent</item>-->
+    <!--导航栏的背景色，但只能用在 API Level 21 (Android 5) 以上的版本 res/values-v21/styles.xml -->
+    <!--<item name="navigationBarColor">@color/colorAccent</item>-->
     <!--</style>-->
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -231,11 +242,6 @@
     <style name="anim_dialogactivity" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/view_in_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/view_out_to_bottom</item>
-    </style>
-
-    <style name="anim_popup" parent="@android:style/Animation">
-        <item name="android:windowEnterAnimation">@anim/head_in</item>
-        <item name="android:windowExitAnimation">@anim/head_out</item>
     </style>
 
     <style name="user_property_key" parent="common_rect_wrap">

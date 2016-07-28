@@ -2,33 +2,24 @@ package cn.nodemedia.leadlive.view;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.RectF;
 import android.os.Build;
-import android.os.Debug;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.SurfaceView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.utils.Log;
-import cn.nodemedia.library.utils.ScreenUtils;
-import cn.nodemedia.library.view.BaseActivity;
-import cn.nodemedia.library.view.widget.PullToRefreshView;
+import cn.nodemedia.leadlive.view.contract.SimpleContract;
+import xyz.tanwb.treasurechest.utils.Log;
+import xyz.tanwb.treasurechest.utils.ScreenUtils;
+import xyz.tanwb.treasurechest.view.BaseActivity;
+import xyz.tanwb.treasurechest.view.widget.PullToRefreshView;
 
-/**
- * 示例
- * Created by Bining on 16/7/5.
- */
 public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> implements SimpleContract.View {
 
-    @InjectView(R.id.common_pulltorefresh)
+    @BindView(R.id.common_pulltorefresh)
     PullToRefreshView commonPulltorefresh;
-    @InjectView(R.id.common_recycler)
+    @BindView(R.id.common_recycler)
     RecyclerView commonRecycler;
 
     @Override
@@ -37,8 +28,8 @@ public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> imple
     }
 
     @Override
-    public void initView() {
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        ButterKnife.bind(this);
 
         Configuration config = getResources().getConfiguration();
 

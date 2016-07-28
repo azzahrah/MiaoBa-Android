@@ -2,12 +2,9 @@ package cn.nodemedia.leadlive.bean;
 
 import java.io.Serializable;
 
-import cn.nodemedia.library.db.annotation.Column;
-import cn.nodemedia.library.db.annotation.Table;
+import xyz.tanwb.treasurechest.db.annotation.Column;
+import xyz.tanwb.treasurechest.db.annotation.Table;
 
-/**
- * Created by Bining on 16/6/12.
- */
 @Table(name = "UserInfo")
 public class UserInfo implements Serializable {
 

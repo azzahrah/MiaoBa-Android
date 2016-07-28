@@ -12,48 +12,45 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.utils.ScreenUtils;
+import xyz.tanwb.treasurechest.utils.ScreenUtils;
+import xyz.tanwb.treasurechest.view.BaseFragment;
+import xyz.tanwb.treasurechest.view.BasePresenter;
 
-public abstract class AbsActionbarFragment extends AbsFragment {
+public abstract class AbsActionbarFragment<T extends BasePresenter> extends BaseFragment {
 
-    protected View mContainer;
-    protected RelativeLayout mActionbarTitle;
-    protected ImageView mActionBarTitleBack;
-    protected TextView mActionBarTitleText;
-    protected LinearLayout mActionBarTitleMenu;
-    protected FrameLayout mActionBarContent;
-    protected LinearLayout loadingLayout;
-    protected ImageView loading;
-
-    public abstract View onCreateView(Bundle savedInstanceState, ViewGroup container, LayoutInflater inflater);
+    @BindView(R.id.actionbar_layout)
+    RelativeLayout actionbarLayout;
+    @BindView(R.id.actionbar_back)
+    ImageView actionbarBack;
+    @BindView(R.id.actionbar_title)
+    TextView actionbarTitle;
+    @BindView(R.id.actionbar_menu)
+    LinearLayout actionbarMenu;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        mContainer = inflater.inflate(R.layout.actionbar, null);
-        mActionbarTitle = (RelativeLayout) mContainer.findViewById(R.id.actionbar_layout);
-        mActionBarTitleBack = (ImageView) mContainer.findViewById(R.id.actionbar_back);
-        mActionBarTitleText = (TextView) mContainer.findViewById(R.id.actionbar_title);
-        mActionBarTitleMenu = (LinearLayout) mContainer.findViewById(R.id.actionbar_menu);
-        mActionBarContent = (FrameLayout) mContainer.findViewById(R.id.actionbar_content);
-        loadingLayout = (LinearLayout) mContainer.findViewById(R.id.loading_layout);
-        loading = (ImageView) mContainer.findViewById(R.id.loading);
-        mActionBarContent.addView(onCreateView(savedInstanceState, container, inflater), new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        mActionBarTitleBack.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Back();
-            }
-        });
-        loadingLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-        return mContainer;
+    public int getLayoutId() {
+        return 0;
     }
+
+    @Override
+    public View getRootView(LayoutInflater inflater, ViewGroup container) {
+        View rootView = inflater.inflate(R.layout.actionbar, container, false);
+        FrameLayout actionbarContent = (FrameLayout) rootView.findViewById(R.id.actionbar_content);
+        View contentView = inflater.inflate(getContentView(), null);
+        actionbarContent.addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        return rootView;
+    }
+
+    public abstract int getContentView();
+
+    @OnClick(R.id.actionbar_back)
+    public void onClickBack() {
+        Back();
+    }
+
 
     /**
      * 批量设置控件的显示状态
@@ -113,7 +110,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param visible 显示参数
      */
     public void hasActionBar(int visible) {
-        mActionbarTitle.setVisibility(visible);
+        actionbarLayout.setVisibility(visible);
     }
 
     /**
@@ -122,7 +119,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param resId 图片ID
      */
     public void setBackgroundByRes(int resId) {
-        mActionbarTitle.setBackgroundResource(resId);
+        actionbarLayout.setBackgroundResource(resId);
     }
 
     /**
@@ -131,7 +128,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param color 颜色值
      */
     public void setBackgroundByColor(String color) {
-        mActionbarTitle.setBackgroundColor(Color.parseColor(color));
+        actionbarLayout.setBackgroundColor(Color.parseColor(color));
     }
 
     /**
@@ -140,7 +137,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param visible 显示参数
      */
     public void hasBack(int visible) {
-        mActionBarTitleBack.setVisibility(visible == View.GONE ? View.INVISIBLE : visible);
+        actionbarBack.setVisibility(visible == View.GONE ? View.INVISIBLE : visible);
     }
 
     /**
@@ -149,7 +146,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param resId 图片ID
      */
     public void setBackRes(int resId) {
-        mActionBarTitleBack.setImageResource(resId);
+        actionbarBack.setImageResource(resId);
     }
 
     /**
@@ -158,7 +155,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param visible 显示参数
      */
     public void hasTitle(int visible) {
-        mActionBarTitleText.setVisibility(visible);
+        actionbarTitle.setVisibility(visible);
     }
 
     /**
@@ -176,7 +173,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param title 标题
      */
     public void setTitle(String title) {
-        mActionBarTitleText.setText(title);
+        actionbarTitle.setText(title);
     }
 
     /**
@@ -185,7 +182,16 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param color 颜色值
      */
     public void setTitleColor(String color) {
-        mActionBarTitleText.setTextColor(Color.parseColor(color));
+        actionbarTitle.setTextColor(Color.parseColor(color));
+    }
+
+    /**
+     * 设置标题颜色
+     *
+     * @param colorRes 颜色值
+     */
+    public void setTitleColor(int colorRes) {
+        actionbarTitle.setTextColor(colorRes);
     }
 
     /**
@@ -194,7 +200,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      * @param visible 显示参数
      */
     public void hasMenu(int visible) {
-        mActionBarTitleMenu.setVisibility(visible);
+        actionbarMenu.setVisibility(visible);
     }
 
     /**
@@ -204,7 +210,7 @@ public abstract class AbsActionbarFragment extends AbsFragment {
      */
     public void addMenuItme(View view, int width, int height) {
         hasMenu(View.VISIBLE);
-        mActionBarTitleMenu.addView(view, width, height);
+        actionbarMenu.addView(view, width, height);
     }
 
     /**
@@ -246,4 +252,5 @@ public abstract class AbsActionbarFragment extends AbsFragment {
         addMenuItme(mTextView);
         return mTextView;
     }
+
 }

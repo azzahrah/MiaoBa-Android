@@ -1,6 +1,7 @@
 package cn.nodemedia.leadlive.wxapi;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
@@ -9,10 +10,11 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
 import butterknife.ButterKnife;
+import cn.nodemedia.leadlive.Application;
 import cn.nodemedia.leadlive.Constants;
-import cn.nodemedia.library.rxjava.RxBus;
-import cn.nodemedia.library.utils.Log;
-import cn.nodemedia.library.view.BaseActivity;
+import xyz.tanwb.treasurechest.rxjava.RxBus;
+import xyz.tanwb.treasurechest.utils.Log;
+import xyz.tanwb.treasurechest.view.BaseActivity;
 
 /**
  * 微信支付结果返回
@@ -26,17 +28,11 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        initView();
-    }
-
-    @Override
-    public void initView() {
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        ButterKnife.bind(this);
         Log.e("微信支付结果返回");
 
-        IWXAPI mWeixinAPI = mApplication.getIWXAPI();
+        IWXAPI mWeixinAPI = ((Application) mApplication).getIWXAPI();
         if (mWeixinAPI != null) {
             mWeixinAPI.handleIntent(getIntent(), this);
         }
@@ -44,6 +40,12 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void initPresenter() {
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        initView(null);
     }
 
     @Override
@@ -60,11 +62,6 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             RxBus.$().post(Constants.PAYMENTWXPAY, baseResp);
             Back();
         }
-    }
-
-    @Override
-    public boolean hasBindServer() {
-        return false;
     }
 
     @Override

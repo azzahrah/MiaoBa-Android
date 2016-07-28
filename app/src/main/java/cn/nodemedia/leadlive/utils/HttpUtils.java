@@ -4,38 +4,18 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
 
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.bean.FollowInfo;
 import cn.nodemedia.leadlive.bean.LiveInfo;
 import cn.nodemedia.leadlive.bean.UserInfo;
-import cn.nodemedia.library.App;
-import cn.nodemedia.library.bean.Abs;
-import cn.nodemedia.library.bean.AbsL;
-import cn.nodemedia.library.bean.AbsT;
-import cn.nodemedia.library.bean.UploadInfo;
-import cn.nodemedia.library.retrofit.JSONConverterFactory;
-import cn.nodemedia.library.utils.Log;
-import cn.nodemedia.library.utils.MD5;
-import cn.nodemedia.library.utils.NetUtils;
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -50,88 +30,27 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 import rx.Observable;
+import xyz.tanwb.treasurechest.bean.Abs;
+import xyz.tanwb.treasurechest.bean.AbsL;
+import xyz.tanwb.treasurechest.bean.AbsT;
+import xyz.tanwb.treasurechest.bean.UploadInfo;
+import xyz.tanwb.treasurechest.retrofit.RetrofitManager;
+import xyz.tanwb.treasurechest.utils.Log;
+import xyz.tanwb.treasurechest.utils.MD5;
 
 /**
  * 网络接口
  * Created by Bining on 16/6/12.
  */
-public class HttpUtils {
+public class HttpUtils extends RetrofitManager {
 
-    private static final int DEFAULT_TIMEOUT = 5000;
+    public HttpUtils() {
+        super();
+    }
 
-    private static HttpUtils httpUtils;
-    private static Map<String, Retrofit> mRetrofitMap = new HashMap<>();
-
-    private Retrofit getRetrofit(String baseUrl) {
-
-        if (mRetrofitMap.containsKey(baseUrl)) {
-            return mRetrofitMap.get(baseUrl);
-        }
-
-        File cacheFile = new File(App.app().getCacheDir(), "cache");
-        Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .readTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .addInterceptor(new Interceptor() {//设置拦截器
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        //请求拦截器，可用来做日志记录
-                        Request request = chain.request();
-                        long t1 = System.nanoTime();
-                        Log.e(String.format("Request %s on %s method %s ", request.url(), chain.connection(), request.method()));
-                        if (request.method().equals("POST")) {
-                            Log.e(String.format("Request body %s ", request.body().toString()));
-                        }
-                        // Log.e(String.format("Request headers %n%s", request.headers()));
-                        Response response = chain.proceed(request);
-                        long t2 = System.nanoTime();
-                        Log.e(String.format("Request Time %.1fms", (t2 - t1) / 1e6d));
-                        // Log.e("OkHttpManager", String.format("Response for %s in %.1fms", response.request().url(), (t2 - t1) / 1e6d));
-                        // Log.e("OkHttpManager", String.format("Response headers %n%s", response.headers()));
-                        return response;
-                    }
-                }).addNetworkInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        if (!NetUtils.isConnected()) {
-                            request = request.newBuilder()
-                                    .cacheControl(CacheControl.FORCE_CACHE)
-                                    .build();
-                            Log.d("no network");
-                        }
-
-                        Response originalResponse = chain.proceed(request);
-                        if (!NetUtils.isConnected()) {
-                            //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
-                            return originalResponse.newBuilder()
-                                    .header("Cache-Control", request.cacheControl().toString())
-                                    .removeHeader("Pragma")
-                                    .build();
-                        } else {
-                            return originalResponse.newBuilder()
-                                    .header("Cache-Control", "public, only-if-cached, max-stale=2419200")
-                                    .removeHeader("Pragma")
-                                    .build();
-                        }
-                    }
-                }).cache(cache)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(okHttpClient)
-                .addConverterFactory(JSONConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(baseUrl)
-                .build();
-
-        mRetrofitMap.put(baseUrl, retrofit);
-
-        return retrofit;
-        //movieService = retrofit.create(ApiService.class);
+    @Override
+    public String getBaseUrl() {
+        return Constants.DNS_ADDRESS;
     }
 
     public interface ApiService {
@@ -197,11 +116,13 @@ public class HttpUtils {
 
     }
 
+    private static HttpUtils httpUtils;
+
     private synchronized static ApiService getApiService() {
         if (httpUtils == null) {
             httpUtils = new HttpUtils();
         }
-        return httpUtils.getRetrofit(Constants.DNS_ADDRESS).create(ApiService.class);
+        return httpUtils.getRetrofit().create(ApiService.class);
     }
 
     /**

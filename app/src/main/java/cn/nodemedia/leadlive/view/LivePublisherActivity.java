@@ -17,30 +17,30 @@ import android.widget.Toast;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.LivePublisher;
 import cn.nodemedia.LivePublisher.LivePublishDelegate;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.utils.SharedUtils;
+import xyz.tanwb.treasurechest.utils.SharedUtils;
 
 public class LivePublisherActivity extends Activity implements OnClickListener, LivePublishDelegate {
 
-    @InjectView(R.id.publisher_surface)
+    @BindView(R.id.publisher_surface)
     SurfaceView publisherSurface;
-    @InjectView(R.id.publisher_mic)
+    @BindView(R.id.publisher_mic)
     Button publisherMic;
-    @InjectView(R.id.publisher_sw)
+    @BindView(R.id.publisher_sw)
     Button publisherSw;
-    @InjectView(R.id.publisher_video)
+    @BindView(R.id.publisher_video)
     Button publisherVideo;
-    @InjectView(R.id.publisher_cam)
+    @BindView(R.id.publisher_cam)
     Button publisherCam;
-    @InjectView(R.id.publisher_flash)
+    @BindView(R.id.publisher_flash)
     Button publisherFlash;
-    @InjectView(R.id.publisher_cap)
+    @BindView(R.id.publisher_cap)
     ImageView publisherCap;
 
     private boolean isStarting = false;
@@ -54,7 +54,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publisher);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         isStarting = false;
 
         LivePublisher.init(this); // 1.初始化

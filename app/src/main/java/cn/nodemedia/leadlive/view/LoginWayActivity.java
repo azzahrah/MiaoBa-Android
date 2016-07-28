@@ -2,16 +2,18 @@ package cn.nodemedia.leadlive.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.nodemedia.leadlive.Application;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.BaseApplication;
-import cn.nodemedia.library.view.BaseActivity;
+import cn.nodemedia.leadlive.view.contract.LoginBindContract;
+import xyz.tanwb.treasurechest.view.BaseActivity;
 
 /**
  * 登陆方式选择
@@ -19,15 +21,15 @@ import cn.nodemedia.library.view.BaseActivity;
  */
 public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> implements LoginBindContract.View {
 
-    @InjectView(R.id.login_way_qq)
+    @BindView(R.id.login_way_qq)
     ImageView loginWayQq;
-    @InjectView(R.id.login_way_wx)
+    @BindView(R.id.login_way_wx)
     ImageView loginWayWx;
-    @InjectView(R.id.login_way_xl)
+    @BindView(R.id.login_way_xl)
     ImageView loginWayXl;
-    @InjectView(R.id.login_way_phone)
+    @BindView(R.id.login_way_phone)
     ImageView loginWayPhone;
-    @InjectView(R.id.login_way_protocol)
+    @BindView(R.id.login_way_protocol)
     TextView loginWayProtocol;
 
     @Override
@@ -36,8 +38,8 @@ public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> 
     }
 
     @Override
-    public void initView() {
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        // ButterKnife.bind(this);
     }
 
     @Override
@@ -76,8 +78,8 @@ public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> 
     }
 
     @Override
-    public BaseApplication getBaseApplication() {
-        return mApplication;
+    public Application getBaseApplication() {
+        return (Application) mApplication;
     }
 
     @Override
@@ -99,5 +101,6 @@ public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> 
     public void exit() {
         Back();
     }
+
 }
 

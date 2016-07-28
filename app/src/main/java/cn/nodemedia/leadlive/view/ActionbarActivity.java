@@ -1,6 +1,7 @@
 package cn.nodemedia.leadlive.view;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,53 +11,66 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.utils.ScreenUtils;
-import cn.nodemedia.library.view.BaseActivity;
-import cn.nodemedia.library.view.BasePresenter;
+import xyz.tanwb.treasurechest.utils.ScreenUtils;
+import xyz.tanwb.treasurechest.view.BaseActivity;
+import xyz.tanwb.treasurechest.view.BasePresenter;
 
 public abstract class ActionbarActivity<T extends BasePresenter> extends BaseActivity<T> {
 
-    protected RelativeLayout mActionbarTitle;
-    protected ImageView mActionBarTitleBack;
-    protected TextView mActionBarTitleText;
-    protected LinearLayout mActionBarTitleMenu;
-    protected FrameLayout mActionBarContent;
+    // protected RelativeLayout actionbarLayout;
+    // protected ImageView actionbarBack;
+    // protected TextView actionbarTitle;
+    // protected LinearLayout actionbarMenu;
+    // protected FrameLayout actionbarContent;
 
-    private LinearLayout loadingLayout;
-    private ImageView loading;
+    @BindView(R.id.actionbar_layout)
+    RelativeLayout actionbarLayout;
+    @BindView(R.id.actionbar_back)
+    ImageView actionbarBack;
+    @BindView(R.id.actionbar_title)
+    TextView actionbarTitle;
+    @BindView(R.id.actionbar_menu)
+    LinearLayout actionbarMenu;
 
+    @Override
     public int getLayoutId() {
-        return R.layout.actionbar;
+        return 0;
     }
 
-    public void initView() {
-        // setFitsSystemWindows(true);
-        mActionbarTitle = (RelativeLayout) findViewById(R.id.actionbar_layout);
-        mActionBarTitleBack = (ImageView) findViewById(R.id.actionbar_back);
-        mActionBarTitleText = (TextView) findViewById(R.id.actionbar_title);
-        mActionBarTitleMenu = (LinearLayout) findViewById(R.id.actionbar_menu);
-        mActionBarContent = (FrameLayout) findViewById(R.id.actionbar_content);
-        loadingLayout = (LinearLayout) findViewById(R.id.loading_layout);
-        loading = (ImageView) findViewById(R.id.loading);
-        mActionBarTitleBack.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Back();
-            }
-        });
-
-        loadingLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
-        mActionBarContent.addView(getLayoutInflater().inflate(getContentView(), null), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    @Override
+    public View getRootView() {
+        View rootView = getLayoutInflater().inflate(R.layout.actionbar, null);
+        FrameLayout actionbarContent = (FrameLayout) rootView.findViewById(R.id.actionbar_content);
+        View contentView = getLayoutInflater().inflate(getContentView(), null);
+        actionbarContent.addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        return rootView;
     }
 
     public abstract int getContentView();
+
+    @Override
+    public void initView(Bundle bundle) {
+        // setFitsSystemWindows(true);
+        // actionbarLayout = (RelativeLayout) findViewById(R.id.actionbar_layout);
+        // actionbarBack = (ImageView) findViewById(R.id.actionbar_back);
+        // actionbarTitle = (TextView) findViewById(R.id.actionbar_title);
+        // actionbarMenu = (LinearLayout) findViewById(R.id.actionbar_menu);
+        // actionbarContent = (FrameLayout) findViewById(R.id.actionbar_content);
+        // actionbarBack.setOnClickListener(new View.OnClickListener() {
+        // @Override
+        // public void onClick(View v) {
+        // Back();
+        // }
+        // });
+    }
+
+    @OnClick(R.id.actionbar_back)
+    public void onClickBack() {
+        Back();
+    }
 
     /**
      * 批量设置控件的显示状态
@@ -116,7 +130,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param visible 显示参数
      */
     public void hasActionBar(int visible) {
-        mActionbarTitle.setVisibility(visible);
+        actionbarLayout.setVisibility(visible);
     }
 
     /**
@@ -125,7 +139,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param resId 图片ID
      */
     public void setBackgroundByRes(int resId) {
-        mActionbarTitle.setBackgroundResource(resId);
+        actionbarLayout.setBackgroundResource(resId);
     }
 
     /**
@@ -134,7 +148,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param color 颜色值
      */
     public void setBackgroundByColor(String color) {
-        mActionbarTitle.setBackgroundColor(Color.parseColor(color));
+        actionbarLayout.setBackgroundColor(Color.parseColor(color));
     }
 
     /**
@@ -143,7 +157,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param visible 显示参数
      */
     public void hasBack(int visible) {
-        mActionBarTitleBack.setVisibility(visible == View.GONE ? View.INVISIBLE : visible);
+        actionbarBack.setVisibility(visible == View.GONE ? View.INVISIBLE : visible);
     }
 
     /**
@@ -152,7 +166,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param resId 图片ID
      */
     public void setBackRes(int resId) {
-        mActionBarTitleBack.setImageResource(resId);
+        actionbarBack.setImageResource(resId);
     }
 
     /**
@@ -161,7 +175,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param visible 显示参数
      */
     public void hasTitle(int visible) {
-        mActionBarTitleText.setVisibility(visible);
+        actionbarTitle.setVisibility(visible);
     }
 
     /**
@@ -179,7 +193,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param title 标题
      */
     public void setTitle(String title) {
-        mActionBarTitleText.setText(title);
+        actionbarTitle.setText(title);
     }
 
     /**
@@ -188,7 +202,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param color 颜色值
      */
     public void setTitleColor(String color) {
-        mActionBarTitleText.setTextColor(Color.parseColor(color));
+        actionbarTitle.setTextColor(Color.parseColor(color));
     }
 
     /**
@@ -197,7 +211,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param colorRes 颜色值
      */
     public void setTitleColor(int colorRes) {
-        mActionBarTitleText.setTextColor(colorRes);
+        actionbarTitle.setTextColor(colorRes);
     }
 
     /**
@@ -206,7 +220,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param visible 显示参数
      */
     public void hasMenu(int visible) {
-        mActionBarTitleMenu.setVisibility(visible);
+        actionbarMenu.setVisibility(visible);
     }
 
     /**
@@ -216,7 +230,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      */
     public void addMenuItme(View view, int width, int height) {
         hasMenu(View.VISIBLE);
-        mActionBarTitleMenu.addView(view, width, height);
+        actionbarMenu.addView(view, width, height);
     }
 
     /**

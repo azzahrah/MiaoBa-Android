@@ -1,5 +1,6 @@
 package cn.nodemedia.leadlive.view;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,21 +8,21 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
 import cn.nodemedia.leadlive.utils.DBUtils;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.bean.AbsT;
-import cn.nodemedia.library.db.DbException;
-import cn.nodemedia.library.glide.GlideCircleTransform;
-import cn.nodemedia.library.utils.SharedUtils;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import xyz.tanwb.treasurechest.bean.AbsT;
+import xyz.tanwb.treasurechest.db.DbException;
+import xyz.tanwb.treasurechest.glide.GlideManager;
+import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
+import xyz.tanwb.treasurechest.utils.SharedUtils;
 
 /**
  * 个人信息
@@ -29,25 +30,25 @@ import rx.schedulers.Schedulers;
  */
 public class UserActivity extends ActionbarActivity {
 
-    @InjectView(R.id.user_face)
+    @BindView(R.id.user_face)
     ImageView userFace;
-    @InjectView(R.id.user_name)
+    @BindView(R.id.user_name)
     TextView userName;
-    @InjectView(R.id.user_leadid)
+    @BindView(R.id.user_leadid)
     TextView userLeadid;
-    @InjectView(R.id.user_sex)
+    @BindView(R.id.user_sex)
     ImageView userSex;
-    @InjectView(R.id.user_auth)
+    @BindView(R.id.user_auth)
     TextView userAuth;
-    @InjectView(R.id.user_age)
+    @BindView(R.id.user_age)
     TextView userAge;
-    @InjectView(R.id.user_emotion)
+    @BindView(R.id.user_emotion)
     TextView userEmotion;
-    @InjectView(R.id.user_city)
+    @BindView(R.id.user_city)
     TextView userCity;
-    @InjectView(R.id.user_occupation)
+    @BindView(R.id.user_occupation)
     TextView userOccupation;
-    @InjectView(R.id.user_weibo)
+    @BindView(R.id.user_weibo)
     TextView userWeibo;
 
     private int userid;
@@ -59,9 +60,9 @@ public class UserActivity extends ActionbarActivity {
     }
 
     @Override
-    public void initView() {
-        super.initView();
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        super.initView(bundle);
+        ButterKnife.bind(this);
         setTitle("个人信息");
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
         initUserData();
@@ -94,7 +95,7 @@ public class UserActivity extends ActionbarActivity {
         try {
             userInfo = DBUtils.getInstance().findById(UserInfo.class, userid);
             if (userInfo != null) {
-                Glide.with(mActivity).load(userInfo.faces).asBitmap().error(R.drawable.default_head).transform(new GlideCircleTransform(mActivity)).into(userFace);
+                GlideManager.load(mActivity, userInfo.faces).placeholder(R.drawable.default_head).error(R.drawable.default_head).setTransform(GlideManager.IMAGE_TYPE_CIRCLE).into(userFace);
                 userName.setText(TextUtils.isEmpty(userInfo.nickname) ? "未设置" : userInfo.nickname);
                 userLeadid.setText(userInfo.userid + "");
                 userSex.setImageResource(userInfo.sex == 2 ? R.drawable.global_female : R.drawable.global_male);

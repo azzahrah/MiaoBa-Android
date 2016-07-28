@@ -2,9 +2,6 @@ package cn.nodemedia.leadlive.bean;
 
 import java.io.Serializable;
 
-/**
- * Created by Bining on 16/6/12.
- */
 public class FollowInfo implements Serializable {
 
     public int id;

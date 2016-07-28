@@ -1,6 +1,8 @@
 package cn.nodemedia.leadlive.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,22 +14,23 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
+import cn.nodemedia.leadlive.view.contract.MainContract;
 import cn.nodemedia.leadlive.view.fragment.HomeFragment;
 import cn.nodemedia.leadlive.view.fragment.UserFragment;
-import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.view.BaseActivity;
+import xyz.tanwb.treasurechest.utils.ToastUtils;
+import xyz.tanwb.treasurechest.view.BaseActivity;
 
-public class MainActivity extends BaseActivity implements OnClickListener {
+public class MainActivity extends BaseActivity<MainContract.Presenter> implements MainContract.View, OnClickListener {
 
-    @InjectView(R.id.main_content)
+    @BindView(R.id.main_content)
     FrameLayout mainContent;
-    @InjectView(R.id.main_tab_live_icon)
+    @BindView(R.id.main_tab_live_icon)
     ImageView mainTabLiveIcon;
-    @InjectView(R.id.main_tab_me_icon)
+    @BindView(R.id.main_tab_me_icon)
     ImageView mainTabMeIcon;
 
     private FragmentManager fragmentManager;
@@ -41,8 +44,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
     }
 
     @Override
-    public void initView() {
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        ButterKnife.bind(this);
         mApplication.exitOtherActivity(this);
 
         fragmentList = new ArrayList<>();
@@ -63,6 +66,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
     @Override
     public void initPresenter() {
+        mPresenter.initPresenter(this);
     }
 
     @OnClick({R.id.main_tab_live, R.id.main_tab_room, R.id.main_tab_me})
@@ -73,7 +77,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
                 changeFooterState(0);
                 break;
             case R.id.main_tab_room:
-                StartActivity(LivePublisherActivity.class);
+                mPresenter.questPermissions();
                 break;
             case R.id.main_tab_me:
                 changeFooterState(1);
@@ -137,4 +141,27 @@ public class MainActivity extends BaseActivity implements OnClickListener {
         return false;
     }
 
+    @Override
+    public Context getContext() {
+        return mActivity;
+    }
+
+    @Override
+    public void startLivePublisher() {
+        StartActivity(LivePublisherActivity.class);
+    }
+
+    @Override
+    public void showProgress() {
+    }
+
+    @Override
+    public void hideProgress() {
+    }
+
+    @Override
+    public void exit() {
+        mPresenter.onDestroy();
+        mPresenter = null;
+    }
 }

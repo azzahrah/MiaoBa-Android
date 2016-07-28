@@ -4,43 +4,34 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSON;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.LivePlayer;
 import cn.nodemedia.LivePlayer.LivePlayerDelegate;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
-import cn.nodemedia.leadlive.bean.UserInfo;
-import cn.nodemedia.leadlive.utils.DBUtils;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.library.bean.Abs;
-import cn.nodemedia.library.bean.AbsT;
-import cn.nodemedia.library.db.DbException;
-import cn.nodemedia.library.utils.ScreenUtils;
-import cn.nodemedia.library.utils.SharedUtils;
-import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.view.BaseActivity;
-import okhttp3.Request;
-import okhttp3.Response;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import xyz.tanwb.treasurechest.bean.Abs;
+import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
+import xyz.tanwb.treasurechest.utils.ScreenUtils;
+import xyz.tanwb.treasurechest.utils.SharedUtils;
+import xyz.tanwb.treasurechest.utils.ToastUtils;
+import xyz.tanwb.treasurechest.view.BaseActivity;
 
 public class LivePlayerActivity extends BaseActivity {
 
-    @InjectView(R.id.player_surfacev)
+    @BindView(R.id.player_surfacev)
     SurfaceView playerSurfacev;
-    @InjectView(R.id.player_follow)
+    @BindView(R.id.player_follow)
     ImageView playerFollow;
 
     private int userid;
@@ -71,8 +62,8 @@ public class LivePlayerActivity extends BaseActivity {
     }
 
     @Override
-    public void initView() {
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        ButterKnife.bind(this);
         LivePlayer.init(this);
         LivePlayer.setDelegate(new LivePlayerDelegate() {
             @Override
@@ -156,7 +147,6 @@ public class LivePlayerActivity extends BaseActivity {
 
     @Override
     public void initPresenter() {
-
     }
 
     @OnClick({R.id.player_follow})

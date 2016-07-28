@@ -1,15 +1,17 @@
 package cn.nodemedia.leadlive.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.view.widget.DrawableEditText;
+import cn.nodemedia.leadlive.view.contract.LoginTradContract;
+import xyz.tanwb.treasurechest.view.widget.DrawableEditText;
 
 /**
  * 登陆界面
@@ -17,15 +19,15 @@ import cn.nodemedia.library.view.widget.DrawableEditText;
  */
 public class LoginActivity extends ActionbarActivity<LoginTradContract.Presenter> implements LoginTradContract.View, View.OnClickListener {
 
-    @InjectView(R.id.phone)
+    @BindView(R.id.phone)
     DrawableEditText phone;
-    @InjectView(R.id.password)
+    @BindView(R.id.password)
     DrawableEditText password;
-    @InjectView(R.id.password_eye)
+    @BindView(R.id.password_eye)
     ImageView passwordEye;
-    @InjectView(R.id.login_text)
+    @BindView(R.id.login_text)
     TextView loginText;
-    @InjectView(R.id.login_button)
+    @BindView(R.id.login_button)
     TextView loginButton;
 
     @Override
@@ -34,9 +36,8 @@ public class LoginActivity extends ActionbarActivity<LoginTradContract.Presenter
     }
 
     @Override
-    public void initView() {
-        super.initView();
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        super.initView(bundle);
         setTitle(R.string.login);
     }
 

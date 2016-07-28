@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cn.nodemedia.library.view.widget.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
+<xyz.tanwb.treasurechest.view.widget.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/live_hot_pulltorefresh"
     style="@style/common_rect_match">
@@ -8,7 +8,7 @@
 
         <LinearLayout style="@style/common_rect_match">
 
-            <cn.nodemedia.library.view.widget.SlideView
+            <xyz.tanwb.treasurechest.view.widget.SlideView
                 android:id="@+id/live_hot_banner"
                 style="@style/common_rect_horizontal"
                 android:visibility="visible"
@@ -27,4 +27,4 @@
                 android:dividerHeight="@dimen/common_dp_0" />
         </LinearLayout>
     </ScrollView>
-</cn.nodemedia.library.view.widget.PullToRefreshView>
+</xyz.tanwb.treasurechest.view.widget.PullToRefreshView>

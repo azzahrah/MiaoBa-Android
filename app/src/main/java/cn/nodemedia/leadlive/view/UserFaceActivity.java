@@ -1,6 +1,6 @@
 package cn.nodemedia.leadlive.view;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,40 +10,24 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.library.utils.PhotoUtils;
-import cn.nodemedia.library.utils.ScreenUtils;
+import cn.nodemedia.leadlive.view.contract.UserFaceContract;
+import xyz.tanwb.treasurechest.utils.ScreenUtils;
 
 /**
  * 设置头像
  * Created by Bining.
  */
-public class UserFaceActivity extends ActionbarActivity {
+public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Presenter> implements UserFaceContract.View {
 
-    @InjectView(R.id.face_preview)
+    @BindView(R.id.face_preview)
     ImageView facePreview;
 
     private String faces;
     private Uri photoUri = null;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            faces = savedInstanceState.getString("p0", "");
-        } else {
-            faces = getIntent().getStringExtra("p0");
-        }
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString("p0", faces);
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public int getContentView() {
@@ -51,9 +35,14 @@ public class UserFaceActivity extends ActionbarActivity {
     }
 
     @Override
-    public void initView() {
-        super.initView();
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        super.initView(bundle);
+        if (bundle != null) {
+            faces = bundle.getString("p0", "");
+        } else {
+            faces = getIntent().getStringExtra("p0");
+        }
+        ButterKnife.bind(this);
         setTitle("设置头像");
         int width = ScreenUtils.getScreenWidth();
         facePreview.setLayoutParams(new LinearLayout.LayoutParams(width, width));
@@ -64,16 +53,21 @@ public class UserFaceActivity extends ActionbarActivity {
     public void initPresenter() {
     }
 
+    @Override
+    public void saveState(Bundle outState) {
+        super.saveState(outState);
+        outState.putString("p0", faces);
+    }
+
     @OnClick({R.id.face_source_album, R.id.face_source_photo})
     public void onClick(View v) {
         if (!isCanClick(v)) return;
         switch (v.getId()) {
             case R.id.face_source_album:
-                PhotoUtils.openImageChoice(mActivity);
+                mPresenter.getPhotoPermissions(1);
                 break;
             case R.id.face_source_photo:
-                photoUri = PhotoUtils.getSysDCIM();
-                PhotoUtils.openSystemCamera(mActivity, photoUri);
+                mPresenter.getPhotoPermissions(2);
                 break;
         }
     }
@@ -81,59 +75,30 @@ public class UserFaceActivity extends ActionbarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case PhotoUtils.REQUEST_CODE_IMAGE:
-                    photoUri = PhotoUtils.openPhotoCut(mActivity, data.getData());
-                    break;
-                case PhotoUtils.REQUEST_CODE_CAMERA:
-                    if (data != null && data.getData() != null) {
-                        photoUri = data.getData();
-                    }
-                    photoUri = PhotoUtils.openPhotoCut(mActivity, photoUri);
-                    break;
-                case PhotoUtils.REQUEST_CODE_PHOTOCUT:
-                    try {
-                        //showProgress();
-                        //String filePath = ImageUtils.getPath(mActivity, photoUri);
-//                        APIManager.upload(context, "apps", filePath, new OKHttpCallBack<FileInfo>() {
-//                            @Override
-//                            public void onSuccess(FileInfo fileInfo, String userAttrId) {
-//                                APIManager.doSetMemImage(context, fileInfo.fileId, new OKHttpCallBack<Abs>() {
-//                                    @Override
-//                                    public void onSuccess(Abs abs, String userAttrId) {
-//                                        if (abs.isSuccess()) {
-//                                            onSucc();
-//                                            getMemData();
-//                                        } else {
-//                                            onFail("设置头像失败,请重试.");
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onFailure(String strMsg) {
-//                                        super.onFailure(strMsg);
-//                                        onFail(strMsg);
-//                                    }
-//                                });
-//                            }
-//
-//                            @Override
-//                            public void onFailure(String strMsg) {
-//                                super.onFailure(strMsg);
-//                                onFail("上传头像失败:" + strMsg);
-//                            }
-//                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-            }
-        }
+        mPresenter.handleResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public Context getContext() {
+        return mActivity;
+    }
+
+    @Override
+    public void showProgress() {
+    }
+
+    @Override
+    public void hideProgress() {
+    }
+
+    @Override
+    public void exit() {
+        mPresenter.onDestroy();
+        mPresenter = null;
     }
 }

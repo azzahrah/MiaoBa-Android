@@ -1,6 +1,7 @@
 package cn.nodemedia.leadlive.wxapi;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
@@ -9,25 +10,13 @@ import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import butterknife.ButterKnife;
-import cn.nodemedia.leadlive.Constants;
-import cn.nodemedia.leadlive.bean.UserInfo;
-import cn.nodemedia.leadlive.utils.DBUtils;
-import cn.nodemedia.leadlive.utils.HttpUtils;
-import cn.nodemedia.leadlive.view.LoginBindContract;
-import cn.nodemedia.library.bean.AbsT;
-import cn.nodemedia.library.db.DbException;
-import cn.nodemedia.library.rxjava.RxBus;
-import cn.nodemedia.library.utils.Log;
-import cn.nodemedia.library.utils.SharedUtils;
-import cn.nodemedia.library.utils.ToastUtils;
-import cn.nodemedia.library.view.BaseActivity;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import cn.nodemedia.leadlive.Application;
+import cn.nodemedia.leadlive.view.contract.LoginBindContract;
+import xyz.tanwb.treasurechest.rxjava.RxBus;
+import xyz.tanwb.treasurechest.utils.Log;
+import xyz.tanwb.treasurechest.utils.ToastUtils;
+import xyz.tanwb.treasurechest.view.BaseActivity;
 
 /**
  * 微信登录结果返回
@@ -41,17 +30,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        initView();
-    }
-
-    @Override
-    public void initView() {
-        ButterKnife.inject(this);
+    public void initView(Bundle bundle) {
+        ButterKnife.bind(this);
         Log.e("微信登录结果返回");
 
-        IWXAPI mWeixinAPI = mApplication.getIWXAPI();
+        IWXAPI mWeixinAPI = ((Application) mApplication).getIWXAPI();
         if (mWeixinAPI != null) {
             mWeixinAPI.handleIntent(getIntent(), this);
         }
@@ -59,6 +42,12 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     @Override
     public void initPresenter() {
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        initView(null);
     }
 
     @Override
@@ -91,11 +80,6 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             }
         }
         Back();
-    }
-
-    @Override
-    public boolean hasBindServer() {
-        return false;
     }
 
     @Override
