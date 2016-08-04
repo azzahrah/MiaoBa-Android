@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.nodemedia.leadlive">
 
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />
+
     <!--允许程序使用网络-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--允许程序访问Wi-Fi网络状态信息-->
@@ -10,12 +16,15 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--允许程序访问使用照相设备 -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!--允许程序写入外部存储-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--允许程序读取外部存储-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <!--允许程序录制音频-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!--允许程序访问闪光灯-->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <!--允许程序写入外部存储-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!--子特性:申明程序需要用到camera特性-->
     <uses-feature android:name="android.hardware.camera" />
@@ -92,6 +101,9 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <meta-data
+            android:name="xyz.tanwb.treasurechest.glide.OkHttpGlideModule"
+            android:value="GlideModule" />
     </application>
 
 </manifest>

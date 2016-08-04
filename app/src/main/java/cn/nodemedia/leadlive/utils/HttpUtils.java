@@ -286,20 +286,6 @@ public class HttpUtils extends RetrofitManager {
         return getApiService().getSinaUserInfo(authToken, uid);
     }
 
-    private static class JsonInfo {
-        public JsonInfo(String json) {
-            this.json = json;
-        }
-
-        public String json;
-    }
-
-    // public class RxSchedulers {
-    // public static <T> Observable.Transformer<T, T> io_main() {
-    // return tObservable -> tObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-    // }
-    // }
-
     //    OkHttpUtils.get(Urls.URL_METHOD) // 请求方式和请求url, get请求不需要拼接参数，支持get，post，put，delete，head，options请求
     //    .tag(this)               // 请求的 tag, 主要用于取消对应的请求
     //    .connTimeOut(10000)      // 设置当前请求的连接超时时间
