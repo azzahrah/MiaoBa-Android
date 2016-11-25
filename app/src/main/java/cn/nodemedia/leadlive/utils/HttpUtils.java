@@ -130,7 +130,7 @@ public class HttpUtils extends RetrofitManager {
      *
      * @param uname 登陆帐号或OpenId
      * @param pwds  密码
-     * @param type  登陆类型 1：注册用登陆 2：三方登陆
+     * @param type  登陆类型 1：注册登陆 2：三方登陆
      */
     public static Observable<AbsT<UserInfo>> login(String uname, String pwds, int type) {
         Map<String, Object> sortMap = new HashMap<>();
@@ -256,21 +256,18 @@ public class HttpUtils extends RetrofitManager {
                 return str1.compareTo(str2);
             }
         });
-
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             treeMap.put(entry.getKey(), entry.getValue());
         }
-
         treeMap.put("temptime", System.currentTimeMillis());
-        String tempStr = "";
-        //	使用 Map按key进行排序
+        StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, Object> entry : treeMap.entrySet()) {
-            tempStr += entry.getValue();
+            stringBuilder.append(entry.getValue());
         }
-        tempStr = tempStr + "NodeMedia@2016";
-        Log.e("tempStr:" + tempStr);
-        treeMap.put("sign", MD5.md5(tempStr));
+        stringBuilder.append("NodeMedia@2016");
+        treeMap.put("sign", MD5.md5(stringBuilder.toString()));
 
+        Log.e("HttpParams:" + JSON.toJSONString(treeMap));
         return JSON.toJSONString(treeMap);
     }
 

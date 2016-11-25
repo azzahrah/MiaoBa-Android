@@ -58,7 +58,7 @@ public interface LoginTradContract {
             SharedUtils.put(Constants.USERPWD, password);
             SharedUtils.put(Constants.USERPWDSAVE, isSave);
 
-            login(username, password, 1);
+            login(username, password, 0);
         }
 
         public void onUsernameError(@StringRes int strRes) {
@@ -73,7 +73,7 @@ public interface LoginTradContract {
 
         @Override
         public void getBindUserInfo() {
-            onFail("登陆遇到问题:为获取到用户数据.");
+            onFail("登陆遇到问题:未获取到用户数据.");
         }
     }
 }
