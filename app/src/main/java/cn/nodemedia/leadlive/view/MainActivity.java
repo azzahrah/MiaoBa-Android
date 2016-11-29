@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.view.contract.MainContract;
@@ -44,7 +43,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     public void initView(Bundle bundle) {
-        ButterKnife.bind(this);
         mApplication.exitOtherActivity(this);
 
         fragmentList = new ArrayList<>();

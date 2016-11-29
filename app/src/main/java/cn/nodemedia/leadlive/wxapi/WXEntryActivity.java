@@ -10,7 +10,6 @@ import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
-import butterknife.ButterKnife;
 import cn.nodemedia.leadlive.Application;
 import cn.nodemedia.leadlive.view.contract.LoginForBindContract;
 import xyz.tanwb.airship.rxjava.RxBus;
@@ -31,9 +30,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     @Override
     public void initView(Bundle bundle) {
-        ButterKnife.bind(this);
         Log.e("微信登录结果返回");
-
         IWXAPI mWeixinAPI = ((Application) mApplication).getIWXAPI();
         if (mWeixinAPI != null) {
             mWeixinAPI.handleIntent(getIntent(), this);

@@ -31,13 +31,6 @@ import xyz.tanwb.airship.view.adapter.listener.OnLoadMoreListener;
 import xyz.tanwb.airship.view.widget.PullToRefreshView;
 import xyz.tanwb.airship.view.widget.SlideView;
 
-/**
- * No description
- * LeadLive the cn.nodemedia.leadlive.view.contract
- *
- * @author Bining
- * @since 16/7/26
- */
 public interface LiveContract {
 
     interface View extends BaseRecyclerContract.View {

@@ -2,40 +2,16 @@ package cn.nodemedia.leadlive.view.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.leadlive.bean.UserInfo;
-import cn.nodemedia.leadlive.view.LivePlayerActivity;
-import cn.nodemedia.leadlive.view.UserFaceActivity;
-import cn.nodemedia.leadlive.view.UserFansActivity;
-import cn.nodemedia.leadlive.view.UserFollowActivity;
-import cn.nodemedia.leadlive.view.UserInfoActivity;
 import cn.nodemedia.leadlive.view.contract.LiveContract;
-import rx.functions.Action1;
-import xyz.tanwb.airship.db.DbException;
-import xyz.tanwb.airship.db.DbManager;
-import xyz.tanwb.airship.glide.GlideManager;
-import xyz.tanwb.airship.rxjava.RxBusManage;
-import xyz.tanwb.airship.utils.SharedUtils;
 import xyz.tanwb.airship.view.BaseFragment;
 import xyz.tanwb.airship.view.widget.PullToRefreshView;
-import xyz.tanwb.airship.view.widget.SlideView;
 
 /**
  * 直播列表

@@ -1,20 +1,9 @@
 package cn.nodemedia.leadlive.view.contract;
 
-import java.security.Permission;
-import java.security.Permissions;
-import java.util.jar.Manifest;
-
 import xyz.tanwb.airship.utils.ToastUtils;
 import xyz.tanwb.airship.view.BaseView;
 import xyz.tanwb.airship.view.contract.PermissionsPresenter;
 
-/**
- * No description
- * LeadLive the cn.nodemedia.leadlive.view.contract
- *
- * @author Bining
- * @since 16/7/26
- */
 public interface MainContract {
 
     interface View extends BaseView {

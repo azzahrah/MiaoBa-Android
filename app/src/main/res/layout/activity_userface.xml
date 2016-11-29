@@ -6,8 +6,6 @@
     <ImageView
         android:id="@+id/face_preview"
         style="@style/common_imageview"
-        android:layout_width="@dimen/dp_360"
-        android:layout_height="@dimen/dp_360"
         android:src="@drawable/mr_720" />
 
     <LinearLayout

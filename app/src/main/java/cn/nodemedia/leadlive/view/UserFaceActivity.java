@@ -1,8 +1,6 @@
 package cn.nodemedia.leadlive.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.view.contract.UserFaceContract;
@@ -28,7 +25,6 @@ public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Present
     ImageView facePreview;
 
     private String faces;
-    private Uri photoUri = null;
 
     @Override
     public int getLayoutId() {
@@ -43,7 +39,6 @@ public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Present
         } else {
             faces = getIntent().getStringExtra("p0");
         }
-        ButterKnife.bind(this);
         setTitle("设置头像");
         int width = ScreenUtils.getScreenWidth();
         facePreview.setLayoutParams(new LinearLayout.LayoutParams(width, width));
@@ -52,6 +47,7 @@ public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Present
 
     @Override
     public void initPresenter() {
+        mPresenter.initPresenter(this);
     }
 
     @Override
@@ -80,26 +76,7 @@ public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Present
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public Context getContext() {
-        return mActivity;
-    }
-
-    @Override
-    public void showProgress() {
-    }
-
-    @Override
-    public void hideProgress() {
-    }
-
-    @Override
-    public void exit() {
-        mPresenter.onDestroy();
-        mPresenter = null;
+    public ImageView getFaceView() {
+        return facePreview;
     }
 }

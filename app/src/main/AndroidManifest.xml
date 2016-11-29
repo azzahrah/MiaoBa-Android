@@ -45,19 +45,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".view.LoginWayActivity" />
-        <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.MainActivity" />
-        <activity android:name=".view.UserInfoActivity" />
-        <activity android:name=".view.UserFaceActivity" />
-        <activity android:name=".view.UserFansActivity" />
-        <activity android:name=".view.UserFollowActivity" />
-
+        <activity
+            android:name=".view.LoginWayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.UserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.UserFaceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.UserFollowActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.LivePlayerActivity"
             android:configChanges="orientation|screenSize" />
-
         <activity
             android:name=".view.LivePublisherActivity"
             android:configChanges="orientation|screenSize" />

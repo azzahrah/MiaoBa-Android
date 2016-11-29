@@ -175,7 +175,7 @@ public class LivePublisherActivity extends Activity implements OnClickListener, 
                     /**
                      * 开始视频发布 rtmpUrl rtmp流地址
                      */
-                    String pubUrl = "rtmp://alpush.nodemedia.cn/live/stream_" + SharedUtils.getInt(Constants.USEROPENID, 0) + "?vhost=cdn.nodemedia.cn&userid=" + userId + "&location=" + "重庆市" + "&title=" + "我是Android直播测试" + userId;
+                    String pubUrl = "rtmp://xypush.nodemedia.cn/live/stream_" + SharedUtils.getInt(Constants.USEROPENID, 0) + "?vhost=cdn.nodemedia.cn&userid=" + userId + "&location=" + "重庆市" + "&title=" + "我是Android直播测试" + userId;
                     //SharedUtils.getString("pubUrl", "rtmp://pub.nodemedia.cn/NodeMedia/stream_" + Math.round((Math.random() * 1000 + 1000))));
 
                     try {

@@ -7,14 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
 import cn.nodemedia.leadlive.utils.HttpCallback;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import xyz.tanwb.airship.bean.AbsT;
 import xyz.tanwb.airship.db.DbException;
 import xyz.tanwb.airship.db.DbManager;
 import xyz.tanwb.airship.glide.GlideManager;
@@ -58,7 +56,6 @@ public class UserInfoActivity extends ActionbarActivity {
     @Override
     public void initView(Bundle bundle) {
         super.initView(bundle);
-        ButterKnife.bind(this);
         setTitle("个人信息");
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
         initUserData();
@@ -137,21 +134,4 @@ public class UserInfoActivity extends ActionbarActivity {
         }
     }
 
-//    @Override
-//    public boolean hasEventBus() {
-//        return true;
-//    }
-//
-//    @Override
-//    public void onSubEvent(EventBusInfo eventBusInfo) {
-//        super.onSubEvent(eventBusInfo);
-//        if (eventBusInfo.equals(UserInfo.class.getName())) {
-//            initUserData();
-//        }
-//    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

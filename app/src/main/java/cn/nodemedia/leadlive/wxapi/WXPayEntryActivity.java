@@ -9,7 +9,6 @@ import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
-import butterknife.ButterKnife;
 import cn.nodemedia.leadlive.Application;
 import cn.nodemedia.leadlive.Constants;
 import xyz.tanwb.airship.rxjava.RxBus;
@@ -29,9 +28,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void initView(Bundle bundle) {
-        ButterKnife.bind(this);
         Log.e("微信支付结果返回");
-
         IWXAPI mWeixinAPI = ((Application) mApplication).getIWXAPI();
         if (mWeixinAPI != null) {
             mWeixinAPI.handleIntent(getIntent(), this);

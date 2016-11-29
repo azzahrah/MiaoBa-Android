@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.LivePlayer;
 import cn.nodemedia.LivePlayer.LivePlayerDelegate;
@@ -36,31 +35,18 @@ public class LivePlayerActivity extends BaseActivity {
     private float srcWidth;
     private float srcHeight;
 
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_player;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            liveInfo = (LiveInfo) savedInstanceState.getSerializable("p0");
+    public void initView(Bundle bundle) {
+        if (bundle != null) {
+            liveInfo = (LiveInfo) bundle.getSerializable("p0");
         } else {
             liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
         }
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("p0", liveInfo);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void initView(Bundle bundle) {
-        ButterKnife.bind(this);
         LivePlayer.init(this);
         LivePlayer.setDelegate(new LivePlayerDelegate() {
             @Override
@@ -109,7 +95,7 @@ public class LivePlayerActivity extends BaseActivity {
          */
         LivePlayer.subscribe(true);
 
-        String playUrl = "rtmp://alplay.nodemedia.cn/live/stream_" + liveInfo.userid;
+        String playUrl = "rtmp://xyplay.nodemedia.cn/live/stream_" + liveInfo.userid;
         //SharedUtils.getString("playUrl", "rtmp://play.nodemedia.cn/NodeMedia/stream");// 获取上一页设置的播放地址，非sdk方法
         /**
          * 开始播放
@@ -144,6 +130,12 @@ public class LivePlayerActivity extends BaseActivity {
 
     @Override
     public void initPresenter() {
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("p0", liveInfo);
+        super.onSaveInstanceState(outState);
     }
 
     @OnClick({R.id.player_follow})

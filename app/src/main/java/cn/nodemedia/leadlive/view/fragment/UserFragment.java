@@ -13,7 +13,6 @@ import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
 import cn.nodemedia.leadlive.view.UserFaceActivity;
-import cn.nodemedia.leadlive.view.UserFansActivity;
 import cn.nodemedia.leadlive.view.UserFollowActivity;
 import cn.nodemedia.leadlive.view.UserInfoActivity;
 import rx.functions.Action1;
@@ -169,10 +168,10 @@ public class UserFragment extends BaseFragment {
                 mActivity.advance(UserInfoActivity.class);
                 break;
             case R.id.user_follow:
-                mActivity.advance(UserFollowActivity.class);
+                mActivity.advance(UserFollowActivity.class, 1);
                 break;
             case R.id.user_fans:
-                mActivity.advance(UserFansActivity.class);
+                mActivity.advance(UserFollowActivity.class, 0);
                 break;
             case R.id.user_live:
                 break;
