@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xyz.tanwb.airship.view.widget.SlideView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/banner"
+    style="@style/common_rect_horizontal"
+    android:visibility="visible"
+    app:svAspectRatio="0.4"
+    app:svDotsAlpha="0.5"
+    app:svDotsPosition="buttomCenter"
+    app:svDotsSpacing="@dimen/dp_8"
+    app:svIntervalTime="15"
+    app:svIsAutoShift="true"
+    app:svIsShowDots="true" />

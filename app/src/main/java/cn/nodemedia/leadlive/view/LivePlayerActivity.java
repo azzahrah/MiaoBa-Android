@@ -17,15 +17,12 @@ import cn.nodemedia.LivePlayer.LivePlayerDelegate;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
+import cn.nodemedia.leadlive.utils.HttpCallback;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import xyz.tanwb.treasurechest.bean.Abs;
-import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
-import xyz.tanwb.treasurechest.utils.ScreenUtils;
-import xyz.tanwb.treasurechest.utils.SharedUtils;
-import xyz.tanwb.treasurechest.utils.ToastUtils;
-import xyz.tanwb.treasurechest.view.BaseActivity;
+import xyz.tanwb.airship.utils.ScreenUtils;
+import xyz.tanwb.airship.utils.SharedUtils;
+import xyz.tanwb.airship.utils.ToastUtils;
+import xyz.tanwb.airship.view.BaseActivity;
 
 public class LivePlayerActivity extends BaseActivity {
 
@@ -154,22 +151,24 @@ public class LivePlayerActivity extends BaseActivity {
         if (!isCanClick(v)) return;
         switch (v.getId()) {
             case R.id.player_follow:
-                HttpUtils.postFollow(userid, liveInfo.liveid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Abs>() {
+                HttpUtils.postFollow(userid, liveInfo.liveid, new HttpCallback<Object>() {
                     @Override
-                    public void call(Abs abs) {
-                        if (abs.isSuccess()) {
-                            liveInfo.is_follow = !liveInfo.is_follow;
-                            if (liveInfo.is_follow) {
-                                playerFollow.setImageResource(R.drawable.me_yiguanzhu);
-                            } else {
-                                playerFollow.setImageResource(R.drawable.me_guanzhu);
-                            }
+                    public void onSuccess(Object o) {
+                        liveInfo.is_follow = !liveInfo.is_follow;
+                        if (liveInfo.is_follow) {
+                            playerFollow.setImageResource(R.drawable.me_yiguanzhu);
                         } else {
-                            if (liveInfo.is_follow) {
-                                ToastUtils.show(mActivity, "取消关注失败.");
-                            } else {
-                                ToastUtils.show(mActivity, "关注失败.");
-                            }
+                            playerFollow.setImageResource(R.drawable.me_guanzhu);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String strMsg) {
+                        super.onFailure(strMsg);
+                        if (liveInfo.is_follow) {
+                            ToastUtils.show(mActivity, "取消关注失败.");
+                        } else {
+                            ToastUtils.show(mActivity, "关注失败.");
                         }
                     }
                 });

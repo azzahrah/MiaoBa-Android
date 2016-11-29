@@ -2,7 +2,6 @@ package cn.nodemedia.leadlive.view.contract;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -10,46 +9,32 @@ import java.util.List;
 
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.LiveInfo;
+import cn.nodemedia.leadlive.utils.HttpCallback;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import xyz.tanwb.treasurechest.bean.AbsL;
-import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
-import xyz.tanwb.treasurechest.view.BasePresenter;
-import xyz.tanwb.treasurechest.view.BaseView;
-import xyz.tanwb.treasurechest.view.adapter.BaseRecyclerAdapter;
-import xyz.tanwb.treasurechest.view.adapter.BaseRecyclerDivider;
-import xyz.tanwb.treasurechest.view.adapter.ViewHolderHelper;
-import xyz.tanwb.treasurechest.view.adapter.listener.OnLoadMoreListener;
-import xyz.tanwb.treasurechest.view.widget.PullToRefreshView;
+import xyz.tanwb.airship.view.adapter.BaseRecyclerAdapter;
+import xyz.tanwb.airship.view.adapter.BaseRecyclerDivider;
+import xyz.tanwb.airship.view.adapter.ViewHolderHelper;
+import xyz.tanwb.airship.view.adapter.listener.OnLoadMoreListener;
+import xyz.tanwb.airship.view.widget.PullToRefreshView;
 
 /**
  * 示例
- * Created by Bining on 16/7/5.
  */
 public interface SimpleContract {
 
-    interface View extends BaseView {
-
-        PullToRefreshView getRefreshView();
-
-        RecyclerView getRecyclerView();
+    interface View extends BaseRecyclerContract.View {
     }
 
-    class Presenter extends BasePresenter<View> {
+    class Presenter extends BaseRecyclerContract.Presenter<View> {
 
-        private PullToRefreshView commonPulltorefresh;
-        private RecyclerView commonRecycler;
         private SimpleAdapter simpleAdapter;
         private int page = 1;
 
         @Override
         public void onStart() {
             if (mView != null) {
-                commonPulltorefresh = mView.getRefreshView();
-                commonRecycler = mView.getRecyclerView();
 
-                commonPulltorefresh.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+                pullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
                     @Override
                     public void onRefresh(PullToRefreshView pullToRefreshLayout) {
                         page = 1;
@@ -57,7 +42,7 @@ public interface SimpleContract {
                     }
                 });
 
-                simpleAdapter = new SimpleAdapter(context);
+                simpleAdapter = new SimpleAdapter(mContext);
                 simpleAdapter.openLoadAnimation();
                 simpleAdapter.openLoadMore(R.layout.layout_list_refresh, 20);
                 simpleAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -68,7 +53,7 @@ public interface SimpleContract {
                     }
                 });
 
-                commonRecycler.setLayoutManager(new LinearLayoutManager(context));
+                commonRecycler.setLayoutManager(new LinearLayoutManager(mContext));
                 commonRecycler.addItemDecoration(new BaseRecyclerDivider());
                 commonRecycler.setAdapter(simpleAdapter);
 
@@ -77,12 +62,11 @@ public interface SimpleContract {
         }
 
         private void getLiveList() {
-            HttpUtils.getLiveList(1, page).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsL<LiveInfo>>() {
+            HttpUtils.getLiveList(1, page, new HttpCallback<List<LiveInfo>>() {
                 @Override
-                public void call(AbsL<LiveInfo> liveInfoAbsL) {
-
+                public void onSuccess(List<LiveInfo> liveInfoAbsL) {
                     if (page == 1) {
-                        commonPulltorefresh.refreshFinish(true);
+                        pullToRefreshView.refreshFinish(true);
                         simpleAdapter.clearDatas();
                     }
 
@@ -101,10 +85,11 @@ public interface SimpleContract {
 //                        simpleAdapter.notifyDataSetChanged();
 //                    }
                 }
-            }, new Action1<Throwable>() {
+
                 @Override
-                public void call(Throwable throwable) {
-                    onFail(throwable.getMessage());
+                public void onFailure(String strMsg) {
+                    super.onFailure(strMsg);
+                    onFail(strMsg);
                 }
             });
         }

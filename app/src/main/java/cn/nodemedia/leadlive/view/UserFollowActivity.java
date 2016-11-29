@@ -8,25 +8,25 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.FollowInfo;
+import cn.nodemedia.leadlive.utils.HttpCallback;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import xyz.tanwb.treasurechest.bean.Abs;
-import xyz.tanwb.treasurechest.bean.AbsL;
-import xyz.tanwb.treasurechest.glide.GlideManager;
-import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
-import xyz.tanwb.treasurechest.utils.SharedUtils;
-import xyz.tanwb.treasurechest.utils.ToastUtils;
-import xyz.tanwb.treasurechest.view.adapter.BaseListAdapter;
-import xyz.tanwb.treasurechest.view.adapter.ViewHolderHelper;
-import xyz.tanwb.treasurechest.view.adapter.listener.OnItemChildClickListener;
-import xyz.tanwb.treasurechest.view.widget.AutoListView;
-import xyz.tanwb.treasurechest.view.widget.PullToRefreshView;
+import xyz.tanwb.airship.bean.Abs;
+import xyz.tanwb.airship.bean.AbsL;
+import xyz.tanwb.airship.glide.GlideManager;
+import xyz.tanwb.airship.utils.SharedUtils;
+import xyz.tanwb.airship.utils.ToastUtils;
+import xyz.tanwb.airship.view.adapter.BaseListAdapter;
+import xyz.tanwb.airship.view.adapter.ViewHolderHelper;
+import xyz.tanwb.airship.view.adapter.listener.OnItemChildClickListener;
+import xyz.tanwb.airship.view.widget.AutoListView;
+import xyz.tanwb.airship.view.widget.PullToRefreshView;
 
 /**
  * 用户关注
@@ -46,7 +46,7 @@ public class UserFollowActivity extends ActionbarActivity {
     private FollowInfo followInfo;
 
     @Override
-    public int getContentView() {
+    public int getLayoutId() {
         return R.layout.layout_list_refresh;
     }
 
@@ -98,9 +98,10 @@ public class UserFollowActivity extends ActionbarActivity {
     }
 
     private void getFollowList() {
-        HttpUtils.getFollowList(userid, page, minid, "follow").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsL<FollowInfo>>() {
+        HttpUtils.getFollowList(userid, page, minid, "follow", new HttpCallback<List<FollowInfo>>() {
+
             @Override
-            public void call(AbsL<FollowInfo> followInfoAbsL) {
+            public void onSuccess(List<FollowInfo> followInfoAbsL) {
                 if (page == 1) {
                     commonPulltorefresh.refreshFinish(true);
                     userAdapter.clearDatas();
@@ -108,12 +109,22 @@ public class UserFollowActivity extends ActionbarActivity {
                     commonPulltorefresh.loadmoreFinish(true);
                 }
 
-                if (followInfoAbsL.isSuccess()) {
-                    userAdapter.addDatas(followInfoAbsL.result);
-                    commonPulltorefresh.setLoadMoreEnable(followInfoAbsL.result != null && followInfoAbsL.result.size() >= 20);
+                if (followInfoAbsL != null) {
+                    userAdapter.addDatas(followInfoAbsL);
+                    commonPulltorefresh.setLoadMoreEnable(followInfoAbsL.size() >= 20);
                 } else {
                     userAdapter.notifyDataSetChanged();
-                    ToastUtils.show(mActivity, followInfoAbsL.getMsg());
+                }
+            }
+
+            @Override
+            public void onFailure(String strMsg) {
+                super.onFailure(strMsg);
+                ToastUtils.show(mContext, strMsg);
+                if (page == 1) {
+                    commonPulltorefresh.refreshFinish(true);
+                } else {
+                    commonPulltorefresh.loadmoreFinish(true);
                 }
             }
         });
@@ -150,18 +161,20 @@ public class UserFollowActivity extends ActionbarActivity {
         @Override
         public void onItemChildClick(View v, int position) {
             followInfo = getItem(position);
-            HttpUtils.postFollow(userid, followInfo.userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Abs>() {
+            HttpUtils.postFollow(userid, followInfo.userid, new HttpCallback<Object>() {
                 @Override
-                public void call(Abs abs) {
-                    if (abs.isSuccess()) {
-                        followInfo.is_follow = !followInfo.is_follow;
-                        notifyDataSetChanged();
+                public void onSuccess(Object abs) {
+                    followInfo.is_follow = !followInfo.is_follow;
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onFailure(String strMsg) {
+                    super.onFailure(strMsg);
+                    if (followInfo.is_follow) {
+                        ToastUtils.show(mActivity, "取消关注失败.");
                     } else {
-                        if (followInfo.is_follow) {
-                            ToastUtils.show(mActivity, "取消关注失败.");
-                        } else {
-                            ToastUtils.show(mActivity, "关注失败.");
-                        }
+                        ToastUtils.show(mActivity, "关注失败.");
                     }
                 }
             });

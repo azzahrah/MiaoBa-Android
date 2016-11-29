@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match">
 
-    <xyz.tanwb.treasurechest.view.widget.PullToRefreshView
+    <xyz.tanwb.airship.view.widget.PullToRefreshView
         android:id="@+id/live_follow_pulltorefresh"
         style="@style/common_rect_match">
 
-        <xyz.tanwb.treasurechest.view.widget.AutoListView
+        <xyz.tanwb.airship.view.widget.AutoListView
             android:id="@+id/live_follow_list"
             style="@style/common_listview"
             android:layout_weight="1"
-            android:dividerHeight="@dimen/common_dp_0" />
-    </xyz.tanwb.treasurechest.view.widget.PullToRefreshView>
+            android:dividerHeight="@dimen/dp_0" />
+    </xyz.tanwb.airship.view.widget.PullToRefreshView>
 </RelativeLayout>

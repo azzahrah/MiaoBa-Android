@@ -5,11 +5,11 @@ import android.text.TextUtils;
 
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
-import xyz.tanwb.treasurechest.utils.SharedUtils;
+import xyz.tanwb.airship.utils.SharedUtils;
 
-public interface LoginTradContract {
+public interface LoginForMobileContract {
 
-    interface View extends LoginBaseContract.View {
+    interface View extends LoginContract.View {
         void setUsername(String username);
 
         void setPassword(String passwoed);
@@ -19,7 +19,7 @@ public interface LoginTradContract {
         void setPasswordError(String message);
     }
 
-    class Presenter extends LoginBaseContract.Presenter<View> {
+    class Presenter extends LoginContract.Presenter<View> {
 
         @Override
         public void onStart() {
@@ -63,12 +63,12 @@ public interface LoginTradContract {
 
         public void onUsernameError(@StringRes int strRes) {
             if (mView != null)
-                mView.setUsernameError(context.getString(strRes));
+                mView.setUsernameError(mContext.getString(strRes));
         }
 
         public void onPasswordError(@StringRes int strRes) {
             if (mView != null)
-                mView.setPasswordError(context.getString(strRes));
+                mView.setPasswordError(mContext.getString(strRes));
         }
 
         @Override

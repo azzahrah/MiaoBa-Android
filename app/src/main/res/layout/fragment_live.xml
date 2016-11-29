@@ -1,11 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/common_rect_match"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/common_rect_match">
 
     <include layout="@layout/layout_main_actionbar" />
 
+    <LinearLayout
+        android:id="@+id/main_live_tab"
+        style="@style/common_rect_wrap"
+        android:layout_height="@dimen/dp_48"
+        android:layout_below="@+id/main_actionbar"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/common_rect_wrap"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/live_follow"
+                style="@style/common_rect_wrap"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/live_follow_text"
+                    style="@style/common_textview_white_big"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dp_12"
+                    android:paddingRight="@dimen/dp_12"
+                    android:text="关注" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/live_hot"
+                style="@style/common_rect_wrap"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/live_hot_text"
+                    style="@style/common_textview_white_big"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dp_12"
+                    android:paddingRight="@dimen/dp_12"
+                    android:text="热门"
+                    android:textColor="@color/colorThemeDark" />
+
+                <ImageView
+                    android:id="@+id/live_hot_icon"
+                    style="@style/common_imageview"
+                    android:layout_below="@+id/live_hot_text"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/home_icn_drop_down"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/live_new"
+                style="@style/common_rect_wrap"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/live_new_text"
+                    style="@style/common_textview_white_big"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dp_12"
+                    android:paddingRight="@dimen/dp_12"
+                    android:text="最新" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/live_cursor"
+            style="@style/common_line"
+            android:layout_height="@dimen/dp_2"
+            android:background="@color/colorThemeDark"
+            android:visibility="invisible" />
+    </LinearLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/main_live_viewpager"
-        style="@style/common_rect_match" />
-</LinearLayout>
+        style="@style/common_rect_match"
+        android:layout_below="@+id/main_live_tab" />
+</RelativeLayout>

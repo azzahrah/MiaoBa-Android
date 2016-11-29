@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match">
 
-    <xyz.tanwb.treasurechest.view.widget.PullToRefreshView
+    <xyz.tanwb.airship.view.widget.PullToRefreshView
         android:id="@+id/common_pulltorefresh"
         style="@style/common_rect_match">
 
-        <xyz.tanwb.treasurechest.view.widget.AutoListView
+        <xyz.tanwb.airship.view.widget.AutoListView
             android:id="@+id/common_list"
             style="@style/common_listview" />
-    </xyz.tanwb.treasurechest.view.widget.PullToRefreshView>
+    </xyz.tanwb.airship.view.widget.PullToRefreshView>
 </RelativeLayout>

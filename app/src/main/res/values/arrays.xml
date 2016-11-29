@@ -11,7 +11,7 @@
         <item>alipay</item>
         <item>wxpay</item>
         <item>unionpay</item>
-        <!--<item>local</item>-->
+        <item>local</item>
     </string-array>
 
 </resources>

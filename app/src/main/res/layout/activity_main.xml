@@ -4,7 +4,7 @@
     <FrameLayout
         android:id="@+id/main_content"
         style="@style/common_rect_match"
-        android:layout_marginBottom="@dimen/common_dp_48" />
+        android:layout_marginBottom="@dimen/dp_48" />
 
     <LinearLayout
         style="@style/common_rect_horizontal"
@@ -15,7 +15,7 @@
         <LinearLayout
             android:id="@+id/main_tab_live"
             style="@style/common_rect_match"
-            android:layout_marginTop="@dimen/common_dp_4"
+            android:layout_marginTop="@dimen/dp_4"
             android:layout_weight="1"
             android:gravity="center">
 
@@ -30,7 +30,7 @@
             style="@style/common_rect_match"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="@dimen/common_dp_4">
+            android:padding="@dimen/dp_4">
 
             <ImageView
                 android:id="@+id/main_tab_room_icon"
@@ -41,7 +41,7 @@
         <LinearLayout
             android:id="@+id/main_tab_me"
             style="@style/common_rect_match"
-            android:layout_marginTop="@dimen/common_dp_4"
+            android:layout_marginTop="@dimen/dp_4"
             android:layout_weight="1"
             android:gravity="center">
 

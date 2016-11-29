@@ -2,23 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match"
     android:orientation="vertical"
-    android:padding="@dimen/common_dp_30">
+    android:padding="@dimen/dp_30">
 
-    <xyz.tanwb.treasurechest.view.widget.DrawableEditText
+    <xyz.tanwb.airship.view.widget.DrawableEditText
         android:id="@+id/user_edit_les"
         style="@style/common_edit_user"
         android:inputType="text" />
 
-    <xyz.tanwb.treasurechest.view.widget.DrawableEditText
+    <xyz.tanwb.airship.view.widget.DrawableEditText
         android:id="@+id/common_edittext_more"
         style="@style/common_edit_user"
-        android:layout_height="@dimen/common_dp_72"
+        android:layout_height="@dimen/dp_72"
         android:inputType="text"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/user_edithint"
         style="@style/common_textview_black_small"
-        android:layout_marginTop="@dimen/common_dp_16" />
+        android:layout_marginTop="@dimen/dp_16" />
 
 </LinearLayout>

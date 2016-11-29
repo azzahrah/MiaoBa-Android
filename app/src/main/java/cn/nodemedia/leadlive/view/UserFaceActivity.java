@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.view.contract.UserFaceContract;
-import xyz.tanwb.treasurechest.utils.ScreenUtils;
+import xyz.tanwb.airship.utils.ScreenUtils;
 
 /**
  * 设置头像
@@ -30,7 +31,7 @@ public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Present
     private Uri photoUri = null;
 
     @Override
-    public int getContentView() {
+    public int getLayoutId() {
         return R.layout.activity_userface;
     }
 
@@ -54,8 +55,8 @@ public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Present
     }
 
     @Override
-    public void saveState(Bundle outState) {
-        super.saveState(outState);
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
         outState.putString("p0", faces);
     }
 
@@ -64,10 +65,10 @@ public class UserFaceActivity extends ActionbarActivity<UserFaceContract.Present
         if (!isCanClick(v)) return;
         switch (v.getId()) {
             case R.id.face_source_album:
-                mPresenter.getPhotoPermissions(1);
+                mPresenter.startAction(1);
                 break;
             case R.id.face_source_photo:
-                mPresenter.getPhotoPermissions(2);
+                mPresenter.startAction(2);
                 break;
         }
     }

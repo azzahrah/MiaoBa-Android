@@ -1,36 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="common_theme_light">#90E0D0</color>
-    <color name="common_theme_dark">#2B7970</color>
-    <color name="common_black_dark">#000000</color>
-    <color name="common_black_light">#444444</color>
-    <color name="common_gray_dark">#777777</color>
-    <color name="common_gray_light">#999999</color>
-    <color name="common_white_light">#BBBBBB</color>
-    <color name="common_white_dark">#FFFFFF</color>
+    <!-- StatusBar Color -->
+    <color name="colorPrimaryDark">#2B7970</color>
+    <!-- Theme Color -->
+    <color name="colorPrimary">#90E0D0</color>
+    <!-- App Import Text Color -->
+    <color name="textColorPrimary">#000000</color>
+    <!-- App Subtitle Text Color -->
+    <color name="subtitleTextColor">#444444</color>
+    <!-- System View Default Color -->
+    <color name="colorControlNormal">#444444</color>
+    <!-- System View Select Color -->
+    <color name="colorAccent">#90E0D0</color>
+    <!-- Window Background Color -->
+    <color name="windowBackground">#F0F7F6</color>
+    <!-- Navigation Background Color -->
+    <color name="navigationBarColor">#000000</color>
+    <!-- Popup Background Color -->
+    <color name="popupBackground">#FFFFFF</color>
+    <!-- Popup Text Color -->
+    <color name="popupTextColor">#90E0D0</color>
+    <!-- Dialog Background Color -->
+    <color name="dialogBackground">#FFFFFF</color>
 
-    <color name="common_red_dark">#E60012</color>
-    <color name="common_red_light">#D0021B</color>
+    <!-- App Theme Color Dark -->
+    <color name="colorThemeDark">#2B7970</color>
+    <!-- App Theme Color -->
+    <color name="colorTheme">#90E0D0</color>
+    <!-- App Light Color -->
+    <color name="colorLight">#FFFFFF</color>
+    <!-- App Gray Color -->
+    <color name="colorGray">#777777</color>
+    <!-- App Dark Color -->
+    <color name="colorDark">#000000</color>
+    <!-- App Hint Text Color -->
+    <color name="colorHint">#444444</color>
+    <!-- Line Divider Color -->
+    <color name="colorLineDivider">#E5E5E5</color>
+
+    <color name="common_red">#E60012</color>
     <color name="common_orange">#F5A623</color>
 
     <color name="background_white_normal">#FFFFFF</color>
     <color name="background_white_pressed">#F0F7F6</color>
     <color name="background_gray_light">#F5F7F9</color>
     <color name="background_gray_dark">#CCCCCC</color>
-
-    <color name="line_divider">#E5E5E5</color>
-
-    <color name="goods_detail_background">#55000000</color>
-    <color name="sort_condition_background">#EFF2F5</color>
-    <color name="confirm_meat">#FFFAF4</color>
-
-    <color name="main_tab_textcolor">#484C62</color>
-    <color name="user_vouchers_blue">#20B3DD</color>
-    <color name="user_vouchers_gray">#D1D1D1</color>
-    <color name="user_vouchers_gold">#B69041</color>
-    <color name="shop_fav_yellow">#EDDD15</color>
-    <color name="guide_pink">#DE4345</color>
-    <color name="launch_red">#BF000F</color>
 
 </resources>

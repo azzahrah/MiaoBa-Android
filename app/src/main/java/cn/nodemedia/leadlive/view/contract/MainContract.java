@@ -1,8 +1,12 @@
 package cn.nodemedia.leadlive.view.contract;
 
-import xyz.tanwb.treasurechest.utils.ToastUtils;
-import xyz.tanwb.treasurechest.view.BaseView;
-import xyz.tanwb.treasurechest.view.contract.PermissionsPresenter;
+import java.security.Permission;
+import java.security.Permissions;
+import java.util.jar.Manifest;
+
+import xyz.tanwb.airship.utils.ToastUtils;
+import xyz.tanwb.airship.view.BaseView;
+import xyz.tanwb.airship.view.contract.PermissionsPresenter;
 
 /**
  * No description
@@ -25,18 +29,18 @@ public interface MainContract {
         }
 
         public void questPermissions() {
-            questPermissions(new String[]{"android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.WRITE_EXTERNAL_STORAGE"});
+            questPermissions(new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.RECORD_AUDIO, android.Manifest.permission.WRITE_EXTERNAL_STORAGE});
         }
 
         @Override
-        public void onPermissionsSuccess() {
+        public void onPermissionsSuccess(String[] strings) {
             mView.startLivePublisher();
         }
 
         @Override
         public void onPermissionsFailure(String strMsg) {
             super.onPermissionsFailure(strMsg);
-            ToastUtils.show(context, "发布视频需要访问摄像头,访问麦克风等权限.");
+            ToastUtils.show(mContext, "发布视频需要访问摄像头和麦克风的权限.");
         }
     }
 }

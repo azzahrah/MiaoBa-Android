@@ -1,6 +1,5 @@
 package cn.nodemedia.leadlive.view.contract;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
@@ -25,20 +24,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import cn.nodemedia.leadlive.Application;
+import cn.nodemedia.leadlive.utils.HttpCallback;
 import cn.nodemedia.leadlive.utils.HttpUtils;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
-import xyz.tanwb.treasurechest.utils.Log;
+import xyz.tanwb.airship.utils.Log;
 
-public interface LoginBindContract {
+public interface LoginForBindContract {
 
-    interface View extends LoginBaseContract.View {
+    interface View extends LoginContract.View {
 
         Application getBaseApplication();
     }
 
-    class Presenter extends LoginBaseContract.Presenter<View> {
+    class Presenter extends LoginContract.Presenter<View> {
 
         public static final int LTYPE_WX = 0X00000001;
         public static final int LTYPE_QQ = 0X00000002;
@@ -70,13 +68,12 @@ public interface LoginBindContract {
             if (mView != null) {
                 switch (loginType) {
                     case LTYPE_WX:
-                        mRxBusManage.on(LoginBindContract.class.getName(), new Action1<Object>() {
+                        mRxBusManage.on(LoginForBindContract.class.getName(), new Action1<Object>() {
                             @Override
                             public void call(Object o) {
                                 getAccessToken(o.toString());
                             }
                         });
-
                         SendAuth.Req req = new SendAuth.Req();
                         req.scope = "snsapi_userinfo";
                         req.state = "warehouse9_customer";
@@ -87,12 +84,12 @@ public interface LoginBindContract {
                         mTencent = mView.getBaseApplication().getTencent();
                         if (!mTencent.isSessionValid()) {
                             //SCOPE说明 例如：SCOPE = “get_user_info,add_t”；所有权限用“all”
-                            mTencent.login((Activity) context, "all", qqIUiListener);
+                            mTencent.login(mActivity, "all", qqIUiListener);
                             isLoginToBind = true;
                         }
                         break;
                     case LTYPE_SINA:
-                        mSsoHandler = new SsoHandler((Activity) context, mView.getBaseApplication().getWeibo());
+                        mSsoHandler = new SsoHandler(mActivity, mView.getBaseApplication().getWeibo());
                         mSsoHandler.authorize(weiboAuthListener);
                         isLoginToBind = true;
                         break;
@@ -124,9 +121,9 @@ public interface LoginBindContract {
         public void getBindUserInfo() {
             switch (loginType) {
                 case LTYPE_WX:
-                    HttpUtils.getWXUserInfo(wxToken, wxOpenId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
+                    HttpUtils.getWXUserInfo(wxToken, wxOpenId, new HttpCallback<String>() {
                         @Override
-                        public void call(String response) {
+                        public void onSuccess(String s) {
                             // {
                             // "openid":"OPENID", 普通用户的标识，对当前开发者帐号唯一
                             // "nickname":"NICKNAME", 普通用户昵称
@@ -138,9 +135,8 @@ public interface LoginBindContract {
                             // "privilege":["PRIVILEGE1","PRIVILEGE2"], 用户特权信息，json数组，如微信沃卡用户为（chinaunicom）
                             // "unionid": " o6_bmasdasdsad6_2sgVt7hMZOPfL" 用户统一标识。针对一个微信开放平台帐号下的应用，同一用户的unionid是唯一的
                             // }
-
                             try {
-                                JSONObject jsonResponse = new JSONObject(response);
+                                JSONObject jsonResponse = new JSONObject(s);
                                 if (jsonResponse.has("nickname") && jsonResponse.has("headimgurl")) {
                                     String nickName = jsonResponse.getString("nickname");
                                     String faceUrl = jsonResponse.getString("headimgurl");
@@ -152,16 +148,17 @@ public interface LoginBindContract {
                                 e.printStackTrace();
                             }
                         }
-                    }, new Action1<Throwable>() {
+
                         @Override
-                        public void call(Throwable throwable) {
-                            onFail("微信遇到问题:" + throwable.getMessage());
+                        public void onFailure(String strMsg) {
+                            super.onFailure(strMsg);
+                            onFail("微信遇到问题:" + strMsg);
                         }
                     });
                     break;
                 case LTYPE_QQ:
                     if (mTencent != null && mTencent.isSessionValid()) {
-                        UserInfo userInfo = new UserInfo(context, mTencent.getQQToken());
+                        UserInfo userInfo = new UserInfo(mContext, mTencent.getQQToken());
                         userInfo.getUserInfo(new BaseUiListener() {
 
                             @Override
@@ -182,11 +179,11 @@ public interface LoginBindContract {
                     }
                     break;
                 case LTYPE_SINA:
-                    HttpUtils.getSinaUserInfo(mAccessToken.getToken(), mAccessToken.getUid()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
+                    HttpUtils.getSinaUserInfo(mAccessToken.getToken(), mAccessToken.getUid(), new HttpCallback<String>() {
                         @Override
-                        public void call(String response) {
+                        public void onSuccess(String s) {
                             try {
-                                JSONObject jsonResponse = new JSONObject(response);
+                                JSONObject jsonResponse = new JSONObject(s);
                                 if (jsonResponse.has("name") && jsonResponse.has("profile_image_url")) {
                                     String nickName = jsonResponse.getString("name");
                                     String faceUrl = jsonResponse.getString("profile_image_url");
@@ -198,13 +195,13 @@ public interface LoginBindContract {
                                 e.printStackTrace();
                             }
                         }
-                    }, new Action1<Throwable>() {
+
                         @Override
-                        public void call(Throwable throwable) {
-                            onFail("微博遇到问题:" + throwable.getMessage());
+                        public void onFailure(String strMsg) {
+                            super.onFailure(strMsg);
+                            onFail("微博遇到问题:" + strMsg);
                         }
                     });
-
 //                    UsersAPI usersAPI = new UsersAPI(context, "1331670181", mAccessToken);
 //                    usersAPI.show(mAccessToken.getUid(), new RequestListener() {
 //                        @Override
@@ -232,10 +229,10 @@ public interface LoginBindContract {
             }
         }
 
-        public void getAccessToken(String wxCode) {
-            HttpUtils.getWXToken(wxCode).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
+        private void getAccessToken(String wxCode) {
+            HttpUtils.getWXToken(wxCode, new HttpCallback<String>() {
                 @Override
-                public void call(String response) {
+                public void onSuccess(String s) {
                     // {
                     // "access_token":"ACCESS_TOKEN", 接口调用凭证
                     // "expires_in":7200, access_token接口调用凭证超时时间，单位（秒）
@@ -244,9 +241,9 @@ public interface LoginBindContract {
                     // "scope":"SCOPE", 用户授权的作用域，使用逗号（,）分隔
                     // "unionid":"o6_bmasdasdsad6_2sgVt7hMZOPfL"  用户统一标识。针对一个微信开放平台帐号下的应用，同一用户的unionid是唯一的
                     // }
-                    Log.e(response);
+                    Log.e(s);
                     try {
-                        JSONObject jsonResponse = new JSONObject(response);
+                        JSONObject jsonResponse = new JSONObject(s);
                         wxOpenId = jsonResponse.getString("openid");
                         wxToken = jsonResponse.getString("access_token");
 
@@ -255,10 +252,11 @@ public interface LoginBindContract {
                         e.printStackTrace();
                     }
                 }
-            }, new Action1<Throwable>() {
+
                 @Override
-                public void call(Throwable throwable) {
-                    onFail("微信遇到问题:" + throwable.getMessage());
+                public void onFailure(String strMsg) {
+                    super.onFailure(strMsg);
+                    onFail("微信遇到问题:" + strMsg);
                 }
             });
         }

@@ -11,45 +11,45 @@
 
         <LinearLayout
             style="@style/common_rect_horizontal"
-            android:background="@color/common_theme_light"
+            android:background="@color/colorTheme"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="@dimen/common_dp_8">
+            android:padding="@dimen/dp_8">
 
             <ImageView
                 android:id="@+id/user_face"
                 style="@style/common_imageview"
-                android:layout_width="@dimen/common_dp_72"
-                android:layout_height="@dimen/common_dp_72"
+                android:layout_width="@dimen/dp_72"
+                android:layout_height="@dimen/dp_72"
                 android:src="@drawable/default_head" />
 
             <TextView
                 android:id="@+id/user_leadid"
                 style="@style/common_textview_white_small"
-                android:layout_marginTop="@dimen/common_dp_8"
+                android:layout_marginTop="@dimen/dp_8"
                 android:text="映客号:12345578" />
 
             <LinearLayout
                 style="@style/common_rect_wrap"
-                android:layout_marginTop="@dimen/common_dp_8"
+                android:layout_marginTop="@dimen/dp_8"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/user_name"
                     style="@style/common_textview_white_small"
-                    android:layout_marginRight="@dimen/common_dp_4"
+                    android:layout_marginRight="@dimen/dp_4"
                     android:text="Bining" />
 
                 <ImageView
                     android:id="@+id/user_sex"
                     style="@style/common_imageview"
-                    android:layout_marginRight="@dimen/common_dp_4"
+                    android:layout_marginRight="@dimen/dp_4"
                     android:src="@drawable/global_female" />
 
                 <ImageView
                     android:id="@+id/user_rank"
                     style="@style/common_imageview"
-                    android:layout_marginRight="@dimen/common_dp_4"
+                    android:layout_marginRight="@dimen/dp_4"
                     android:src="@drawable/rank_1" />
 
                 <ImageView
@@ -61,24 +61,24 @@
 
             <LinearLayout
                 style="@style/common_rect_wrap"
-                android:layout_marginTop="@dimen/common_dp_8"
+                android:layout_marginTop="@dimen/dp_8"
                 android:gravity="center">
 
                 <TextView
                     android:id="@+id/user_follow"
                     style="@style/common_textview_white_small"
-                    android:layout_marginRight="@dimen/common_dp_8"
+                    android:layout_marginRight="@dimen/dp_8"
                     android:text="关注 0" />
 
                 <View
-                    style="@style/common_vertical_line"
-                    android:layout_height="@dimen/common_dp_12"
-                    android:background="@color/common_white_dark" />
+                    style="@style/common_line_veritical"
+                    android:layout_height="@dimen/dp_12"
+                    android:background="@color/colorLight" />
 
                 <TextView
                     android:id="@+id/user_fans"
                     style="@style/common_textview_white_small"
-                    android:layout_marginLeft="@dimen/common_dp_8"
+                    android:layout_marginLeft="@dimen/dp_8"
                     android:text="粉丝 0" />
 
             </LinearLayout>
@@ -86,9 +86,9 @@
             <TextView
                 android:id="@+id/user_autograph"
                 style="@style/common_textview_white_small"
-                android:layout_marginLeft="@dimen/common_dp_24"
-                android:layout_marginRight="@dimen/common_dp_24"
-                android:layout_marginTop="@dimen/common_dp_8"
+                android:layout_marginLeft="@dimen/dp_24"
+                android:layout_marginRight="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_8"
                 android:singleLine="false"
                 android:text="Ta好像忘记写签名了..." />
 
@@ -96,9 +96,9 @@
 
         <LinearLayout
             style="@style/common_rect_horizontal"
-            android:layout_marginLeft="@dimen/common_dp_4"
-            android:layout_marginRight="@dimen/common_dp_4"
-            android:layout_marginTop="@dimen/common_dp_4">
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_4">
 
             <RelativeLayout
                 android:id="@+id/user_live"
@@ -110,14 +110,14 @@
                     android:id="@+id/user_live_icon"
                     style="@style/common_imageview"
                     android:layout_centerInParent="true"
-                    android:padding="@dimen/common_dp_30"
+                    android:padding="@dimen/dp_30"
                     android:src="@drawable/icon_my_live" />
 
                 <TextView
                     style="@style/common_textview_black_small"
                     android:layout_alignBottom="@+id/user_live_icon"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
+                    android:layout_margin="@dimen/dp_8"
                     android:text="直播" />
 
                 <TextView
@@ -126,13 +126,13 @@
                     android:layout_alignBottom="@+id/user_live_icon"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
+                    android:layout_margin="@dimen/dp_8"
                     android:text="0个" />
             </RelativeLayout>
 
             <View
-                style="@style/common_vertical_line"
-                android:layout_width="@dimen/common_dp_4"
+                style="@style/common_line_veritical"
+                android:layout_width="@dimen/dp_4"
                 android:background="#F0F0F0" />
 
             <RelativeLayout
@@ -145,14 +145,14 @@
                     android:id="@+id/user_level_icon"
                     style="@style/common_imageview"
                     android:layout_centerInParent="true"
-                    android:padding="@dimen/common_dp_30"
+                    android:padding="@dimen/dp_30"
                     android:src="@drawable/icon_my_level" />
 
                 <TextView
                     style="@style/common_textview_black_small"
                     android:layout_alignBottom="@+id/user_level_icon"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
+                    android:layout_margin="@dimen/dp_8"
                     android:text="等级" />
 
                 <TextView
@@ -161,16 +161,16 @@
                     android:layout_alignBottom="@+id/user_level_icon"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
+                    android:layout_margin="@dimen/dp_8"
                     android:text="1级" />
             </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
             style="@style/common_rect_horizontal"
-            android:layout_marginLeft="@dimen/common_dp_4"
-            android:layout_marginRight="@dimen/common_dp_4"
-            android:layout_marginTop="@dimen/common_dp_4">
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_4">
 
             <RelativeLayout
                 android:id="@+id/user_gain"
@@ -182,14 +182,14 @@
                     android:id="@+id/user_gain_icon"
                     style="@style/common_imageview"
                     android:layout_centerInParent="true"
-                    android:padding="@dimen/common_dp_30"
+                    android:padding="@dimen/dp_30"
                     android:src="@drawable/icon_my_gain" />
 
                 <TextView
                     style="@style/common_textview_black_small"
                     android:layout_alignBottom="@+id/user_gain_icon"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
+                    android:layout_margin="@dimen/dp_8"
                     android:text="收益" />
 
                 <TextView
@@ -198,13 +198,13 @@
                     android:layout_alignBottom="@+id/user_gain_icon"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
+                    android:layout_margin="@dimen/dp_8"
                     android:text="0" />
             </RelativeLayout>
 
             <View
-                style="@style/common_vertical_line"
-                android:layout_width="@dimen/common_dp_4"
+                style="@style/common_line_veritical"
+                android:layout_width="@dimen/dp_4"
                 android:background="#F0F0F0" />
 
             <RelativeLayout
@@ -217,14 +217,14 @@
                     android:id="@+id/user_account_icon"
                     style="@style/common_imageview"
                     android:layout_centerInParent="true"
-                    android:padding="@dimen/common_dp_30"
+                    android:padding="@dimen/dp_30"
                     android:src="@drawable/icon_my_account" />
 
                 <TextView
                     style="@style/common_textview_black_small"
                     android:layout_alignBottom="@+id/user_account_icon"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
+                    android:layout_margin="@dimen/dp_8"
                     android:text="账户" />
 
                 <TextView
@@ -233,8 +233,8 @@
                     android:layout_alignBottom="@+id/user_account_icon"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="false"
-                    android:layout_margin="@dimen/common_dp_8"
-                    android:drawablePadding="@dimen/common_dp_4"
+                    android:layout_margin="@dimen/dp_8"
+                    android:drawablePadding="@dimen/dp_4"
                     android:drawableRight="@drawable/icon_my_account_diamond"
                     android:text="0" />
             </RelativeLayout>
@@ -243,13 +243,13 @@
         <RelativeLayout
             android:id="@+id/user_ticket"
             style="@style/common_rect_horizontal"
-            android:layout_marginBottom="@dimen/common_dp_1"
-            android:layout_marginTop="@dimen/common_dp_8"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_8"
             android:background="@drawable/common_background">
 
             <TextView
                 style="@style/user_property_key"
-                android:paddingLeft="@dimen/common_dp_12"
+                android:paddingLeft="@dimen/dp_12"
                 android:text="映票贡献榜" />
 
             <LinearLayout
@@ -259,19 +259,19 @@
                 <ImageView
                     android:id="@+id/user_ticket_champion"
                     style="@style/common_imageview"
-                    android:layout_marginRight="@dimen/common_dp_8"
+                    android:layout_marginRight="@dimen/dp_8"
                     android:src="@drawable/me_qiuzhan" />
 
                 <ImageView
                     android:id="@+id/user_ticket_runnerup"
                     style="@style/common_imageview"
-                    android:layout_marginRight="@dimen/common_dp_8"
+                    android:layout_marginRight="@dimen/dp_8"
                     android:src="@drawable/me_qiuzhan" />
 
                 <ImageView
                     android:id="@+id/user_ticket_third"
                     style="@style/common_imageview"
-                    android:layout_marginRight="@dimen/common_dp_8"
+                    android:layout_marginRight="@dimen/dp_8"
                     android:src="@drawable/me_qiuzhan" />
 
                 <ImageView
@@ -290,7 +290,7 @@
 
             <TextView
                 style="@style/user_property_key"
-                android:paddingLeft="@dimen/common_dp_12"
+                android:paddingLeft="@dimen/dp_12"
                 android:text="映客号" />
         </RelativeLayout>
 
@@ -298,11 +298,11 @@
             android:id="@+id/user_setting"
             style="@style/user_property_key"
             android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/common_dp_16"
-            android:layout_marginTop="@dimen/common_dp_8"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_8"
             android:background="@drawable/common_background"
             android:drawableRight="@drawable/icon_arrow_theme"
-            android:paddingLeft="@dimen/common_dp_12"
+            android:paddingLeft="@dimen/dp_12"
             android:text="设置" />
     </LinearLayout>
 </ScrollView>

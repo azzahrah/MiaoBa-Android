@@ -4,15 +4,15 @@
     android:background="@drawable/common_background"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/common_dp_12">
+    android:padding="@dimen/dp_12">
 
     <RelativeLayout style="@style/common_rect_wrap">
 
         <ImageView
             android:id="@+id/user_face"
             style="@style/common_imageview"
-            android:layout_width="@dimen/common_dp_48"
-            android:layout_height="@dimen/common_dp_48"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"
             android:src="@drawable/default_head" />
 
         <ImageView
@@ -26,8 +26,8 @@
 
     <LinearLayout
         style="@style/common_rect_horizontal"
-        android:layout_marginLeft="@dimen/common_dp_12"
-        android:layout_marginRight="@dimen/common_dp_12"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_12"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -43,13 +43,13 @@
             <ImageView
                 android:id="@+id/user_sex"
                 style="@style/common_imageview"
-                android:layout_marginLeft="@dimen/common_dp_4"
+                android:layout_marginLeft="@dimen/dp_4"
                 android:src="@drawable/global_male" />
 
             <ImageView
                 android:id="@+id/user_rank"
                 style="@style/common_imageview"
-                android:layout_marginLeft="@dimen/common_dp_4"
+                android:layout_marginLeft="@dimen/dp_4"
                 android:src="@drawable/rank_1" />
 
         </LinearLayout>
@@ -57,7 +57,7 @@
         <TextView
             android:id="@+id/user_info"
             style="@style/common_textview_black_small"
-            android:layout_marginTop="@dimen/common_dp_4"
+            android:layout_marginTop="@dimen/dp_4"
             android:singleLine="false"
             android:text="@string/app_name" />
     </LinearLayout>

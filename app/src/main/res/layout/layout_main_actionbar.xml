@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_actionbar"
     style="@style/common_rect_horizontal"
-    android:background="@color/common_theme_light"
-    android:paddingLeft="@dimen/common_dp_8"
-    android:paddingRight="@dimen/common_dp_8">
+    android:background="@color/colorTheme"
+    android:paddingLeft="@dimen/dp_8"
+    android:paddingRight="@dimen/dp_8">
 
     <ImageView
         android:id="@+id/main_chat"
         style="@style/common_imageview"
         android:layout_centerVertical="true"
-        android:padding="@dimen/common_dp_12"
+        android:padding="@dimen/dp_12"
         android:src="@drawable/actionbar_chat" />
 
     <ImageView
@@ -17,7 +18,7 @@
         style="@style/common_imageview"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:padding="@dimen/common_dp_12"
+        android:padding="@dimen/dp_12"
         android:src="@drawable/actionbar_search" />
 
     <TextView
@@ -25,86 +26,9 @@
         style="@style/common_textview_white_small"
         android:layout_centerInParent="true"
         android:drawableLeft="@drawable/me_harvest_exchange"
-        android:drawablePadding="@dimen/common_dp_4"
+        android:drawablePadding="@dimen/dp_4"
         android:text="送出 0"
         android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/main_live_tab"
-        style="@style/common_rect_wrap"
-        android:layout_height="@dimen/common_dp_48"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            style="@style/common_rect_wrap"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/live_follow"
-                style="@style/common_rect_wrap"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/live_follow_text"
-                    style="@style/common_textview_white_big"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/common_dp_12"
-                    android:paddingRight="@dimen/common_dp_12"
-                    android:text="关注" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/live_hot"
-                style="@style/common_rect_wrap"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/live_hot_text"
-                    style="@style/common_textview_white_big"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/common_dp_12"
-                    android:paddingRight="@dimen/common_dp_12"
-                    android:text="热门"
-                    android:textColor="@color/common_theme_dark" />
-
-                <ImageView
-                    android:id="@+id/live_hot_icon"
-                    style="@style/common_imageview"
-                    android:layout_below="@+id/live_hot_text"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/home_icn_drop_down"
-                    android:visibility="visible" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/live_new"
-                style="@style/common_rect_wrap"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/live_new_text"
-                    style="@style/common_textview_white_big"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/common_dp_12"
-                    android:paddingRight="@dimen/common_dp_12"
-                    android:text="最新" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/live_cursor"
-            style="@style/common_line"
-            android:layout_height="@dimen/common_dp_2"
-            android:background="@color/common_theme_dark"
-            android:visibility="invisible" />
-    </LinearLayout>
 </RelativeLayout>
 
 

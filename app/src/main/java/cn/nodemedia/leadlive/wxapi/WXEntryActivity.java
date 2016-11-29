@@ -12,11 +12,11 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
 import butterknife.ButterKnife;
 import cn.nodemedia.leadlive.Application;
-import cn.nodemedia.leadlive.view.contract.LoginBindContract;
-import xyz.tanwb.treasurechest.rxjava.RxBus;
-import xyz.tanwb.treasurechest.utils.Log;
-import xyz.tanwb.treasurechest.utils.ToastUtils;
-import xyz.tanwb.treasurechest.view.BaseActivity;
+import cn.nodemedia.leadlive.view.contract.LoginForBindContract;
+import xyz.tanwb.airship.rxjava.RxBus;
+import xyz.tanwb.airship.utils.Log;
+import xyz.tanwb.airship.utils.ToastUtils;
+import xyz.tanwb.airship.view.BaseActivity;
 
 /**
  * 微信登录结果返回
@@ -66,7 +66,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     SendAuth.Resp resp = new SendAuth.Resp(getIntent().getExtras());
                     String code = resp.code;
                     Log.e("onResp:" + code);
-                    RxBus.$().post(LoginBindContract.class.getName(), code);
+                    RxBus.$().post(LoginForBindContract.class.getName(), code);
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
                     ToastUtils.show(mActivity, "您已取消登陆.");
@@ -79,7 +79,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     break;
             }
         }
-        Back();
+        exit();
     }
 
     @Override

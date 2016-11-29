@@ -1,23 +1,21 @@
 package cn.nodemedia.leadlive.view;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.leadlive.view.contract.LoginTradContract;
-import xyz.tanwb.treasurechest.view.widget.DrawableEditText;
+import cn.nodemedia.leadlive.view.contract.LoginForMobileContract;
+import xyz.tanwb.airship.view.widget.DrawableEditText;
 
 /**
  * 登陆界面
  * Created by Bining.
  */
-public class LoginActivity extends ActionbarActivity<LoginTradContract.Presenter> implements LoginTradContract.View, View.OnClickListener {
+public class LoginActivity extends ActionbarActivity<LoginForMobileContract.Presenter> implements LoginForMobileContract.View, View.OnClickListener {
 
     @BindView(R.id.phone)
     DrawableEditText phone;
@@ -31,7 +29,7 @@ public class LoginActivity extends ActionbarActivity<LoginTradContract.Presenter
     TextView loginButton;
 
     @Override
-    public int getContentView() {
+    public int getLayoutId() {
         return R.layout.activity_login;
     }
 
@@ -64,11 +62,6 @@ public class LoginActivity extends ActionbarActivity<LoginTradContract.Presenter
     }
 
     @Override
-    public Context getContext() {
-        return mActivity;
-    }
-
-    @Override
     public void setUsername(String username) {
         phone.setText(username);
     }
@@ -90,22 +83,7 @@ public class LoginActivity extends ActionbarActivity<LoginTradContract.Presenter
 
     @Override
     public void goNextView() {
-        StartActivity(MainActivity.class);
-    }
-
-    @Override
-    public void showProgress() {
-        hasProgress(null, View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgress() {
-        hasProgress(null, View.GONE);
-    }
-
-    @Override
-    public void exit() {
-        Back();
+        advance(MainActivity.class);
     }
 
 }

@@ -1,7 +1,10 @@
 package cn.nodemedia.leadlive.view;
 
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +17,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.R;
-import xyz.tanwb.treasurechest.utils.ScreenUtils;
-import xyz.tanwb.treasurechest.view.BaseActivity;
-import xyz.tanwb.treasurechest.view.BasePresenter;
+import xyz.tanwb.airship.view.BaseActivity;
+import xyz.tanwb.airship.view.BasePresenter;
 
 public abstract class ActionbarActivity<T extends BasePresenter> extends BaseActivity<T> {
 
@@ -36,40 +38,31 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
     LinearLayout actionbarMenu;
 
     @Override
-    public int getLayoutId() {
-        return 0;
-    }
-
-    @Override
-    public View getRootView() {
+    public void setContentView(int layoutResID) {
         View rootView = getLayoutInflater().inflate(R.layout.actionbar, null);
-        FrameLayout actionbarContent = (FrameLayout) rootView.findViewById(R.id.actionbar_content);
-        View contentView = getLayoutInflater().inflate(getContentView(), null);
-        actionbarContent.addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        return rootView;
+        FrameLayout content = (FrameLayout) rootView.findViewById(R.id.actionbar_content);
+        View contentView = getLayoutInflater().inflate(layoutResID, null);
+        content.addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        super.setContentView(rootView);
     }
-
-    public abstract int getContentView();
 
     @Override
     public void initView(Bundle bundle) {
-        // setFitsSystemWindows(true);
-        // actionbarLayout = (RelativeLayout) findViewById(R.id.actionbar_layout);
-        // actionbarBack = (ImageView) findViewById(R.id.actionbar_back);
-        // actionbarTitle = (TextView) findViewById(R.id.actionbar_title);
-        // actionbarMenu = (LinearLayout) findViewById(R.id.actionbar_menu);
-        // actionbarContent = (FrameLayout) findViewById(R.id.actionbar_content);
-        // actionbarBack.setOnClickListener(new View.OnClickListener() {
-        // @Override
-        // public void onClick(View v) {
-        // Back();
-        // }
-        // });
+        //activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN); 全屏
     }
 
-    @OnClick(R.id.actionbar_back)
-    public void onClickBack() {
-        Back();
+    @OnClick({R.id.actionbar_back})
+    public void onBarClick(View view) {
+        switch (view.getId()) {
+            case R.id.actionbar_back:
+                onBackClick();
+                break;
+        }
+    }
+
+    @Override
+    public boolean hasLightMode() {
+        return true;
     }
 
     /**
@@ -85,34 +78,19 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
     /**
      * 设置是否显示加载进度
      *
-     * @param loadingView 加载控件
-     * @param visible     显示状态
+     * @param visible 显示状态
      */
-    public void hasProgress(View loadingView, int visible) {
-        if (loadingView == null) {
+    public void hasProgress(ImageView loading, int visible) {
+        if (loading.getVisibility() == visible) {
             return;
-            //Glide.with(this).load(R.drawable.loading).into(loading);
-//            AnimationDrawable animationDrawable = (AnimationDrawable) loading.getDrawable();
-//            if (visible == View.VISIBLE) {
-//                animationDrawable.start();
-//            } else {
-//                animationDrawable.stop();
-//            }
-//            loadingLayout.setVisibility(visible);
-        } else {
-            if (loadingView.getVisibility() != visible) {
-                if (loadingView instanceof ImageView) {
-                    //Glide.with(this).load(R.drawable.loading).into((ImageView) loadingView);
-                    //AnimationDrawable animationDrawable = (AnimationDrawable) ((ImageView) loadingView).getDrawable();
-                    //if (visible == View.VISIBLE) {
-                    //animationDrawable.start();
-                    //} else {
-                    //animationDrawable.stop();
-                    //}
-                }
-                loadingView.setVisibility(visible);
-            }
         }
+        AnimationDrawable animationDrawable = (AnimationDrawable) loading.getDrawable();
+        if (visible == View.VISIBLE) {
+            animationDrawable.start();
+        } else {
+            animationDrawable.stop();
+        }
+        loading.setVisibility(visible);
     }
 
     /**
@@ -121,16 +99,7 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param visible 显示状态
      */
     public void hasProgress(int visible) {
-        hasProgress(null, visible);
-    }
-
-    /**
-     * 设置是否显示ActionBar
-     *
-     * @param visible 显示参数
-     */
-    public void hasActionBar(int visible) {
-        actionbarLayout.setVisibility(visible);
+        //hasProgress(loading, visible);
     }
 
     /**
@@ -167,6 +136,13 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      */
     public void setBackRes(int resId) {
         actionbarBack.setImageResource(resId);
+    }
+
+    /**
+     * 返回键被点击
+     */
+    public void onBackClick() {
+        exit();
     }
 
     /**
@@ -228,18 +204,9 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      *
      * @param view 菜单项视图
      */
-    public void addMenuItme(View view, int width, int height) {
+    public void addMenuItme(View view, LinearLayout.LayoutParams layoutParams) {
         hasMenu(View.VISIBLE);
-        actionbarMenu.addView(view, width, height);
-    }
-
-    /**
-     * 添加Title功能
-     *
-     * @param view 菜单项视图
-     */
-    public void addMenuItme(View view) {
-        addMenuItme(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        actionbarMenu.addView(view, layoutParams);
     }
 
     /**
@@ -248,12 +215,14 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      * @param resId 图片ID
      */
     public ImageView addMenuImageItme(int resId, View.OnClickListener mOnClickListener) {
-        ImageView mImageItme = new ImageView(this);
-        mImageItme.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        mImageItme.setImageResource(resId);
-        mImageItme.setOnClickListener(mOnClickListener);
-        addMenuItme(mImageItme);
-        return mImageItme;
+        ImageView mMenuItme = new ImageView(this);
+        mMenuItme.setScaleType(ImageView.ScaleType.CENTER);
+        mMenuItme.setImageResource(resId);
+        mMenuItme.setOnClickListener(mOnClickListener);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.dp_48), LinearLayout.LayoutParams.MATCH_PARENT);
+        // params.leftMargin = (int) getResources().getDimension(R.dimen.dp_4);
+        addMenuItme(mMenuItme, params);
+        return mMenuItme;
     }
 
     /**
@@ -263,13 +232,39 @@ public abstract class ActionbarActivity<T extends BasePresenter> extends BaseAct
      */
     public TextView addMenuTextItme(int textId, View.OnClickListener mOnClickListener) {
         TextView mTextView = new TextView(this);
-        mTextView.setTextAppearance(mActivity, R.style.common_textview_black);
+        mTextView.setTextAppearance(mContext, R.style.ToolBarStyle);
+        mTextView.setMaxWidth((int) getResources().getDimension(R.dimen.dp_72));
+        int padding = (int) getResources().getDimension(R.dimen.dp_6);
+        mTextView.setPadding(padding, 0, padding, 0);
+        mTextView.setGravity(Gravity.CENTER_VERTICAL);
+        mTextView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+        mTextView.setTextColor(ContextCompat.getColor(mContext, R.color.textColorPrimary));
         mTextView.setText(textId);
-        mTextView.setGravity(Gravity.CENTER);
         mTextView.setOnClickListener(mOnClickListener);
-        int padding = ScreenUtils.dp2px(12);
-        mTextView.setPadding(padding, padding, padding, padding);
-        addMenuItme(mTextView);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        addMenuItme(mTextView, params);
+        return mTextView;
+    }
+
+    /**
+     * 添加Title功能
+     *
+     * @param textId       文字ID
+     * @param textColorRes 文字颜色资源id
+     */
+    public TextView addMenuTextItme(int textId, int textColorRes, View.OnClickListener mOnClickListener) {
+        TextView mTextView = new TextView(this);
+        mTextView.setTextAppearance(mContext, R.style.ToolBarStyle);
+        mTextView.setMaxWidth((int) getResources().getDimension(R.dimen.dp_72));
+        int padding = (int) getResources().getDimension(R.dimen.dp_6);
+        mTextView.setPadding(padding, 0, padding, 0);
+        mTextView.setGravity(Gravity.CENTER_VERTICAL);
+        mTextView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+        mTextView.setTextColor(ContextCompat.getColor(mContext, textColorRes));
+        mTextView.setText(textId);
+        mTextView.setOnClickListener(mOnClickListener);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        addMenuItme(mTextView, params);
         return mTextView;
     }
 

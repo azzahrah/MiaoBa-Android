@@ -1,38 +1,8 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-    <!--ActionBar底色-->
-    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-    <!--状态栏底色-->
-    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-    <!--ActionBar文字颜色-->
-    <!--<item name="textColorPrimary">@color/colorPrimaryDark</item>-->
-    <!--各控制元件(如：check box、switch 或是 radoi) 被勾选 (checked) 或是选定 (selected) 的颜色-->
-    <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--各控制元件的预设颜色-->
-    <!--<item name="colorControlNormal">@color/colorAccent</item>-->
-    <!--App的背景色-->
-    <!--<item name="windowBackground">@color/colorAccent</item>-->
-    <!--导航栏的背景色，但只能用在 API Level 21 (Android 5) 以上的版本 res/values-v21/styles.xml -->
-    <!--<item name="navigationBarColor">@color/colorAccent</item>-->
-    <!--</style>-->
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <!--<item name="colorPrimaryDark">@android:color/white</item>-->
-    </style>
-
-    <style name="common_line">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/common_dp_1</item>
-        <item name="android:background">@color/line_divider</item>
-    </style>
-
-    <style name="common_vertical_line" parent="common_line">
-        <item name="android:layout_width">@dimen/common_dp_1</item>
-        <item name="android:layout_height">match_parent</item>
+    <style name="AppTheme" parent="AppTheme.Base">
+        <!--防止正式版时启动短暂白屏-->
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="common_dotted_line" parent="common_line">
@@ -40,112 +10,106 @@
         <item name="android:layerType">software</item>
     </style>
 
-    <style name="common_listview" parent="common_rect_match">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <!-- 阻止list项变黑色 -->
-        <item name="android:cacheColorHint">@android:color/transparent</item>
-        <!-- 设置list项点击颜色 -->
-        <item name="android:listSelector">@android:color/transparent</item>
-        <!-- 设置list项 上边和下边无黑色的阴影 -->
-        <item name="android:fadingEdge">none</item>
-        <!-- 设置滚动条的自动隐藏和显示 -->
-        <item name="android:fadeScrollbars">false</item>
-        <!-- 设置滚动条的隐藏 -->
-        <item name="android:scrollbars">none</item>
-        <!-- 设置滚动到底部模式 -->
-        <!--<item name="android:overScrollMode">never</item>-->
-        <!--List分割线-->
-        <item name="android:divider">@color/line_divider</item>
-        <!--List分割线高度-->
-        <item name="android:dividerHeight">@dimen/common_dp_1</item>
-    </style>
-
-    <style name="common_textview" parent="common_rect_wrap">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
     <style name="common_textview_black_big" parent="common_textview">
-        <item name="android:textSize">@dimen/common_sp_18</item>
-        <item name="android:textColor">@color/common_black_light</item>
+        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textColor">@color/colorDark</item>
+        <item name="android:textColorHint">@color/colorHint</item>
     </style>
 
     <style name="common_textview_black" parent="common_textview_black_big">
-        <item name="android:textSize">@dimen/common_sp_16</item>
+        <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
     <style name="common_textview_black_small" parent="common_textview_black_big">
-        <item name="android:textSize">@dimen/common_sp_14</item>
+        <item name="android:textSize">@dimen/sp_14</item>
     </style>
 
-    <style name="common_textview_black_dark_big" parent="common_textview_black_big">
-        <item name="android:textColor">@color/common_black_dark</item>
+    <style name="common_textview_black_tiny" parent="common_textview_black_big">
+        <item name="android:textSize">@dimen/sp_12</item>
     </style>
 
-    <style name="common_textview_black_drak" parent="common_textview_black_big">
-        <item name="android:textSize">@dimen/common_sp_16</item>
+    <style name="common_textview_theme_big" parent="common_textview_black_big">
+        <item name="android:textColor">@color/colorTheme</item>
     </style>
 
-    <style name="common_textview_black_dark_small" parent="common_textview_black_dark_big">
-        <item name="android:textSize">@dimen/common_sp_14</item>
+    <style name="common_textview_theme" parent="common_textview_theme_big">
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
+
+    <style name="common_textview_theme_small" parent="common_textview_theme_big">
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="common_textview_theme_tiny" parent="common_textview_theme_big">
+        <item name="android:textSize">@dimen/sp_12</item>
     </style>
 
     <style name="common_textview_white_big" parent="common_textview_black_big">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/colorLight</item>
     </style>
 
     <style name="common_textview_white" parent="common_textview_white_big">
-        <item name="android:textSize">@dimen/common_sp_16</item>
+        <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
     <style name="common_textview_white_small" parent="common_textview_white_big">
-        <item name="android:textSize">@dimen/common_sp_14</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="common_textview_white_tiny" parent="common_textview_white_big">
+        <item name="android:textSize">@dimen/sp_12</item>
     </style>
 
     <style name="common_textview_gray_big" parent="common_textview_black_big">
-        <item name="android:textColor">@color/common_gray_dark</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textColor">@color/colorGray</item>
     </style>
 
     <style name="common_textview_gray" parent="common_textview_gray_big">
-        <item name="android:textSize">@dimen/common_sp_16</item>
+        <item name="android:textSize">@dimen/sp_14</item>
     </style>
 
     <style name="common_textview_gray_small" parent="common_textview_gray_big">
-        <item name="android:textSize">@dimen/common_sp_14</item>
+        <item name="android:textSize">@dimen/sp_12</item>
     </style>
 
-    <style name="common_textview_gray_mini" parent="common_textview_gray_big">
-        <item name="android:textSize">@dimen/common_sp_12</item>
+    <style name="common_textview_gray_tiny" parent="common_textview_gray_big">
+        <item name="android:textSize">@dimen/sp_10</item>
     </style>
 
-    <style name="common_edittext" parent="common_rect_horizontal">
+    <style name="common_edittext_content" parent="common_edittext">
         <item name="android:singleLine">true</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLength">30</item>
         <item name="android:background">@android:color/white</item>
-        <item name="android:textSize">@dimen/common_sp_14</item>
-        <item name="android:textColor">@color/common_black_light</item>
-        <item name="android:textColorHint">@color/common_gray_light</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="common_edittext_password" parent="common_edittext_content">
+        <item name="android:digits">
+            1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_
+        </item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:maxLength">18</item>
+        <item name="android:password">true</item>
     </style>
 
     <style name="common_edittext_more" parent="common_edittext">
         <item name="android:maxLength">32</item>
         <item name="android:singleLine">false</item>
         <item name="android:gravity">start</item>
-        <item name="android:paddingBottom">@dimen/common_dp_8</item>
-        <item name="android:paddingRight">@dimen/common_dp_4</item>
-        <item name="android:paddingTop">@dimen/common_dp_8</item>
-        <item name="android:paddingLeft">@dimen/common_dp_4</item>
+        <item name="android:paddingBottom">@dimen/dp_8</item>
+        <item name="android:paddingRight">@dimen/dp_4</item>
+        <item name="android:paddingTop">@dimen/dp_8</item>
+        <item name="android:paddingLeft">@dimen/dp_4</item>
         <item name="android:background">@drawable/common_edit_white_background</item>
     </style>
 
     <style name="common_edit_user" parent="common_edittext">
-        <item name="android:textSize">@dimen/common_sp_16</item>
-        <item name="android:paddingBottom">@dimen/common_dp_8</item>
-        <item name="android:paddingRight">@dimen/common_dp_4</item>
-        <item name="android:paddingTop">@dimen/common_dp_8</item>
-        <item name="android:paddingLeft">@dimen/common_dp_4</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:paddingBottom">@dimen/dp_8</item>
+        <item name="android:paddingRight">@dimen/dp_4</item>
+        <item name="android:paddingTop">@dimen/dp_8</item>
+        <item name="android:paddingLeft">@dimen/dp_4</item>
         <item name="android:background">@drawable/common_edit_white_background</item>
     </style>
 
@@ -180,12 +144,12 @@
     </style>
 
     <style name="common_button" parent="common_rect_horizontal">
-        <item name="android:paddingLeft">@dimen/common_dp_12</item>
-        <item name="android:paddingRight">@dimen/common_dp_12</item>
-        <item name="android:paddingTop">@dimen/common_dp_8</item>
-        <item name="android:paddingBottom">@dimen/common_dp_8</item>
+        <item name="android:paddingLeft">@dimen/dp_12</item>
+        <item name="android:paddingRight">@dimen/dp_12</item>
+        <item name="android:paddingTop">@dimen/dp_8</item>
+        <item name="android:paddingBottom">@dimen/dp_8</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/common_sp_16</item>
+        <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
     <style name="common_button_theme_pie" parent="common_button">
@@ -195,7 +159,7 @@
 
     <style name="common_button_theme_line" parent="common_button">
         <item name="android:background">@drawable/common_round_rect_line_theme</item>
-        <item name="android:textColor">@color/common_theme_light</item>
+        <item name="android:textColor">@color/colorTheme</item>
     </style>
 
     <!--<style name="common_button_white" parent="common_button">-->
@@ -245,15 +209,15 @@
     </style>
 
     <style name="user_property_key" parent="common_rect_wrap">
-        <item name="android:paddingBottom">@dimen/common_dp_16</item>
-        <item name="android:paddingTop">@dimen/common_dp_16</item>
-        <item name="android:paddingLeft">@dimen/common_dp_16</item>
-        <item name="android:paddingRight">@dimen/common_dp_16</item>
+        <item name="android:paddingBottom">@dimen/dp_16</item>
+        <item name="android:paddingTop">@dimen/dp_16</item>
+        <item name="android:paddingLeft">@dimen/dp_16</item>
+        <item name="android:paddingRight">@dimen/dp_16</item>
         <item name="android:singleLine">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/common_black_light</item>
-        <item name="android:textSize">@dimen/common_sp_14</item>
+        <item name="android:textColor">@color/colorHint</item>
+        <item name="android:textSize">@dimen/sp_14</item>
         <item name="android:text">@string/app_no</item>
     </style>
 
@@ -262,16 +226,16 @@
         <item name="android:background">@drawable/common_background</item>
         <item name="android:gravity">right</item>
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:drawablePadding">@dimen/common_dp_8</item>
+        <item name="android:drawablePadding">@dimen/dp_8</item>
         <item name="android:drawableRight">@drawable/icon_arrow_gray_light</item>
-        <item name="android:textColor">@color/common_gray_dark</item>
+        <item name="android:textColor">@color/colorGray</item>
         <item name="android:text">@string/not_set</item>
     </style>
 
     <style name="user_property_image" parent="common_imageview">
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginRight">@dimen/common_dp_16</item>
+        <item name="android:layout_marginRight">@dimen/dp_16</item>
     </style>
 
 </resources>

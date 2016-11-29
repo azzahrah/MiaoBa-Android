@@ -24,7 +24,7 @@ import cn.nodemedia.LivePublisher;
 import cn.nodemedia.LivePublisher.LivePublishDelegate;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
-import xyz.tanwb.treasurechest.utils.SharedUtils;
+import xyz.tanwb.airship.utils.SharedUtils;
 
 public class LivePublisherActivity extends Activity implements OnClickListener, LivePublishDelegate {
 

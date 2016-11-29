@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,22 +12,23 @@ import butterknife.OnClick;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
-import cn.nodemedia.leadlive.utils.DBUtils;
-import cn.nodemedia.leadlive.view.UserActivity;
 import cn.nodemedia.leadlive.view.UserFaceActivity;
 import cn.nodemedia.leadlive.view.UserFansActivity;
 import cn.nodemedia.leadlive.view.UserFollowActivity;
+import cn.nodemedia.leadlive.view.UserInfoActivity;
 import rx.functions.Action1;
-import xyz.tanwb.treasurechest.db.DbException;
-import xyz.tanwb.treasurechest.glide.GlideManager;
-import xyz.tanwb.treasurechest.rxjava.RxBusManage;
-import xyz.tanwb.treasurechest.utils.SharedUtils;
+import xyz.tanwb.airship.db.DbException;
+import xyz.tanwb.airship.db.DbManager;
+import xyz.tanwb.airship.glide.GlideManager;
+import xyz.tanwb.airship.rxjava.RxBusManage;
+import xyz.tanwb.airship.utils.SharedUtils;
+import xyz.tanwb.airship.view.BaseFragment;
 
 /**
  * 个人中心
  * Create in Bining.
  */
-public class UserFragment extends AbsActionbarFragment {
+public class UserFragment extends BaseFragment {
 
     @BindView(R.id.main_chat)
     ImageView mainChat;
@@ -36,24 +36,8 @@ public class UserFragment extends AbsActionbarFragment {
     ImageView mainSearch;
     @BindView(R.id.main_me_diamonds)
     TextView mainMeDiamonds;
-    @BindView(R.id.live_follow_text)
-    TextView liveFollowText;
-    @BindView(R.id.live_follow)
-    RelativeLayout liveFollow;
-    @BindView(R.id.live_hot_text)
-    TextView liveHotText;
-    @BindView(R.id.live_hot_icon)
-    ImageView liveHotIcon;
-    @BindView(R.id.live_hot)
-    RelativeLayout liveHot;
-    @BindView(R.id.live_new_text)
-    TextView liveNewText;
-    @BindView(R.id.live_new)
-    RelativeLayout liveNew;
-    @BindView(R.id.live_cursor)
-    View liveCursor;
-    @BindView(R.id.main_live_tab)
-    LinearLayout mainLiveTab;
+    @BindView(R.id.main_actionbar)
+    RelativeLayout mainActionbar;
     @BindView(R.id.user_face)
     ImageView userFace;
     @BindView(R.id.user_leadid)
@@ -120,21 +104,12 @@ public class UserFragment extends AbsActionbarFragment {
     }
 
     @Override
-    public int getContentView() {
+    public int getLayoutId() {
         return R.layout.fragment_user;
     }
 
     @Override
     public void initView(View view, Bundle bundle) {
-        hasActionBar(View.GONE);
-
-        mainLiveTab.setVisibility(View.GONE);
-        mainMeDiamonds.setVisibility(View.VISIBLE);
-
-        isLogin = SharedUtils.getBoolean(Constants.USERISLOGIN, false);
-        userid = SharedUtils.getInt(Constants.USEROPENID, 0);
-
-        initUserData();
     }
 
     @Override
@@ -146,12 +121,16 @@ public class UserFragment extends AbsActionbarFragment {
                 initUserData();
             }
         });
+        mainMeDiamonds.setVisibility(View.VISIBLE);
+        isLogin = SharedUtils.getBoolean(Constants.USERISLOGIN, false);
+        userid = SharedUtils.getInt(Constants.USEROPENID, 0);
+        initUserData();
     }
 
     private void initUserData() {
         if (!isLogin) return;
         try {
-            userInfo = DBUtils.getInstance().findById(UserInfo.class, userid);
+            userInfo = DbManager.getInstance().findById(UserInfo.class, userid);
             if (userInfo != null) {
                 mainMeDiamonds.setText("送出 0");
                 GlideManager.load(mActivity, userInfo.faces).placeholder(R.drawable.default_head).error(R.drawable.default_head).setTransform(GlideManager.IMAGE_TYPE_CIRCLE).into(userFace);
@@ -184,16 +163,16 @@ public class UserFragment extends AbsActionbarFragment {
                 //((AbsActivity) mActivity).StartActivity(MessageListActivity.class);
                 break;
             case R.id.user_face:
-                mActivity.StartActivity(UserFaceActivity.class, userInfo.faces);
+                mActivity.advance(UserFaceActivity.class, userInfo.faces);
                 break;
             case R.id.user_info_edit:
-                mActivity.StartActivity(UserActivity.class);
+                mActivity.advance(UserInfoActivity.class);
                 break;
             case R.id.user_follow:
-                mActivity.StartActivity(UserFollowActivity.class);
+                mActivity.advance(UserFollowActivity.class);
                 break;
             case R.id.user_fans:
-                mActivity.StartActivity(UserFansActivity.class);
+                mActivity.advance(UserFansActivity.class);
                 break;
             case R.id.user_live:
                 break;
@@ -211,5 +190,4 @@ public class UserFragment extends AbsActionbarFragment {
                 break;
         }
     }
-
 }

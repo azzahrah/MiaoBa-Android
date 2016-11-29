@@ -6,29 +6,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.Constants;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.bean.UserInfo;
-import cn.nodemedia.leadlive.utils.DBUtils;
+import cn.nodemedia.leadlive.utils.HttpCallback;
 import cn.nodemedia.leadlive.utils.HttpUtils;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import xyz.tanwb.treasurechest.bean.AbsT;
-import xyz.tanwb.treasurechest.db.DbException;
-import xyz.tanwb.treasurechest.glide.GlideManager;
-import xyz.tanwb.treasurechest.rxjava.schedulers.AndroidSchedulers;
-import xyz.tanwb.treasurechest.utils.SharedUtils;
+import xyz.tanwb.airship.bean.AbsT;
+import xyz.tanwb.airship.db.DbException;
+import xyz.tanwb.airship.db.DbManager;
+import xyz.tanwb.airship.glide.GlideManager;
+import xyz.tanwb.airship.utils.SharedUtils;
 
 /**
  * 个人信息
  * Created by Bining.
  */
-public class UserActivity extends ActionbarActivity {
+public class UserInfoActivity extends ActionbarActivity {
 
     @BindView(R.id.user_face)
     ImageView userFace;
@@ -55,7 +51,7 @@ public class UserActivity extends ActionbarActivity {
     private UserInfo userInfo;
 
     @Override
-    public int getContentView() {
+    public int getLayoutId() {
         return R.layout.activity_user;
     }
 
@@ -74,26 +70,28 @@ public class UserActivity extends ActionbarActivity {
     }
 
     private void getUsetInfo() {
-        HttpUtils.getUserInfo(userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<AbsT<UserInfo>>() {
+        HttpUtils.getUserInfo(userid, new HttpCallback<UserInfo>() {
             @Override
-            public void call(AbsT<UserInfo> userInfoAbsT) {
-                if (userInfoAbsT.isSuccess()) {
-                    SharedUtils.put(Constants.USEROPENID, userInfoAbsT.result.userid);
-                    try {
-                        DBUtils.getInstance().saveOrUpdate(userInfo);
-                    } catch (DbException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    //onFail(userInfoAbsT.getMsg());
+            public void onSuccess(UserInfo userInfoAbsT) {
+                SharedUtils.put(Constants.USEROPENID, userInfoAbsT.userid);
+                try {
+                    DbManager.getInstance().saveOrUpdate(userInfo);
+                } catch (DbException e) {
+                    e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onFailure(String strMsg) {
+                super.onFailure(strMsg);
+
             }
         });
     }
 
     private void initUserData() {
         try {
-            userInfo = DBUtils.getInstance().findById(UserInfo.class, userid);
+            userInfo = DbManager.getInstance().findById(UserInfo.class, userid);
             if (userInfo != null) {
                 GlideManager.load(mActivity, userInfo.faces).placeholder(R.drawable.default_head).error(R.drawable.default_head).setTransform(GlideManager.IMAGE_TYPE_CIRCLE).into(userFace);
                 userName.setText(TextUtils.isEmpty(userInfo.nickname) ? "未设置" : userInfo.nickname);
@@ -114,7 +112,7 @@ public class UserActivity extends ActionbarActivity {
         if (!isCanClick(v)) return;
         switch (v.getId()) {
             case R.id.user_face_layout:
-                StartActivity(UserFaceActivity.class, userInfo.faces);
+                advance(UserFaceActivity.class, userInfo.faces);
                 break;
             case R.id.user_name:
                 break;

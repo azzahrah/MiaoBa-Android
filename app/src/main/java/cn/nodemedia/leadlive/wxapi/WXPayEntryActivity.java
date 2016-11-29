@@ -12,9 +12,9 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import butterknife.ButterKnife;
 import cn.nodemedia.leadlive.Application;
 import cn.nodemedia.leadlive.Constants;
-import xyz.tanwb.treasurechest.rxjava.RxBus;
-import xyz.tanwb.treasurechest.utils.Log;
-import xyz.tanwb.treasurechest.view.BaseActivity;
+import xyz.tanwb.airship.rxjava.RxBus;
+import xyz.tanwb.airship.utils.Log;
+import xyz.tanwb.airship.view.BaseActivity;
 
 /**
  * 微信支付结果返回
@@ -60,7 +60,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         Log.e("onResp 回执类型：" + baseResp.getType() + " 回执编码：" + baseResp.errCode);
         if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             RxBus.$().post(Constants.PAYMENTWXPAY, baseResp);
-            Back();
+            exit();
         }
     }
 

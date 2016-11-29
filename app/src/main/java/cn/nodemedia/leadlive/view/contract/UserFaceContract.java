@@ -1,9 +1,9 @@
 package cn.nodemedia.leadlive.view.contract;
 
-import android.net.Uri;
+import java.io.File;
 
-import xyz.tanwb.treasurechest.view.BaseView;
-import xyz.tanwb.treasurechest.view.contract.PhotoPresenter;
+import xyz.tanwb.airship.view.BaseView;
+import xyz.tanwb.airship.view.contract.PhotoPresenter;
 
 /**
  * No description
@@ -25,10 +25,9 @@ public interface UserFaceContract {
         }
 
         @Override
-        public void onPhotoSuccess(int i, Uri uri) {
+        public void onPhotoSuccess(int i, File file) {
 
         }
-
     }
 
 }

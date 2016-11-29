@@ -1,6 +1,5 @@
 package cn.nodemedia.leadlive.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,18 +7,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.nodemedia.leadlive.Application;
 import cn.nodemedia.leadlive.R;
-import cn.nodemedia.leadlive.view.contract.LoginBindContract;
-import xyz.tanwb.treasurechest.view.BaseActivity;
+import cn.nodemedia.leadlive.view.contract.LoginForBindContract;
+import xyz.tanwb.airship.utils.StatusBarUtils;
+import xyz.tanwb.airship.view.BaseActivity;
 
 /**
  * 登陆方式选择
  * Created by Bining.
  */
-public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> implements LoginBindContract.View {
+public class LoginWayActivity extends BaseActivity<LoginForBindContract.Presenter> implements LoginForBindContract.View {
 
     @BindView(R.id.login_way_qq)
     ImageView loginWayQq;
@@ -39,7 +38,8 @@ public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> 
 
     @Override
     public void initView(Bundle bundle) {
-        // ButterKnife.bind(this);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        StatusBarUtils.setColorToTransparent(mActivity);
     }
 
     @Override
@@ -52,16 +52,16 @@ public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> 
         if (!isCanClick(v)) return;
         switch (v.getId()) {
             case R.id.login_way_qq:
-                mPresenter.loginToBind(LoginBindContract.Presenter.LTYPE_QQ);
+                mPresenter.loginToBind(LoginForBindContract.Presenter.LTYPE_QQ);
                 break;
             case R.id.login_way_wx:
-                mPresenter.loginToBind(LoginBindContract.Presenter.LTYPE_WX);
+                mPresenter.loginToBind(LoginForBindContract.Presenter.LTYPE_WX);
                 break;
             case R.id.login_way_xl:
-                mPresenter.loginToBind(LoginBindContract.Presenter.LTYPE_SINA);
+                mPresenter.loginToBind(LoginForBindContract.Presenter.LTYPE_SINA);
                 break;
             case R.id.login_way_phone:
-                StartActivity(LoginActivity.class);
+                advance(LoginActivity.class);
                 break;
         }
     }
@@ -73,33 +73,13 @@ public class LoginWayActivity extends BaseActivity<LoginBindContract.Presenter> 
     }
 
     @Override
-    public Context getContext() {
-        return mActivity;
-    }
-
-    @Override
     public Application getBaseApplication() {
         return (Application) mApplication;
     }
 
     @Override
     public void goNextView() {
-        StartActivity(MainActivity.class);
-    }
-
-    @Override
-    public void showProgress() {
-        // hasProgress(null, View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgress() {
-        // hasProgress(null, View.GONE);
-    }
-
-    @Override
-    public void exit() {
-        Back();
+        advance(MainActivity.class);
     }
 
 }

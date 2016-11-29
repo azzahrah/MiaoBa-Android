@@ -1,6 +1,5 @@
 package cn.nodemedia.leadlive.view;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,10 +9,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.view.contract.SimpleContract;
-import xyz.tanwb.treasurechest.utils.Log;
-import xyz.tanwb.treasurechest.utils.ScreenUtils;
-import xyz.tanwb.treasurechest.view.BaseActivity;
-import xyz.tanwb.treasurechest.view.widget.PullToRefreshView;
+import xyz.tanwb.airship.utils.Log;
+import xyz.tanwb.airship.utils.ScreenUtils;
+import xyz.tanwb.airship.view.BaseActivity;
+import xyz.tanwb.airship.view.widget.PullToRefreshView;
 
 public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> implements SimpleContract.View {
 
@@ -24,7 +23,7 @@ public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> imple
 
     @Override
     public int getLayoutId() {
-        return R.layout.layout_recycler;
+        return R.layout.layout_recycler_refresh;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> imple
         Log.e("screen width" + ScreenUtils.getScreenWidth());
         Log.e("screen Height" + ScreenUtils.getScreenHeight());
 
-        Log.e("screen TextSize" + getResources().getDimension(R.dimen.common_sp_10));
+        Log.e("screen TextSize" + getResources().getDimension(R.dimen.sp_10));
     }
 
     @Override
@@ -50,12 +49,7 @@ public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> imple
     }
 
     @Override
-    public Context getContext() {
-        return mActivity;
-    }
-
-    @Override
-    public PullToRefreshView getRefreshView() {
+    public PullToRefreshView getPullToRefreshView() {
         return commonPulltorefresh;
     }
 
@@ -65,16 +59,6 @@ public class SimpleActivity extends BaseActivity<SimpleContract.Presenter> imple
     }
 
     @Override
-    public void showProgress() {
+    public void setNoData(boolean isNoData) {
     }
-
-    @Override
-    public void hideProgress() {
-    }
-
-    @Override
-    public void exit() {
-        Back();
-    }
-
 }

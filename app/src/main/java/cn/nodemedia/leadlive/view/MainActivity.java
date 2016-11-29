@@ -1,6 +1,5 @@
 package cn.nodemedia.leadlive.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,8 +20,8 @@ import cn.nodemedia.leadlive.R;
 import cn.nodemedia.leadlive.view.contract.MainContract;
 import cn.nodemedia.leadlive.view.fragment.HomeFragment;
 import cn.nodemedia.leadlive.view.fragment.UserFragment;
-import xyz.tanwb.treasurechest.utils.ToastUtils;
-import xyz.tanwb.treasurechest.view.BaseActivity;
+import xyz.tanwb.airship.utils.ToastUtils;
+import xyz.tanwb.airship.view.BaseActivity;
 
 public class MainActivity extends BaseActivity<MainContract.Presenter> implements MainContract.View, OnClickListener {
 
@@ -122,7 +121,12 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     }
 
     @Override
-    public void Back() {
+    public void startLivePublisher() {
+        advance(LivePublisherActivity.class);
+    }
+
+    @Override
+    public void exit() {
         long newClickTime = System.currentTimeMillis();
         if (newClickTime - clickTime < 1000) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -137,31 +141,13 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     }
 
     @Override
+    public boolean hasLightMode() {
+        return true;
+    }
+
+    @Override
     public boolean hasSwipeFinish() {
         return false;
     }
 
-    @Override
-    public Context getContext() {
-        return mActivity;
-    }
-
-    @Override
-    public void startLivePublisher() {
-        StartActivity(LivePublisherActivity.class);
-    }
-
-    @Override
-    public void showProgress() {
-    }
-
-    @Override
-    public void hideProgress() {
-    }
-
-    @Override
-    public void exit() {
-        mPresenter.onDestroy();
-        mPresenter = null;
-    }
 }

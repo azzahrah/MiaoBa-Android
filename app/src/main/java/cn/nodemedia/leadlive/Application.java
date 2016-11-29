@@ -6,8 +6,9 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import butterknife.ButterKnife;
-import xyz.tanwb.treasurechest.App;
-import xyz.tanwb.treasurechest.BaseApplication;
+import xyz.tanwb.airship.App;
+import xyz.tanwb.airship.BaseApplication;
+import xyz.tanwb.airship.utils.Log;
 
 /**
  * Application
@@ -22,7 +23,14 @@ public class Application extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        ButterKnife.setDebug(App.isDebug());
+        if (App.isNamedProcess(getPackageName())) {
+            Log.e("启动主进程");
+            ButterKnife.setDebug(App.isDebug());
+            // SDKInitializer.initialize(getApplicationContext());
+            // MyMQTTService.startAndConnect(this);
+        } else {
+            Log.e("启动其他进程");
+        }
     }
 
     public IWXAPI getIWXAPI() {

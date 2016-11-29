@@ -7,12 +7,12 @@
 
     <LinearLayout
         style="@style/common_rect_horizontal"
-        android:layout_marginTop="@dimen/common_dp_16"
+        android:layout_marginTop="@dimen/dp_16"
         android:orientation="horizontal">
 
         <TextView
             style="@style/common_textview_black"
-            android:layout_marginRight="@dimen/common_dp_20"
+            android:layout_marginRight="@dimen/dp_20"
             android:text="@string/phone"
             android:visibility="gone" />
 
@@ -25,20 +25,20 @@
             android:id="@+id/captcha_get"
             style="@style/common_button_theme_pie"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="@dimen/common_dp_8"
+            android:layout_marginLeft="@dimen/dp_8"
             android:clickable="false"
             android:text="验证" />
     </LinearLayout>
 
     <LinearLayout
         style="@style/common_rect_horizontal"
-        android:layout_marginTop="@dimen/common_dp_16"
+        android:layout_marginTop="@dimen/dp_16"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
             style="@style/common_textview_black"
-            android:layout_marginRight="@dimen/common_dp_20"
+            android:layout_marginRight="@dimen/dp_20"
             android:text="@string/captcha"
             android:visibility="gone" />
 
@@ -50,14 +50,14 @@
     <TextView
         android:id="@+id/phone_feedback"
         style="@style/common_textview_gray"
-        android:layout_marginTop="@dimen/common_dp_24"
+        android:layout_marginTop="@dimen/dp_24"
         android:text="运营商将会给你发送短信验证码"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/phone_button"
         style="@style/common_button_theme_line"
-        android:layout_marginTop="@dimen/common_dp_16"
+        android:layout_marginTop="@dimen/dp_16"
         android:clickable="false"
         android:text="@string/login"
         android:visibility="gone" />

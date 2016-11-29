@@ -35,22 +35,13 @@ public class Constants {
     public final static String LOCATIONLONG = "LocationLong";//用户经度位置
     public final static String LOCATIONLAT = "LocationLat";//用户纬度位置
 
-    public final static String DNS_ADDRESS = "http://api.nodemedia.cn"; // DEV
-    // public final static String DNS_ADDRESS = "http://jiuhao.simpleway.com.cn"; // ONLINE
+    public final static String DNS_ADDRESS_DEV = "http://api.nodemedia.cn"; // DEV
+    public final static String DNS_ADDRESS_ONLINE = "http://api.nodemedia.cn"; // ONLINE
 
-    // public final static String HTTP_ = "";//
-
-    public final static String HTTP_JSONCALL = "jsoncall/";
-    public final static String HTTP_UPLOADCALL = "f-ul/";//http://域名(IP)[:端口]/应用路径/f-ul/文件路径（user|system|apps|chat|file)
-    public final static String HTTP_DLFILECALL = "dlfile/";//http://域名(IP)[:端口]/应用路径/dlfile/文件路径
-    public final static String HTTP_IMAGECALL = "image/";//http://域名(IP)[:端口]/应用路径/image/图片路径/图片名称.jpg
-
-    public final static String HTTP_HOMECALL = "/api/home/";
-
+    private final static String HTTP_HOMECALL = "/api/home/";
     public final static String HTTP_LOGIN = HTTP_HOMECALL + "login.html";//用户登陆 登陆帐号(String uname) 密码，加密后传递(String pwds) 登陆类型 1：注册用登陆 2：三方登陆(int type) 请求时间戳(int temptime) 签名加密串(String sign) >>UserInfo
-
-    public final static String HTTP_REGISTER = HTTP_HOMECALL + "/userinfo/register.html";//用户注册 登陆帐号(String uname) 可以是自己输入的帐号或者是三方openid  密码(String pwds) 三方的时候密码默认为空  昵称(String nick)  头像(String faces) 注册类型(String utype) QQ  WeiXin Sina RenRen DouBan >>
-    public final static String HTTP_USERINFO_GET = HTTP_HOMECALL + "/userinfo.html";//获取用户详细信息 登陆用户ID(int userid) 请求时间戳(int temptime) 签名加密串(String sign) >>UserInfo
+    public final static String HTTP_REGISTER = HTTP_HOMECALL + "userinfo/register.html";//用户注册 登陆帐号(String uname) 可以是自己输入的帐号或者是三方openid  密码(String pwds) 三方的时候密码默认为空  昵称(String nick)  头像(String faces) 注册类型(String utype) QQ  WeiXin Sina RenRen DouBan >>
+    public final static String HTTP_USERINFO_GET = HTTP_HOMECALL + "userinfo.html";//获取用户详细信息 登陆用户ID(int userid) 请求时间戳(int temptime) 签名加密串(String sign) >>UserInfo
     public final static String HTTP_USERINFO_POST = HTTP_HOMECALL + "userinfo.html";//编辑用户资料 登陆用户ID(int userid) 修改字段(String key) 修改内容(String val) 请求时间戳(int temptime) 签名加密串(String sign) >>null
     public final static String HTTP_FOLLOW_GET = HTTP_HOMECALL + "follow.html";//获取关注用户列表 登陆用户ID(int userid) 刷新类型(int type) 数据标识ID(int minid) 获取类型 follow 关注列表 fans粉丝列表(String gettype) 请求时间戳(int temptime) 签名加密串(String sign) >>FollowInfo
     public final static String HTTP_FOLLOW_POST = HTTP_HOMECALL + "follow.html";//关注用户 登陆用户ID(int userid) 被关注用户ID(int followid) 请求时间戳(int temptime) 签名加密串(String sign) >>null
@@ -58,5 +49,7 @@ public class Constants {
     public final static String HTTP_LIVE_GET = HTTP_HOMECALL + "live.html";//获取直播列表 类型 1：最新（默认） 2：关注 3：热门(int type) 分页页数(int page) 每页显示条数(int pagesize) 请求时间戳(int temptime) 签名加密串(String sign) >>LiveInfo
     public final static String HTTP_LIVE_POST = HTTP_HOMECALL + "live/info.html";//发布直播 用户标识ID(int userid) 定位信息(String location) 标题(String title) 请求时间戳(int temptime) 签名加密串(String sign) >>null
     public final static String HTTP_LIVE_DEL = HTTP_HOMECALL + "live/info.html";//退出发布直播 直播标识ID(int id) 用户标识ID(int userid) 请求时间戳(int temptime) 签名加密串(String sign) >>null
+
+    // public final static String HTTP_ = "";//
 
 }

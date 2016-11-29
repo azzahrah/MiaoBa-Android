@@ -6,8 +6,8 @@
     <ImageView
         android:id="@+id/face_preview"
         style="@style/common_imageview"
-        android:layout_width="@dimen/common_dp_360"
-        android:layout_height="@dimen/common_dp_360"
+        android:layout_width="@dimen/dp_360"
+        android:layout_height="@dimen/dp_360"
         android:src="@drawable/mr_720" />
 
     <LinearLayout
@@ -15,8 +15,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/common_dp_30"
-        android:paddingRight="@dimen/common_dp_30">
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingRight="@dimen/dp_30">
 
         <TextView
             android:id="@+id/face_source_album"
@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/face_source_photo"
             style="@style/common_button_theme_pie"
-            android:layout_marginTop="@dimen/common_dp_16"
+            android:layout_marginTop="@dimen/dp_16"
             android:text="拍照" />
 
     </LinearLayout>

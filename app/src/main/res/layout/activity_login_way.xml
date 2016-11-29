@@ -6,7 +6,7 @@
     <LinearLayout
         style="@style/common_rect_horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/common_dp_36"
+        android:layout_marginBottom="@dimen/dp_36"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -16,24 +16,24 @@
 
         <LinearLayout
             style="@style/common_rect_wrap"
-            android:layout_marginTop="@dimen/common_dp_30">
+            android:layout_marginTop="@dimen/dp_30">
 
             <ImageView
                 android:id="@+id/login_way_qq"
                 style="@style/common_imageview"
-                android:layout_marginRight="@dimen/common_dp_24"
+                android:layout_marginRight="@dimen/dp_24"
                 android:src="@drawable/icon_def_qq" />
 
             <ImageView
                 android:id="@+id/login_way_wx"
                 style="@style/common_imageview"
-                android:layout_marginRight="@dimen/common_dp_24"
+                android:layout_marginRight="@dimen/dp_24"
                 android:src="@drawable/icon_def_wx" />
 
             <ImageView
                 android:id="@+id/login_way_xl"
                 style="@style/common_imageview"
-                android:layout_marginRight="@dimen/common_dp_24"
+                android:layout_marginRight="@dimen/dp_24"
                 android:src="@drawable/icon_def_xl" />
 
             <ImageView
@@ -44,7 +44,7 @@
 
         <LinearLayout
             style="@style/common_rect_wrap"
-            android:layout_marginTop="@dimen/common_dp_24">
+            android:layout_marginTop="@dimen/dp_24">
 
             <TextView
                 style="@style/common_textview_white_small"
@@ -53,7 +53,7 @@
             <TextView
                 android:id="@+id/login_way_protocol"
                 style="@style/common_textview_gray_small"
-                android:layout_marginLeft="@dimen/common_dp_4"
+                android:layout_marginLeft="@dimen/dp_4"
                 android:text="@string/app_protocol_name" />
         </LinearLayout>
     </LinearLayout>

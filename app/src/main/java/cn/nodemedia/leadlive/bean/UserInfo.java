@@ -2,8 +2,8 @@ package cn.nodemedia.leadlive.bean;
 
 import java.io.Serializable;
 
-import xyz.tanwb.treasurechest.db.annotation.Column;
-import xyz.tanwb.treasurechest.db.annotation.Table;
+import xyz.tanwb.airship.db.annotation.Column;
+import xyz.tanwb.airship.db.annotation.Table;
 
 @Table(name = "UserInfo")
 public class UserInfo implements Serializable {
