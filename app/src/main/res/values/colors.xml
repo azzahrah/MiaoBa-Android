@@ -2,7 +2,7 @@
 <resources>
 
     <!-- StatusBar Color -->
-    <color name="colorPrimaryDark">#2B7970</color>
+    <color name="colorPrimaryDark">#90E0D0</color>
     <!-- Theme Color -->
     <color name="colorPrimary">#90E0D0</color>
     <!-- App Import Text Color -->

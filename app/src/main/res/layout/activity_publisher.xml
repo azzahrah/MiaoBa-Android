@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match">
 
-    <SurfaceView
+    <android.opengl.GLSurfaceView
         android:id="@+id/publisher_surface"
         style="@style/common_rect_match" />
 
@@ -59,8 +59,12 @@
     <ImageView
         android:id="@+id/publisher_cap"
         style="@style/common_imageview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/dp_16"
-        android:src="@drawable/phone_edit_photo_icon" />
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_26"
+        android:background="@drawable/bar_bg"
+        android:src="@drawable/ic_screen_shot" />
 
 </RelativeLayout>

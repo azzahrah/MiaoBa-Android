@@ -27,7 +27,7 @@
                 android:id="@+id/user_leadid"
                 style="@style/common_textview_white_small"
                 android:layout_marginTop="@dimen/dp_8"
-                android:text="映客号:12345578" />
+                android:text="喵吧直播" />
 
             <LinearLayout
                 style="@style/common_rect_wrap"
@@ -199,7 +199,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="false"
                     android:layout_margin="@dimen/dp_8"
-                    android:text="0" />
+                    android:text="0币" />
             </RelativeLayout>
 
             <View
@@ -250,7 +250,7 @@
             <TextView
                 style="@style/user_property_key"
                 android:paddingLeft="@dimen/dp_12"
-                android:text="映票贡献榜" />
+                android:text="喵吧贡献榜" />
 
             <LinearLayout
                 style="@style/user_property_image"
@@ -286,12 +286,12 @@
                 android:id="@+id/user_auth"
                 style="@style/user_property_value"
                 android:drawableRight="@null"
-                android:text="升级映客认证号" />
+                android:text="升级喵吧认证号" />
 
             <TextView
                 style="@style/user_property_key"
                 android:paddingLeft="@dimen/dp_12"
-                android:text="映客号" />
+                android:text="喵吧认证" />
         </RelativeLayout>
 
         <TextView

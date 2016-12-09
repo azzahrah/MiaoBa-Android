@@ -55,7 +55,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/phone_button"
+        android:id="@+id/login"
         style="@style/common_button_theme_line"
         android:layout_marginTop="@dimen/dp_16"
         android:clickable="false"

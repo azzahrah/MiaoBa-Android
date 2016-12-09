@@ -13,7 +13,8 @@
         android:id="@+id/player_follow"
         style="@style/common_rect_wrap"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_26"
         android:src="@drawable/me_guanzhu" />
 
 </RelativeLayout>

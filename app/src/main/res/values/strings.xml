@@ -1,13 +1,13 @@
 <resources>
 
-    <string name="app_name">主角</string>
+    <string name="app_name">喵吧直播</string>
 
     <string name="app_null"> </string>
     <string name="app_no">无</string>
     <string name="app_notset">未设置</string>
 
     <string name="app_protocol">登陆即代表你同意</string>
-    <string name="app_protocol_name"><u>服务和隐私条款</u></string>
+    <string name="app_protocol_name"><u>喵吧服务和隐私条款</u></string>
 
     <string name="zero">0</string>
     <string name="not_set">未设置</string>
@@ -39,11 +39,13 @@
     <string name="login_way">选择登陆方式</string>
     <string name="login_captcha">验证码登录</string>
     <string name="login_password">密码登录</string>
+    <string name="login_tourist">游客登录</string>
     <string name="login_out">退出当前帐号</string>
+    <string name="account">用&#160;&#160;户&#160;&#160;名</string>
+    <string name="account_hint">请输入您的用户名</string>
     <string name="phone">手&#160;&#160;机&#160;&#160;号</string>
     <string name="phone_bind">绑定手机号</string>
     <string name="phone_register">手机号快速注册</string>
-    <string name="phone_login">手机号登录</string>
     <string name="phone_hint">请输入您的手机号</string>
     <string name="phone_hasuse">该手机号已注册哦.</string>
     <string name="phone_nouse">该手机号尚未注册哦.</string>

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/common_rect_match"
-    android:background="@drawable/login_way">
+    style="@style/common_rect_match">
+
+    <ImageView
+        android:id="@+id/launcher"
+        style="@style/common_rect_match"
+        android:scaleType="fitXY"
+        android:src="@drawable/launcher" />
 
     <LinearLayout
+        android:id="@+id/login_way"
         style="@style/common_rect_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dp_36"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             style="@style/common_textview_white_big"
@@ -16,7 +23,7 @@
 
         <LinearLayout
             style="@style/common_rect_wrap"
-            android:layout_marginTop="@dimen/dp_30">
+            android:layout_marginTop="@dimen/dp_24">
 
             <ImageView
                 android:id="@+id/login_way_qq"

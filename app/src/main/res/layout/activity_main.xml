@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match">
 
-    <FrameLayout
+    <xyz.tanwb.airship.view.widget.NoScrollViewPager
         android:id="@+id/main_content"
         style="@style/common_rect_match"
         android:layout_marginBottom="@dimen/dp_48" />

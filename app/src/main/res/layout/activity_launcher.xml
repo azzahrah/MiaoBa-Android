@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match"
     android:fitsSystemWindows="false">
 
@@ -8,4 +8,61 @@
         android:scaleType="fitXY"
         android:src="@drawable/launcher" />
 
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/login_way"
+        style="@style/common_rect_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_36"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/common_textview_white_big"
+            android:text="@string/login_way" />
+
+        <LinearLayout
+            style="@style/common_rect_wrap"
+            android:layout_marginTop="@dimen/dp_30">
+
+            <ImageView
+                android:id="@+id/login_way_qq"
+                style="@style/common_imageview"
+                android:layout_marginRight="@dimen/dp_24"
+                android:src="@drawable/icon_def_qq" />
+
+            <ImageView
+                android:id="@+id/login_way_wx"
+                style="@style/common_imageview"
+                android:layout_marginRight="@dimen/dp_24"
+                android:src="@drawable/icon_def_wx" />
+
+            <ImageView
+                android:id="@+id/login_way_xl"
+                style="@style/common_imageview"
+                android:layout_marginRight="@dimen/dp_24"
+                android:src="@drawable/icon_def_xl" />
+
+            <ImageView
+                android:id="@+id/login_way_phone"
+                style="@style/common_imageview"
+                android:src="@drawable/icon_def_phone" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/common_rect_wrap"
+            android:layout_marginTop="@dimen/dp_24">
+
+            <TextView
+                style="@style/common_textview_white_small"
+                android:text="@string/app_protocol" />
+
+            <TextView
+                android:id="@+id/login_way_protocol"
+                style="@style/common_textview_gray_small"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:text="@string/app_protocol_name" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
