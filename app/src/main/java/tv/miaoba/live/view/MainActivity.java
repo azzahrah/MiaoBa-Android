@@ -40,8 +40,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     public void initView(Bundle bundle) {
-        mApplication.exitOtherActivity(this);
-
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(HomeFragment.newInstance());
         fragmentList.add(UserFragment.newInstance());
@@ -49,6 +47,8 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
         mainContent.setAdapter(new BasePagerFragmentAdapter(getSupportFragmentManager(), fragmentList));
 
         changeFooterState(0);
+
+        mApplication.exitOtherActivity(this);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
                 break;
         }
 
-        mainContent.setCurrentItem(position);
+        mainContent.setCurrentItem(position, false);
 
         selectIndex = position;
 

@@ -2,6 +2,7 @@ package tv.miaoba.live.view.contract;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
@@ -40,11 +41,12 @@ public interface LauncherContract {
 
     class Presenter extends BaseLoginContract.Presenter<View> {
 
-        public static final int LTYPE_WX = 0X00000001;
-        public static final int LTYPE_QQ = 0X00000002;
-        public static final int LTYPE_SINA = 0X00000003;
+        public static final int LTYPE_YK = 0X00000001;
+        public static final int LTYPE_WX = 0X00000002;
+        public static final int LTYPE_QQ = 0X00000003;
+        public static final int LTYPE_SINA = 0X00000004;
 
-        @IntDef({LTYPE_WX, LTYPE_QQ, LTYPE_SINA})
+        @IntDef({LTYPE_YK, LTYPE_WX, LTYPE_QQ, LTYPE_SINA})
         @Retention(RetentionPolicy.SOURCE)
         public @interface LoginType {
         }
@@ -88,6 +90,10 @@ public interface LauncherContract {
             isLoginToBind = false;
             if (mView != null) {
                 switch (loginType) {
+                    case LTYPE_YK:
+                        String deivceId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+                        login(deivceId, "", 1);
+                        break;
                     case LTYPE_WX:
                         mRxBusManage.on(LauncherContract.class.getName(), new Action1<Object>() {
                             @Override
@@ -141,6 +147,10 @@ public interface LauncherContract {
         @Override
         public void getBindUserInfo() {
             switch (loginType) {
+                case LTYPE_YK:
+                    String deivceId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+                    regiter(deivceId, "", "", "", "");
+                    break;
                 case LTYPE_WX:
                     HttpUtils.getWXUserInfo(wxToken, wxOpenId, new HttpCallback<String>() {
                         @Override

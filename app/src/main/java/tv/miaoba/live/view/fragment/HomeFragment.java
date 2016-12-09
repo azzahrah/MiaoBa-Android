@@ -35,6 +35,8 @@ public class HomeFragment extends BaseFragment {
     ImageView mainSearch;
     @BindView(R.id.main_me_diamonds)
     TextView mainMeDiamonds;
+    @BindView(R.id.main_live_tab)
+    LinearLayout mainLiveTab;
     @BindView(R.id.live_follow_text)
     TextView liveFollowText;
     @BindView(R.id.live_follow)
@@ -51,8 +53,6 @@ public class HomeFragment extends BaseFragment {
     RelativeLayout liveNew;
     @BindView(R.id.live_cursor)
     View liveCursor;
-    @BindView(R.id.main_live_tab)
-    LinearLayout mainLiveTab;
     @BindView(R.id.main_live_viewpager)
     ViewPager mainLiveViewpager;
 
@@ -71,7 +71,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void initView(View view, Bundle bundle) {
         mainMeDiamonds.setVisibility(View.GONE);
-
+        mainLiveTab.setVisibility(View.VISIBLE);
         int cursorTextWidth = (int) liveHotText.getPaint().measureText("热门");
         titleWidth = cursorTextWidth + liveHotText.getPaddingLeft() + liveHotText.getPaddingLeft();
         ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) liveCursor.getLayoutParams();
@@ -172,13 +172,13 @@ public class HomeFragment extends BaseFragment {
             case R.id.main_search:
                 break;
             case R.id.live_follow:
-                mainLiveViewpager.setCurrentItem(0, false);
+                mainLiveViewpager.setCurrentItem(0, true);
                 break;
             case R.id.live_hot:
-                mainLiveViewpager.setCurrentItem(1, false);
+                mainLiveViewpager.setCurrentItem(1, true);
                 break;
             case R.id.live_new:
-                mainLiveViewpager.setCurrentItem(2, false);
+                mainLiveViewpager.setCurrentItem(2, true);
                 break;
         }
     }

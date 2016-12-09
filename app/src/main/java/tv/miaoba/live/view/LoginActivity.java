@@ -40,7 +40,7 @@ public class LoginActivity extends ActionbarActivity<LoginForMobileContract.Pres
     }
 
     @Override
-    @OnClick({R.id.password_eye, R.id.password_forget_find, R.id.login, R.id.login_tourist})
+    @OnClick({R.id.password_eye, R.id.password_forget_find, R.id.login})
     public void onClick(View view) {
         if (!isCanClick(view)) return;
         switch (view.getId()) {
@@ -52,9 +52,6 @@ public class LoginActivity extends ActionbarActivity<LoginForMobileContract.Pres
                 break;
             case R.id.login:
                 mPresenter.attemptLogin(account.getText().toString(), password.getText().toString(), true);
-                break;
-            case R.id.login_tourist:
-                mPresenter.attemptYKLogin();
                 break;
         }
     }

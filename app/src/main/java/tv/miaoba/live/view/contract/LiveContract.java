@@ -23,7 +23,6 @@ import tv.miaoba.live.utils.HttpUtils;
 import tv.miaoba.live.view.LivePlayerActivity;
 import xyz.tanwb.airship.glide.GlideManager;
 import xyz.tanwb.airship.utils.ScreenUtils;
-import xyz.tanwb.airship.utils.ToastUtils;
 import xyz.tanwb.airship.view.adapter.BaseRecyclerAdapter;
 import xyz.tanwb.airship.view.adapter.ViewHolderHelper;
 import xyz.tanwb.airship.view.adapter.listener.OnItemClickListener;
@@ -111,7 +110,6 @@ public interface LiveContract {
                 @Override
                 public void onFailure(String strMsg) {
                     super.onFailure(strMsg);
-                    ToastUtils.show(mActivity, strMsg);
                     if (page == 1) {
                         pullToRefreshView.refreshFinish(true);
                     } else {
@@ -124,7 +122,7 @@ public interface LiveContract {
         }
 
         public void isNoData() {
-            mView.setNoData(liveAdapter.getDataCount() == 0);
+            mView.setNoData(liveAdapter.getDataCount() == 0 && liveAdapter.getHeaderViewsCount() == 0);
         }
 
         public class LiveAdapter extends BaseRecyclerAdapter<LiveInfo> {

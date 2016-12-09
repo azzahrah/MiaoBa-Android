@@ -44,7 +44,7 @@ public class LaunchActivity extends BaseActivity<LauncherContract.Presenter> imp
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_login_way;
+        return R.layout.activity_launcher;
     }
 
     @Override
@@ -84,10 +84,13 @@ public class LaunchActivity extends BaseActivity<LauncherContract.Presenter> imp
     public void onAnimationRepeat(Animation animation) {
     }
 
-    @OnClick({R.id.login_way_qq, R.id.login_way_wx, R.id.login_way_xl, R.id.login_way_phone})
+    @OnClick({R.id.login_way_tourist, R.id.login_way_qq, R.id.login_way_wx, R.id.login_way_xl, R.id.login_way_phone})
     public void onClick(View v) {
         if (!isCanClick(v)) return;
         switch (v.getId()) {
+            case R.id.login_way_tourist:
+                mPresenter.loginToBind(LauncherContract.Presenter.LTYPE_YK);
+                break;
             case R.id.login_way_qq:
                 mPresenter.loginToBind(LauncherContract.Presenter.LTYPE_QQ);
                 break;

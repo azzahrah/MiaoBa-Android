@@ -7,10 +7,4 @@
 
     <include layout="@layout/layout_user_login" />
 
-    <TextView
-        android:id="@+id/login_tourist"
-        style="@style/common_button_theme_line"
-        android:layout_marginTop="@dimen/dp_24"
-        android:text="@string/login_tourist" />
-
 </LinearLayout>

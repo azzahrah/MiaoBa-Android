@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ public class UserFragment extends BaseFragment {
     ImageView mainSearch;
     @BindView(R.id.main_me_diamonds)
     TextView mainMeDiamonds;
+    @BindView(R.id.main_live_tab)
+    LinearLayout mainLiveTab;
     @BindView(R.id.main_actionbar)
     RelativeLayout mainActionbar;
     @BindView(R.id.user_face)
@@ -121,6 +124,7 @@ public class UserFragment extends BaseFragment {
             }
         });
         mainMeDiamonds.setVisibility(View.VISIBLE);
+        mainLiveTab.setVisibility(View.GONE);
         isLogin = SharedUtils.getBoolean(Constants.USERISLOGIN, false);
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
         initUserData();

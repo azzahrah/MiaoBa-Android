@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/common_nodata"
     style="@style/common_rect_match"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <TextView
         android:id="@+id/common_nodata_content"

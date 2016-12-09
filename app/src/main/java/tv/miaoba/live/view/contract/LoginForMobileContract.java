@@ -1,6 +1,5 @@
 package tv.miaoba.live.view.contract;
 
-import android.provider.Settings;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
@@ -22,8 +21,6 @@ public interface LoginForMobileContract {
     }
 
     class Presenter extends BaseLoginContract.Presenter<View> {
-
-        private String deivceId;
 
         @Override
         public void onStart() {
@@ -79,18 +76,9 @@ public interface LoginForMobileContract {
                 mView.setPasswordError(mContext.getString(strRes));
         }
 
-        public void attemptYKLogin() {
-            deivceId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-            login(deivceId, "", 1);
-        }
-
         @Override
         public void getBindUserInfo() {
-            if (!TextUtils.isEmpty(deivceId)) {
-                regiter(deivceId, "", "", "", "");
-            } else {
-                ToastUtils.show(mContext, "未获取到用户信息,请稍候重试.");
-            }
+            ToastUtils.show(mContext, "未获取到用户信息,请稍候重试.");
         }
     }
 }

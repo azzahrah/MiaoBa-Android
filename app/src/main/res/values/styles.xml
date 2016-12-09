@@ -157,20 +157,10 @@
         <item name="android:textColor">@color/colorTheme</item>
     </style>
 
-    <!--<style name="common_button_white" parent="common_button">-->
-    <!--<item name="android:background">@drawable/common_round_rect_pie_white</item>-->
-    <!--<item name="android:textColor">@android:color/black</item>-->
-    <!--</style>-->
-
-    <!--<style name="common_button_gray_dark" parent="common_button">-->
-    <!--<item name="android:background">@drawable/common_round_rect_pie_gray_dark</item>-->
-    <!--<item name="android:textColor">@android:color/white</item>-->
-    <!--</style>-->
-    <!---->
-    <!--<style name="common_button_red" parent="common_button">-->
-    <!--<item name="android:background">@drawable/common_round_rect_pie_red</item>-->
-    <!--<item name="android:textColor">@android:color/white</item>-->
-    <!--</style>-->
+    <style name="common_button_white_line" parent="common_button">
+        <item name="android:background">@drawable/common_round_rect_line_white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
     <style name="common_dialog" parent="android:style/Theme.Dialog">
         <item name="android:background">@android:color/transparent</item>
