@@ -78,13 +78,14 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
          * 960x540@15 ~~ 700kbps 1024x576@15 ~~ 800kbps 1280x720@15 ~~ 1000kbps
          * 使用main profile
          */
-        LivePublisher.setVideoParam(640, 360, 15, 400 * 1000, LivePublisher.AVC_PROFILE_BASELINE);
+        LivePublisher.setVideoParam(640, 360, 15, 500 * 1000, LivePublisher.AVC_PROFILE_MAIN);
 
         /**
          * 是否开启背景噪音抑制
          */
         LivePublisher.setDenoiseEnable(true);
 
+        LivePublisher.setSmoothSkinLevel(3);
         /**
          * 开始视频预览， cameraPreview ： 用以回显摄像头预览的SurfaceViewd对象，如果此参数传入null，则只发布音频
          * interfaceOrientation ： 程序界面的方向，也做调整摄像头旋转度数的参数， camId：
@@ -181,14 +182,14 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
                     /**
                      * 开始视频发布 rtmpUrl rtmp流地址
                      */
-                    String pubUrl = "rtmp://alpush.nodemedia.cn/live/stream_" + SharedUtils.getInt(Constants.USEROPENID, 0) + "?vhost=cdn.nodemedia.cn&userid=" + userId + "&location=" + "重庆市" + "&title=" + "我是Android直播测试" + userId;
+                    String pubUrl = "rtmp://alpush.nodemedia.cn/live/stream_" + SharedUtils.getInt(Constants.USEROPENID, 0) + "?vhost=alplay.nodemedia.cn&userid=" + userId + "&location=" + "重庆市" + "&title=" + "我是Android直播测试" + userId;
                     //SharedUtils.getString("pubUrl", "rtmp://pub.nodemedia.cn/NodeMedia/stream_" + Math.round((Math.random() * 1000 + 1000))));
 
-                    try {
-                        LivePublisher.startPublish(URLEncoder.encode(pubUrl, "UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+                        LivePublisher.startPublish(pubUrl);
+//                    } catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    }
                 }
                 break;
             case R.id.publisher_flash:
