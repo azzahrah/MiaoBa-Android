@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import org.w3c.dom.Node;
+
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.nodemedia.LivePlayer;
-import cn.nodemedia.LivePlayerDelegate;
+import cn.nodemedia.NodePlayer;
+import cn.nodemedia.NodePlayerDelegate;
 import tv.miaoba.live.Constants;
 import tv.miaoba.live.R;
 import tv.miaoba.live.bean.LiveInfo;
@@ -33,9 +35,7 @@ public class LivePlayerActivity extends BaseActivity {
 
     private int userid;
     private LiveInfo liveInfo;
-    private float srcWidth;
-    private float srcHeight;
-
+    private NodePlayer np;
     @Override
     public int getLayoutId() {
         return R.layout.activity_player;
@@ -52,10 +52,10 @@ public class LivePlayerActivity extends BaseActivity {
             liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
         }
 
-        LivePlayer.init(this);
-        LivePlayer.setDelegate(new LivePlayerDelegate() {
+        np = new NodePlayer(this);
+        np.setDelegate(new NodePlayerDelegate() {
             @Override
-            public void onEventCallback(int event, String msg) {
+            public void onEventCallback(NodePlayer np, int event, String msg) {
                 Message message = new Message();
                 Bundle b = new Bundle();
                 b.putString("msg", msg);
@@ -65,7 +65,7 @@ public class LivePlayerActivity extends BaseActivity {
             }
         });
 
-        LivePlayer.setUIVIew(playerSurfacev);
+        np.setSurfaceView(playerSurfacev, NodePlayer.UIViewContentModeScaleAspectFill);
 
         /**
          * 设置缓冲区时长，与flash编程时一样，可以设置2个值
@@ -74,7 +74,7 @@ public class LivePlayerActivity extends BaseActivity {
          * 如果你的服务器支持GOP_cache可以开启来加快画面的出现
          */
         int bufferTime = Integer.valueOf(SharedUtils.getString("bufferTime", "300")); // 获取上一个页面设置的bufferTIme，非sdk方法
-        LivePlayer.setBufferTime(bufferTime);
+        np.setBufferTime(bufferTime);
 
         /**
          * maxBufferTime为最大缓冲区，当遇到网络抖动，较大的maxBufferTime更加平滑，但延迟也会跟着增加。
@@ -82,49 +82,16 @@ public class LivePlayerActivity extends BaseActivity {
          */
         int maxBufferTime = Integer.valueOf(SharedUtils.getString("maxBufferTime", "1000"));
         ;// 获取上一个页面设置的maxBufferTIme，非sdk方法
-        LivePlayer.setMaxBufferTime(maxBufferTime);
+        np.setMaxBufferTime(maxBufferTime);
 
-        /**
-         * 设置是否接收音视频流  协议参考 rtmp_specification_1.0.pdf 7.2.2.4. & 7.2.2.5.
-         * 默认值都为true 如不需要该功能可以不设置该值
-         * 注意：目前测试了fms和red5支持该参数设定有效，欢迎测试补充。目前版本只在开始播放前设置有效，中途无法变更。
-         */
-//		LivePlayer.receiveAudio(true);
-//		LivePlayer.receiveVideo(false);
-
-        /**
-         * 当设为true时，向服务端发送FCSubscribe命令，默认不发送
-         * When streaming RTMP live streams using the Akamai, Edgecast or Limelight CDN,
-         * players cannot simply connect to the live stream. Instead, they have to subscribe to it,
-         * by sending a so-called FC Subscribe call to the server.
-         */
-        // LivePlayer.subscribe(true);
 
         String playUrl = "rtmp://alplay.nodemedia.cn/live/stream_" + liveInfo.userid;
         //SharedUtils.getString("playUrl", "rtmp://play.nodemedia.cn/NodeMedia/stream");// 获取上一页设置的播放地址，非sdk方法
         /**
          * 开始播放
          */
-        LivePlayer.startPlay(playUrl);
+        np.startPlay(playUrl);
 
-        /**
-         * Demo调试用例，每200毫秒获取一次缓冲时长 单位毫秒
-         */
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				while(!LivePlayerActivity.this.isFinishing()) {
-//					Log.d("NodeMedia.java","BufferLength:"+LivePlayer.getBufferLength());
-//					try {
-//						Thread.sleep(200);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		}).start();
-//
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
 
         if (liveInfo.is_follow) {
@@ -177,39 +144,8 @@ public class LivePlayerActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LivePlayer.stopPlay();
-
-    }
-
-    /**
-     * 监听手机旋转，不销毁activity进行画面旋转，再缩放显示区域
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        doVideoFix();
-    }
-
-    /**
-     * 视频画面高宽等比缩放，此SDK——demo 取屏幕高宽做最大高宽缩放
-     */
-    private void doVideoFix() {
-        float maxWidth = ScreenUtils.getScreenWidth();
-        float maxHeight = ScreenUtils.getScreenHeight();
-        float fixWidth;
-        float fixHeight;
-        if (srcWidth / srcHeight <= maxWidth / maxHeight) {
-            fixWidth = srcWidth * maxHeight / srcHeight;
-            fixHeight = maxHeight;
-        } else {
-            fixWidth = maxWidth;
-            fixHeight = srcHeight * maxWidth / srcWidth;
-        }
-        ViewGroup.LayoutParams lp = playerSurfacev.getLayoutParams();
-        lp.width = (int) fixWidth;
-        lp.height = (int) fixHeight;
-
-        playerSurfacev.setLayoutParams(lp);
+        np.stopPlay();
+        np.deInit();
     }
 
     private Handler handler = new Handler() {
@@ -265,10 +201,6 @@ public class LivePlayerActivity extends BaseActivity {
                      * LinearLayout的大小为最大高宽,SurfaceView在内部等比缩放,画面不失真
                      * 等比缩放使用在不确定视频源高宽比例的场景,用上层LinearLayout限定了最大高宽
                      */
-                    String[] info = msg.getData().getString("msg").split("x");
-                    srcWidth = Integer.valueOf(info[0]);
-                    srcHeight = Integer.valueOf(info[1]);
-                    doVideoFix();
                     break;
                 default:
                     break;
