@@ -2,9 +2,9 @@
 <resources>
 
     <!-- StatusBar Color -->
-    <color name="colorPrimaryDark">#90E0D0</color>
+    <color name="colorPrimaryDark">#2AB7AA</color>
     <!-- Theme Color -->
-    <color name="colorPrimary">#90E0D0</color>
+    <color name="colorPrimary">#2AB7AA</color>
     <!-- App Import Text Color -->
     <color name="textColorPrimary">#000000</color>
     <!-- App Subtitle Text Color -->
@@ -12,7 +12,7 @@
     <!-- System View Default Color -->
     <color name="colorControlNormal">#444444</color>
     <!-- System View Select Color -->
-    <color name="colorAccent">#90E0D0</color>
+    <color name="colorAccent">#2AB7AA</color>
     <!-- Window Background Color -->
     <color name="windowBackground">#F0F7F6</color>
     <!-- Navigation Background Color -->
@@ -20,14 +20,14 @@
     <!-- Popup Background Color -->
     <color name="popupBackground">#FFFFFF</color>
     <!-- Popup Text Color -->
-    <color name="popupTextColor">#90E0D0</color>
+    <color name="popupTextColor">#2AB7AA</color>
     <!-- Dialog Background Color -->
     <color name="dialogBackground">#FFFFFF</color>
 
     <!-- App Theme Color Dark -->
-    <color name="colorThemeDark">#2B7970</color>
+    <color name="colorThemeDark">#1AA79A</color>
     <!-- App Theme Color -->
-    <color name="colorTheme">#90E0D0</color>
+    <color name="colorTheme">#2AB7AA</color>
     <!-- App Light Color -->
     <color name="colorLight">#FFFFFF</color>
     <!-- App Gray Color -->
