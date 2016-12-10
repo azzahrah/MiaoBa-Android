@@ -25,7 +25,7 @@
     <color name="dialogBackground">#FFFFFF</color>
 
     <!-- App Theme Color Dark -->
-    <color name="colorThemeDark">#1AA79A</color>
+    <color name="colorThemeDark">#1F645B</color>
     <!-- App Theme Color -->
     <color name="colorTheme">#2AB7AA</color>
     <!-- App Light Color -->

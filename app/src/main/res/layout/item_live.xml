@@ -59,8 +59,7 @@
         <ImageView
             android:id="@+id/user_cover"
             style="@style/common_imageview"
-            android:layout_width="@dimen/dp_360"
-            android:layout_height="@dimen/dp_360"
+            android:layout_width="match_parent"
             android:src="@drawable/mr_720" />
 
         <ImageView
