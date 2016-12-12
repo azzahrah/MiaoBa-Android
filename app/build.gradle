@@ -41,7 +41,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'airship-1.0.2', ext: 'aar')
-    compile project(':WeiboSDK')
+    compile(name: 'WeiboSDK', ext: 'aar')
 
     testCompile 'junit:junit:4.12'
 
