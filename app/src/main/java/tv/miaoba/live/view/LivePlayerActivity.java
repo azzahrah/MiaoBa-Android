@@ -1,21 +1,35 @@
 package tv.miaoba.live.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.nodemedia.NodePlayer;
 import cn.nodemedia.NodePlayerDelegate;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.MessageContent;
+import io.rong.message.InformationNotificationMessage;
+import io.rong.message.TextMessage;
+import tv.miaoba.imlib.ChatListAdapter;
+import tv.miaoba.imlib.HeartLayout;
+import tv.miaoba.imlib.InputPanel;
+import tv.miaoba.imlib.LiveKit;
+import tv.miaoba.imlib.message.GiftMessage;
 import tv.miaoba.live.Constants;
 import tv.miaoba.live.R;
 import tv.miaoba.live.bean.LiveInfo;
-import tv.miaoba.live.utils.HttpCallback;
-import tv.miaoba.live.utils.HttpUtils;
+import xyz.tanwb.airship.glide.GlideManager;
 import xyz.tanwb.airship.utils.SharedUtils;
 import xyz.tanwb.airship.utils.StatusBarUtils;
 import xyz.tanwb.airship.utils.ToastUtils;
@@ -25,12 +39,34 @@ public class LivePlayerActivity extends BaseActivity {
 
     @BindView(R.id.player_surfacev)
     SurfaceView playerSurfacev;
+    @BindView(R.id.player_images)
+    ImageView playerImages;
     @BindView(R.id.player_follow)
     ImageView playerFollow;
+
+    @BindView(R.id.btn_input)
+    ImageView btnInput;
+    @BindView(R.id.btn_heart)
+    ImageView btnHeart;
+    @BindView(R.id.btn_gift)
+    ImageView btnGift;
+    @BindView(R.id.button_panel)
+    RelativeLayout buttonPanel;
+    @BindView(R.id.input_panel)
+    InputPanel inputPanel;
+    @BindView(R.id.bottom_bar)
+    LinearLayout bottomBar;
+    @BindView(R.id.chat_listview)
+    ListView chatListview;
+    @BindView(R.id.heart_layout)
+    HeartLayout heartLayout;
 
     private int userid;
     private LiveInfo liveInfo;
     private NodePlayer np;
+    private ChatListAdapter chatListAdapter;
+    private Random random = new Random();
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_player;
@@ -47,16 +83,35 @@ public class LivePlayerActivity extends BaseActivity {
             liveInfo = (LiveInfo) getIntent().getSerializableExtra("p0");
         }
 
+        GlideManager.load(mActivity, liveInfo.images).placeholder(R.drawable.mr_720).error(R.drawable.mr_720).into(playerImages);
+
+        LiveKit.addEventHandler(handler);
+
+        chatListAdapter = new ChatListAdapter();
+        chatListview.setAdapter(chatListAdapter);
+        inputPanel.setPanelListener(new InputPanel.InputPanelListener() {
+            @Override
+            public void onSendClick(String text) {
+                final TextMessage content = TextMessage.obtain(text);
+                LiveKit.sendMessage(content);
+            }
+        });
+
+        joinChatRoom(Integer.toString(liveInfo.id));
+
+
         np = new NodePlayer(this);
         np.setDelegate(new NodePlayerDelegate() {
             @Override
             public void onEventCallback(NodePlayer np, int event, String msg) {
-                Message message = new Message();
-                Bundle b = new Bundle();
-                b.putString("msg", msg);
-                message.setData(b);
-                message.what = event;
-                handler.sendMessage(message);
+                if (handler != null) {
+                    Message message = new Message();
+                    Bundle b = new Bundle();
+                    b.putString("msg", msg);
+                    message.setData(b);
+                    message.what = event;
+                    handler.sendMessage(message);
+                }
             }
         });
 
@@ -89,11 +144,11 @@ public class LivePlayerActivity extends BaseActivity {
 
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
 
-        if (liveInfo.is_follow) {
-            playerFollow.setImageResource(R.drawable.me_yiguanzhu);
-        } else {
-            playerFollow.setImageResource(R.drawable.me_guanzhu);
-        }
+//        if (liveInfo.is_follow) {
+//            playerFollow.setImageResource(R.drawable.me_yiguanzhu);
+//        } else {
+//            playerFollow.setImageResource(R.drawable.me_guanzhu);
+//        }
     }
 
     @Override
@@ -106,39 +161,92 @@ public class LivePlayerActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
     }
 
-    @OnClick({R.id.player_follow})
+    @OnClick({R.id.background, R.id.player_follow, R.id.btn_input, R.id.btn_gift, R.id.btn_heart})
     public void onClick(View v) {
         if (!isCanClick(v)) return;
         switch (v.getId()) {
+            case R.id.background:
+                onBackAction();
+                break;
             case R.id.player_follow:
-                HttpUtils.postFollow(userid, liveInfo.liveid, new HttpCallback<Object>() {
+                ToastUtils.show(mActivity, "别点啦,伦家只是一个示例.");
+                break;
+            case R.id.btn_input:
+                buttonPanel.setVisibility(View.GONE);
+                inputPanel.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_gift:
+                LiveKit.sendMessage(new GiftMessage("2", "送您一个礼物"));
+                break;
+            case R.id.btn_heart:
+                heartLayout.post(new Runnable() {
                     @Override
-                    public void onSuccess(Object o) {
-                        liveInfo.is_follow = !liveInfo.is_follow;
-                        if (liveInfo.is_follow) {
-                            playerFollow.setImageResource(R.drawable.me_yiguanzhu);
-                        } else {
-                            playerFollow.setImageResource(R.drawable.me_guanzhu);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(String strMsg) {
-                        super.onFailure(strMsg);
-                        if (liveInfo.is_follow) {
-                            ToastUtils.show(mActivity, "取消关注失败.");
-                        } else {
-                            ToastUtils.show(mActivity, "关注失败.");
-                        }
+                    public void run() {
+                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+                        heartLayout.addHeart(rgb);
                     }
                 });
+                LiveKit.sendMessage(new GiftMessage("1", "为您点赞"));
                 break;
         }
     }
 
     @Override
+    public void onBackPressed() {
+        if (!onBackAction()) {
+            finish();
+            return;
+        }
+    }
+
+    private void joinChatRoom(final String roomId) {
+        LiveKit.joinChatRoom(roomId, 2, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                final InformationNotificationMessage content = InformationNotificationMessage.obtain("来啦");
+                LiveKit.sendMessage(content);
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                ToastUtils.show(mContext, "聊天室加入失败! errorCode = " + errorCode);
+            }
+        });
+    }
+
+    /**
+     * back键或者空白区域点击事件处理
+     *
+     * @return 已处理true, 否则false
+     */
+    public boolean onBackAction() {
+        if (inputPanel.onBackAction()) {
+            return true;
+        }
+        if (buttonPanel.getVisibility() != View.VISIBLE) {
+            inputPanel.setVisibility(View.GONE);
+            buttonPanel.setVisibility(View.VISIBLE);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     protected void onDestroy() {
+        LiveKit.removeEventHandler(handler);
+        LiveKit.quitChatRoom(new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                ToastUtils.show(mContext, "聊天室退出成功! ");
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                ToastUtils.show(mContext, "聊天室退出失败! errorCode = " + errorCode);
+            }
+        });
         super.onDestroy();
+        handler = null;
         np.stopPlay();
         np.deInit();
     }
@@ -151,24 +259,30 @@ public class LivePlayerActivity extends BaseActivity {
 
             switch (msg.what) {
                 case 1000:
+                    playerImages.setVisibility(View.VISIBLE);
 //                    Toast.makeText(LivePlayerActivity.this, "正在连接视频", Toast.LENGTH_SHORT).show();
                     break;
                 case 1001:
+                    playerImages.setVisibility(View.GONE);
 //                    Toast.makeText(LivePlayerActivity.this, "视频连接成功", Toast.LENGTH_SHORT).show();
                     break;
                 case 1002:
+                    playerImages.setVisibility(View.VISIBLE);
 //                    Toast.makeText(LivePlayerActivity.this, "视频连接失败", Toast.LENGTH_SHORT).show();
                     //流地址不存在，或者本地网络无法和服务端通信，回调这里。5秒后重连， 可停止
                     //LivePlayer.stopPlay();
                     break;
                 case 1003:
+                    playerImages.setVisibility(View.VISIBLE);
 //                    Toast.makeText(LivePlayerActivity.this, "视频开始重连", Toast.LENGTH_SHORT).show();
                     //LivePlayer.stopPlay();    //自动重连总开关
                     break;
                 case 1004:
+                    playerImages.setVisibility(View.VISIBLE);
 //                    Toast.makeText(LivePlayerActivity.this, "视频播放结束", Toast.LENGTH_SHORT).show();
                     break;
                 case 1005:
+                    playerImages.setVisibility(View.VISIBLE);
 //                    Toast.makeText(LivePlayerActivity.this, "网络异常,播放中断", Toast.LENGTH_SHORT).show();
                     //播放中途网络异常，回调这里。1秒后重连，如不需要，可停止
                     //LivePlayer.stopPlay();
@@ -197,9 +311,20 @@ public class LivePlayerActivity extends BaseActivity {
                      * 等比缩放使用在不确定视频源高宽比例的场景,用上层LinearLayout限定了最大高宽
                      */
                     break;
+                case LiveKit.MESSAGE_ARRIVED:
+                    chatListAdapter.addMessage((MessageContent) msg.obj);
+                    chatListAdapter.notifyDataSetChanged();
+                    break;
+                case LiveKit.MESSAGE_SENT:
+                    chatListAdapter.addMessage((MessageContent) msg.obj);
+                    chatListAdapter.notifyDataSetChanged();
+                    break;
+                case LiveKit.MESSAGE_SEND_ERROR:
+                    break;
                 default:
                     break;
             }
         }
     };
+
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import tv.miaoba.imlib.LiveKit;
 import tv.miaoba.live.R;
 import tv.miaoba.live.view.contract.MainContract;
 import tv.miaoba.live.view.fragment.HomeFragment;
@@ -132,5 +133,11 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     @Override
     public boolean hasSwipeFinish() {
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        LiveKit.logout();
+        super.onDestroy();
     }
 }

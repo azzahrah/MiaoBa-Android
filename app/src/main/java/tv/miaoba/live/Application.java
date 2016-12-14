@@ -6,6 +6,8 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import butterknife.ButterKnife;
+import tv.miaoba.imlib.LiveKit;
+import tv.miaoba.imlib.fakeserver.FakeServer;
 import xyz.tanwb.airship.App;
 import xyz.tanwb.airship.BaseApplication;
 import xyz.tanwb.airship.utils.Log;
@@ -26,6 +28,7 @@ public class Application extends BaseApplication {
         if (App.isNamedProcess(getPackageName())) {
             Log.e("启动主进程");
             ButterKnife.setDebug(App.isDebug());
+            LiveKit.init(this, FakeServer.getAppKey());
             // SDKInitializer.initialize(getApplicationContext());
             // MyMQTTService.startAndConnect(this);
         } else {

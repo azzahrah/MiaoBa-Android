@@ -57,7 +57,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <cn.rongcloud.live.ui.widget.EmojiBoard
+    <tv.miaoba.imlib.EmojiBoard
         android:id="@+id/input_emoji_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
