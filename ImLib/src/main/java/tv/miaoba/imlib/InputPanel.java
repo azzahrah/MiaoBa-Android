@@ -118,6 +118,14 @@ public class InputPanel extends LinearLayout {
         return false;
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == View.GONE) {
+            hideKeyboard();
+        }
+    }
+
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getWindowToken(), 0);

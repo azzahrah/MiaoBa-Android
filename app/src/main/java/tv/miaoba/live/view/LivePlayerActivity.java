@@ -29,6 +29,7 @@ import tv.miaoba.imlib.message.GiftMessage;
 import tv.miaoba.live.Constants;
 import tv.miaoba.live.R;
 import tv.miaoba.live.bean.LiveInfo;
+import xyz.tanwb.airship.App;
 import xyz.tanwb.airship.glide.GlideManager;
 import xyz.tanwb.airship.utils.SharedUtils;
 import xyz.tanwb.airship.utils.StatusBarUtils;
