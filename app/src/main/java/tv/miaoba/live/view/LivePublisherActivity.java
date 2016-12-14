@@ -186,7 +186,7 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
                     //SharedUtils.getString("pubUrl", "rtmp://pub.nodemedia.cn/NodeMedia/stream_" + Math.round((Math.random() * 1000 + 1000))));
 
 //                    try {
-                        LivePublisher.startPublish(pubUrl);
+                    LivePublisher.startPublish(pubUrl);
 //                    } catch (UnsupportedEncodingException e) {
 //                        e.printStackTrace();
 //                    }
@@ -229,7 +229,9 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
 
     @Override
     public void onEventCallback(int event, String msg) {
-        handler.sendEmptyMessage(event);
+        if (handler != null) {
+            handler.sendEmptyMessage(event);
+        }
     }
 
     private Handler handler = new Handler() {
@@ -294,6 +296,7 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handler = null;
         LivePublisher.stopPreview();
         LivePublisher.stopPublish();
     }

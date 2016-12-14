@@ -1,15 +1,11 @@
 package tv.miaoba.live.view;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import org.w3c.dom.Node;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,7 +16,6 @@ import tv.miaoba.live.R;
 import tv.miaoba.live.bean.LiveInfo;
 import tv.miaoba.live.utils.HttpCallback;
 import tv.miaoba.live.utils.HttpUtils;
-import xyz.tanwb.airship.utils.ScreenUtils;
 import xyz.tanwb.airship.utils.SharedUtils;
 import xyz.tanwb.airship.utils.StatusBarUtils;
 import xyz.tanwb.airship.utils.ToastUtils;

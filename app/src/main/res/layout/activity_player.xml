@@ -10,11 +10,67 @@
         android:layout_centerInParent="true" />
 
     <ImageView
-        android:id="@+id/player_follow"
-        style="@style/common_rect_wrap"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_16"
-        android:layout_marginTop="@dimen/dp_26"
-        android:src="@drawable/me_guanzhu" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/fake_members" />
 
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/button_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp">
+
+            <ImageView
+                android:id="@+id/btn_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/live_input" />
+
+            <ImageView
+                android:id="@+id/btn_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/live_heart" />
+
+            <ImageView
+                android:id="@+id/btn_gift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/btn_heart"
+                android:src="@drawable/live_gift" />
+        </RelativeLayout>
+
+        <tv.miaoba.imlib.InputPanel
+            android:id="@+id/input_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chat_listview"
+        android:layout_width="230dp"
+        android:layout_height="152dp"
+        android:layout_above="@+id/bottom_bar"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
+        android:transcriptMode="alwaysScroll" />
+
+    <tv.miaoba.imlib.HeartLayout
+        android:id="@+id/heart_layout"
+        android:layout_width="86dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="4dp" />
 </RelativeLayout>
