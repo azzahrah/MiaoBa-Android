@@ -38,7 +38,7 @@ public class Constants {
     public final static String DNS_ADDRESS_DEV = "http://api.nodemedia.cn"; // DEV
     public final static String DNS_ADDRESS_ONLINE = "http://api.nodemedia.cn"; // ONLINE
 
-    private final static String HTTP_HOMECALL = "/api/home/";
+    private final static String HTTP_HOMECALL = "/api/";
     public final static String HTTP_LOGIN = HTTP_HOMECALL + "login.html";//用户登陆 登陆帐号(String uname) 密码，加密后传递(String pwds) 登陆类型 1：注册用登陆 2：三方登陆(int type) 请求时间戳(int temptime) 签名加密串(String sign) >>UserInfo
     public final static String HTTP_REGISTER = HTTP_HOMECALL + "userinfo/register.html";//用户注册 登陆帐号(String uname) 可以是自己输入的帐号或者是三方openid  密码(String pwds) 三方的时候密码默认为空  昵称(String nick)  头像(String faces) 注册类型(String utype) QQ  WeiXin Sina RenRen DouBan >>
     public final static String HTTP_USERINFO_GET = HTTP_HOMECALL + "userinfo.html";//获取用户详细信息 登陆用户ID(int userid) 请求时间戳(int temptime) 签名加密串(String sign) >>UserInfo
