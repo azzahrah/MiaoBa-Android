@@ -57,7 +57,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <tv.miaoba.imlib.EmojiBoard
+    <tv.miaoba.imlib.widget.EmojiBoard
         android:id="@+id/input_emoji_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

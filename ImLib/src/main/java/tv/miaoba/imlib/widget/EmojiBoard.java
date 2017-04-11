@@ -1,4 +1,4 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.widget;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -16,6 +16,10 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import tv.miaoba.imlib.R;
+import tv.miaoba.imlib.controller.CommonUtil;
+import tv.miaoba.imlib.controller.EmojiManager;
 
 /**
  * Created by Bining on 2016/12/14.

@@ -1,4 +1,4 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.animation;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,9 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/**
- * Created by Bining on 2016/12/14.
- */
+import tv.miaoba.imlib.R;
 
 public class HeartView  extends ImageView {
 

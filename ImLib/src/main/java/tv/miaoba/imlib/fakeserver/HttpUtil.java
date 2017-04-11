@@ -13,7 +13,6 @@ import java.net.UnknownHostException;
 import java.security.MessageDigest;
 
 public class HttpUtil {
-
     private static final String TAG = "HttpUtil";
 
     public interface OnResponse {

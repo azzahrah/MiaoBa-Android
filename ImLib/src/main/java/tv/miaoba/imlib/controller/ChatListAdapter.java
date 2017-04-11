@@ -1,4 +1,4 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.controller;
 
 import android.content.Context;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 
 import io.rong.imlib.model.MessageContent;
+import tv.miaoba.imlib.LiveKit;
 import tv.miaoba.imlib.message.BaseMsgView;
 import tv.miaoba.imlib.message.UnknownMsgView;
 

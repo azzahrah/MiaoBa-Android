@@ -1,4 +1,4 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.animation;
 
 import android.graphics.Matrix;
 import android.graphics.Path;
@@ -13,9 +13,7 @@ import android.view.animation.Transformation;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Created by Bining on 2016/12/14.
- */
+import tv.miaoba.imlib.animation.AbstractPathAnimator;
 
 public class PathAnimator extends AbstractPathAnimator {
     private final AtomicInteger mCounter = new AtomicInteger(0);
@@ -93,3 +91,4 @@ public class PathAnimator extends AbstractPathAnimator {
         return (float) ((a - b) / (c - b) * (e - d) + d);
     }
 }
+

@@ -14,6 +14,7 @@ import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.InformationNotificationMessage;
 import io.rong.message.TextMessage;
+import tv.miaoba.imlib.controller.EmojiManager;
 import tv.miaoba.imlib.message.BaseMsgView;
 import tv.miaoba.imlib.message.GiftMessage;
 import tv.miaoba.imlib.message.GiftMsgView;

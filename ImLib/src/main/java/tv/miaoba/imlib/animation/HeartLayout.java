@@ -1,13 +1,11 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.animation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-/**
- * Created by Bining on 2016/12/14.
- */
+import tv.miaoba.imlib.R;
 
 public class HeartLayout extends RelativeLayout {
 
@@ -67,4 +65,3 @@ public class HeartLayout extends RelativeLayout {
     }
 
 }
-

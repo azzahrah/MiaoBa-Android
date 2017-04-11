@@ -82,6 +82,9 @@ public interface BaseLoginContract {
                 FakeServer.getToken(rcUserInfo, new HttpUtil.OnResponse() {
                     @Override
                     public void onResponse(int code, String body) {
+
+                        Log.e("code:" + code + " body:" + body);
+
                         if (code != 200) {
                             ToastUtils.show(mContext, body);
                             return;
@@ -91,6 +94,8 @@ public interface BaseLoginContract {
                         try {
                             JSONObject jsonObj = new JSONObject(body);
                             token = jsonObj.getString("token");
+
+                            Log.e("token:" + token);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             ToastUtils.show(mContext, "Token 解析失败!");
@@ -106,7 +111,7 @@ public interface BaseLoginContract {
 
                             @Override
                             public void onSuccess(String userId) {
-                                Log.d("connect onSuccess:" + userId);
+                                Log.e("connect onSuccess:" + userId);
                                 onSucc();
                             }
 

@@ -1,4 +1,4 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.controller;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,6 +15,8 @@ import android.text.style.ImageSpan;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import tv.miaoba.imlib.R;
 
 public class EmojiManager {
 

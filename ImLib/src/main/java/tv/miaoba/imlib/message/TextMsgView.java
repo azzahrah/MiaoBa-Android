@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
-import tv.miaoba.imlib.EmojiManager;
+import tv.miaoba.imlib.controller.EmojiManager;
 import tv.miaoba.imlib.R;
 
 public class TextMsgView extends BaseMsgView {

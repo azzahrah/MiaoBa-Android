@@ -1,4 +1,4 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.widget;
 
 import android.content.Context;
 import android.text.Editable;
@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import tv.miaoba.imlib.R;
+import tv.miaoba.imlib.controller.EmojiManager;
 
 public class InputPanel extends LinearLayout {
 

@@ -1,4 +1,4 @@
-package tv.miaoba.imlib;
+package tv.miaoba.imlib.animation;
 
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -9,14 +9,12 @@ import android.view.ViewGroup;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Created by Bining on 2016/12/14.
- */
+import tv.miaoba.imlib.R;
 
 public abstract class AbstractPathAnimator {
-
     private final Random mRandom;
     protected final Config mConfig;
+
 
     public AbstractPathAnimator(Config config) {
         mConfig = config;
@@ -88,4 +86,7 @@ public abstract class AbstractPathAnimator {
 
 
     }
+
+
 }
+
