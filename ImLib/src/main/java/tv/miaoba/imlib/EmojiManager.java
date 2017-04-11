@@ -105,8 +105,7 @@ public class EmojiManager {
         }
 
         @Override
-        public void draw(Canvas canvas, CharSequence text, int start, int end, float x,
-                         int top, int y, int bottom, Paint paint) {
+        public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
             Drawable b = getDrawable();
             Paint.FontMetricsInt fm = paint.getFontMetricsInt();
             int transY = ((bottom - top) - getDrawable().getBounds().bottom) / 2 + top;
