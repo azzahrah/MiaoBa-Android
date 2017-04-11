@@ -6,6 +6,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import butterknife.ButterKnife;
+import io.rong.imlib.RongIMClient;
 import tv.miaoba.imlib.LiveKit;
 import tv.miaoba.imlib.fakeserver.FakeServer;
 import xyz.tanwb.airship.App;
@@ -25,6 +26,17 @@ public class Application extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+
+//        /**
+//         * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIMClient 的进程和 Push 进程执行了 init。
+//         * io.rong.push 为融云 push 进程名称，不可修改。
+//         */
+//        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
+//                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+//            RongIMClient.init(this);
+//        }
+
         if (App.isNamedProcess(getPackageName())) {
             Log.e("启动主进程");
             ButterKnife.setDebug(App.isDebug());

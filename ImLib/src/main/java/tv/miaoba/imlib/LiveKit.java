@@ -2,6 +2,7 @@ package tv.miaoba.imlib;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,9 +82,15 @@ public class LiveKit {
      * @param appKey  融云注册应用的AppKey
      */
     public static void init(Context context, String appKey) {
-        RongIMClient.init(context, appKey);
+        //RongIMClient.init(context, appKey);
+        RongIMClient.init(context);
         EmojiManager.init(context);
-
+        RongIMClient.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
+            @Override
+            public void onChanged(ConnectionStatus connectionStatus) {
+                Log.e("ConnectionStatusListener:", connectionStatus.getMessage());
+            }
+        });
         RongIMClient.setOnReceiveMessageListener(onReceiveMessageListener);
 
         registerMessageType(GiftMessage.class);
