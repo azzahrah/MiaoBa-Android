@@ -60,7 +60,7 @@
                 android:src="@drawable/live_gift" />
         </RelativeLayout>
 
-        <tv.miaoba.imlib.widget.InputPanel
+        <io.rong.imlib.widget.InputPanel
             android:id="@+id/input_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
         android:scrollbars="none"
         android:transcriptMode="alwaysScroll" />
 
-    <tv.miaoba.imlib.animation.HeartLayout
+    <io.rong.imlib.animation.HeartLayout
         android:id="@+id/heart_layout"
         android:layout_width="86dp"
         android:layout_height="match_parent"

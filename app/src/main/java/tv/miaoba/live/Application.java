@@ -1,14 +1,15 @@
 package tv.miaoba.live;
 
+import android.content.Context;
+
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import butterknife.ButterKnife;
-import io.rong.imlib.RongIMClient;
-import tv.miaoba.imlib.LiveKit;
-import tv.miaoba.imlib.fakeserver.FakeServer;
+import io.rong.imlib.LiveKit;
+import io.rong.imlib.fakeserver.FakeServer;
 import xyz.tanwb.airship.App;
 import xyz.tanwb.airship.BaseApplication;
 import xyz.tanwb.airship.utils.Log;
@@ -19,6 +20,8 @@ import xyz.tanwb.airship.utils.Log;
  */
 public class Application extends BaseApplication {
 
+    private static Context context;
+
     public IWXAPI mWeixinAPI;
     public Tencent mTencent;
     public AuthInfo mAuthInfo;
@@ -26,8 +29,6 @@ public class Application extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
-
 //        /**
 //         * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIMClient 的进程和 Push 进程执行了 init。
 //         * io.rong.push 为融云 push 进程名称，不可修改。
@@ -37,15 +38,21 @@ public class Application extends BaseApplication {
 //            RongIMClient.init(this);
 //        }
 
+        context = this;
+        LiveKit.init(context, FakeServer.getAppKey());
+
         if (App.isNamedProcess(getPackageName())) {
             Log.e("启动主进程");
             ButterKnife.setDebug(App.isDebug());
-            LiveKit.init(this, FakeServer.getAppKey());
             // SDKInitializer.initialize(getApplicationContext());
             // MyMQTTService.startAndConnect(this);
         } else {
             Log.e("启动其他进程");
         }
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     public IWXAPI getIWXAPI() {

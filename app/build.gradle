@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "tv.miaoba.live"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -36,13 +36,18 @@ android {
             dirs 'libs'
         }
     }
+    dexOptions {
+        maxProcessCount 4
+        javaMaxHeapSize "2g"
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
     compile(name: 'airship-1.0.2', ext: 'aar')
-    compile(name: 'WeiboSDK', ext: 'aar')
     compile project(':ImLib')
+    compile project(':WeiboSDK')
 
     testCompile 'junit:junit:4.12'
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import tv.miaoba.imlib.LiveKit;
+import io.rong.imlib.LiveKit;
 import tv.miaoba.live.R;
 import tv.miaoba.live.view.contract.MainContract;
 import tv.miaoba.live.view.fragment.HomeFragment;

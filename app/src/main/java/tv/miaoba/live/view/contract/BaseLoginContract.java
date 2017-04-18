@@ -6,9 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.rong.imlib.RongIMClient;
-import tv.miaoba.imlib.LiveKit;
-import tv.miaoba.imlib.fakeserver.FakeServer;
-import tv.miaoba.imlib.fakeserver.HttpUtil;
+import io.rong.imlib.LiveKit;
+import io.rong.imlib.fakeserver.FakeServer;
+import io.rong.imlib.fakeserver.HttpUtil;
 import tv.miaoba.live.Constants;
 import tv.miaoba.live.bean.UserInfo;
 import tv.miaoba.live.utils.HttpCallback;
@@ -82,9 +82,7 @@ public interface BaseLoginContract {
                 FakeServer.getToken(rcUserInfo, new HttpUtil.OnResponse() {
                     @Override
                     public void onResponse(int code, String body) {
-
                         Log.e("code:" + code + " body:" + body);
-
                         if (code != 200) {
                             ToastUtils.show(mContext, body);
                             return;
@@ -94,7 +92,6 @@ public interface BaseLoginContract {
                         try {
                             JSONObject jsonObj = new JSONObject(body);
                             token = jsonObj.getString("token");
-
                             Log.e("token:" + token);
                         } catch (JSONException e) {
                             e.printStackTrace();
