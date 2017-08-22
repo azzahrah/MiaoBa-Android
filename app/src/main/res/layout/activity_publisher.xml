@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/common_rect_match">
 
-    <android.opengl.GLSurfaceView
+    <cn.nodemedia.NodeCameraView
         android:id="@+id/publisher_surface"
         style="@style/common_rect_match" />
 

@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +16,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.nodemedia.NodePlayer;
 import cn.nodemedia.NodePlayerDelegate;
+import cn.nodemedia.NodePlayerView;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.InformationNotificationMessage;
@@ -38,7 +38,7 @@ import xyz.tanwb.airship.view.BaseActivity;
 public class LivePlayerActivity extends BaseActivity {
 
     @BindView(R.id.player_surfacev)
-    SurfaceView playerSurfacev;
+    NodePlayerView playerSurfacev;
     @BindView(R.id.player_images)
     ImageView playerImages;
     @BindView(R.id.player_follow)
@@ -101,7 +101,7 @@ public class LivePlayerActivity extends BaseActivity {
 
 
         np = new NodePlayer(this);
-        np.setDelegate(new NodePlayerDelegate() {
+        np.setNodePlayerDelegate(new NodePlayerDelegate() {
             @Override
             public void onEventCallback(NodePlayer np, int event, String msg) {
                 if (handler != null) {
@@ -115,7 +115,7 @@ public class LivePlayerActivity extends BaseActivity {
             }
         });
 
-        np.setSurfaceView(playerSurfacev, NodePlayer.UIViewContentModeScaleAspectFill);
+        np.setPlayerView(playerSurfacev);
 
         /**
          * 设置缓冲区时长，与flash编程时一样，可以设置2个值
@@ -123,25 +123,22 @@ public class LivePlayerActivity extends BaseActivity {
          * 注意：声音因为没有关键帧，所以这个缓冲区足够马上就可以听到声音，但视频需要等待关键帧后才会开始显示画面。
          * 如果你的服务器支持GOP_cache可以开启来加快画面的出现
          */
-        int bufferTime = Integer.valueOf(SharedUtils.getString("bufferTime", "300")); // 获取上一个页面设置的bufferTIme，非sdk方法
-        np.setBufferTime(bufferTime);
+        np.setBufferTime(5 00);
 
         /**
          * maxBufferTime为最大缓冲区，当遇到网络抖动，较大的maxBufferTime更加平滑，但延迟也会跟着增加。
          * 这个值关乎延迟的大小。
          */
-        int maxBufferTime = Integer.valueOf(SharedUtils.getString("maxBufferTime", "1000"));
-        ;// 获取上一个页面设置的maxBufferTIme，非sdk方法
-        np.setMaxBufferTime(maxBufferTime);
+        np.setMaxBufferTime(1000);
 
 
         String playUrl = "rtmp://xyplay.nodemedia.cn/live/stream_" + liveInfo.userid;
-        //SharedUtils.getString("playUrl", "rtmp://play.nodemedia.cn/NodeMedia/stream");// 获取上一页设置的播放地址，非sdk方法
+        np.setInputUrl(playUrl);
         /**
          * 开始播放
          */
-        np.startPlay(playUrl);
 
+        np.start();
         userid = SharedUtils.getInt(Constants.USEROPENID, 0);
 
 //        if (liveInfo.is_follow) {
@@ -247,8 +244,8 @@ public class LivePlayerActivity extends BaseActivity {
         });
         super.onDestroy();
         handler = null;
-        np.stopPlay();
-        np.deInit();
+        np.stop();
+        np.release();
     }
 
     private Handler handler = new Handler() {

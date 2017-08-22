@@ -1,35 +1,30 @@
 package tv.miaoba.live.view;
 
-import android.content.res.Configuration;
-import android.opengl.GLSurfaceView;
+
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Surface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.nodemedia.LivePublisher;
-import cn.nodemedia.LivePublisherDelegate;
+import cn.nodemedia.NodeCameraView;
+import cn.nodemedia.NodePublisher;
+import cn.nodemedia.NodePublisherDelegate;
 import tv.miaoba.live.Constants;
 import tv.miaoba.live.R;
 import xyz.tanwb.airship.utils.SharedUtils;
 import xyz.tanwb.airship.utils.StatusBarUtils;
 import xyz.tanwb.airship.view.BaseActivity;
 
-public class LivePublisherActivity extends BaseActivity implements OnClickListener, LivePublisherDelegate {
+public class LivePublisherActivity extends BaseActivity implements OnClickListener ,NodePublisherDelegate{
 
     @BindView(R.id.publisher_surface)
-    GLSurfaceView publisherSurface;
+    NodeCameraView publisherSurface;
     @BindView(R.id.publisher_mic)
     Button publisherMic;
     @BindView(R.id.publisher_sw)
@@ -43,6 +38,7 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
     @BindView(R.id.publisher_cap)
     ImageView publisherCap;
 
+    private NodePublisher np;
     private boolean isStarting = false;
     private boolean isMicOn = true;
     private boolean isCamOn = true;
@@ -63,87 +59,48 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
         isStarting = false;
         userId = SharedUtils.getInt(Constants.USEROPENID, 0);
 
-        LivePublisher.init(this); // 1.初始化
-        LivePublisher.setDelegate(this); // 2.设置事件回调
-
+        np = new NodePublisher(this);
+        np.setNodePublisherDelegate(this);
+        np.setCameraPreview(publisherSurface, NodePublisher.CAMERA_FRONT, true);
         /**
          * 设置输出音频参数 码率 32kbps 使用HE-AAC ,部分服务端不支持HE-AAC,会导致发布失败
          */
-        LivePublisher.setAudioParam(32 * 1000, LivePublisher.AAC_PROFILE_HE);
+        np.setAudioParam(32 * 1000, NodePublisher.AUDIO_PROFILE_HEAAC);
 
-        /**
-         * 设置输出视频参数 宽 640 高 360 fps 15 码率 300kbps 以下建议分辨率及比特率 不用超过1280x720
-         * 320X180@15 ~~ 200kbps 480X272@15 ~~ 250kbps 568x320@15 ~~ 300kbps
-         * 640X360@15 ~~ 400kbps 720x405@15 ~~ 500kbps 854x480@15 ~~ 600kbps
-         * 960x540@15 ~~ 700kbps 1024x576@15 ~~ 800kbps 1280x720@15 ~~ 1000kbps
-         * 使用main profile
-         */
-        LivePublisher.setVideoParam(640, 360, 15, 500 * 1000, LivePublisher.AVC_PROFILE_MAIN);
+
+        np.setVideoParam(NodePublisher.VIDEO_PPRESET_16X9_360, 24, 500 * 1000, NodePublisher.VIDEO_PROFILE_MAIN, false);
 
         /**
          * 是否开启背景噪音抑制
          */
-        LivePublisher.setDenoiseEnable(true);
+        np.setDenoiseEnable(true);
 
-        LivePublisher.setSmoothSkinLevel(3);
         /**
-         * 开始视频预览， cameraPreview ： 用以回显摄像头预览的SurfaceViewd对象，如果此参数传入null，则只发布音频
-         * interfaceOrientation ： 程序界面的方向，也做调整摄像头旋转度数的参数， camId：
-         * 摄像头初始id，LivePublisher.CAMERA_BACK 后置，LivePublisher.CAMERA_FRONT 前置
+         * 美颜等级 3
          */
-        LivePublisher.startPreview(publisherSurface, getWindowManager().getDefaultDisplay().getRotation(), true); // 5.开始预览
-        // 如果传null
-        // 则只发布音频
+        np.setBeautyLevel(3);
+
+        /**
+         * 开始预览
+         */
+        np.startPreview();
+
     }
 
     @Override
     public void initPresenter() {
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // 注意：如果你的业务方案需求只做单一方向的视频直播，可以不处理这段
 
-        // 如果程序UI没有锁定屏幕方向，旋转手机后，请把新的界面方向传入，以调整摄像头预览方向
-        LivePublisher.setCameraOrientation(getWindowManager().getDefaultDisplay().getRotation());
-
-        // 还没有开始发布视频的时候，可以跟随界面旋转的方向设置视频与当前界面方向一致，但一经开始发布视频，是不能修改视频发布方向的了
-        // 请注意：如果视频发布过程中旋转了界面，停止发布，再开始发布，是不会触发"onConfigurationChanged"进入这个参数设置的
-        if (!isStarting) {
-            switch (getWindowManager().getDefaultDisplay().getRotation()) {
-                case Surface.ROTATION_0:
-                    LivePublisher.setVideoOrientation(LivePublisher.VIDEO_ORI_PORTRAIT);
-                    break;
-                case Surface.ROTATION_90:
-                    LivePublisher.setVideoOrientation(LivePublisher.VIDEO_ORI_LANDSCAPE);
-                    break;
-                case Surface.ROTATION_180:
-                    LivePublisher.setVideoOrientation(LivePublisher.VIDEO_ORI_PORTRAIT_REVERSE);
-                    break;
-                case Surface.ROTATION_270:
-                    LivePublisher.setVideoOrientation(LivePublisher.VIDEO_ORI_LANDSCAPE_REVERSE);
-                    break;
-            }
-        }
-    }
 
     @Override
     @OnClick({R.id.publisher_mic, R.id.publisher_sw, R.id.publisher_video, R.id.publisher_cam, R.id.publisher_flash, R.id.publisher_cap})
     public void onClick(View arg0) {
         switch (arg0.getId()) {
-            case R.id.publisher_cap:
-                String capFilePath = Environment.getExternalStorageDirectory().getPath() + "/pub_cap.jpg";
-                if (LivePublisher.capturePicture(capFilePath)) {
-                    Toast.makeText(LivePublisherActivity.this, "截图保存到 " + capFilePath, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LivePublisherActivity.this, "截图保存失败", Toast.LENGTH_SHORT).show();
-                }
-                break;
             case R.id.publisher_mic:
                 if (isStarting) {
                     isMicOn = !isMicOn;
-                    LivePublisher.setMicEnable(isMicOn); // 设置是否打开麦克风
+                    np.setAudioEnable(isMicOn); // 设置是否打开麦克风
                     if (isMicOn) {
                         handler.sendEmptyMessage(3101);
                     } else {
@@ -152,52 +109,30 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
                 }
                 break;
             case R.id.publisher_sw:
-                LivePublisher.switchCamera();// 切换前后摄像头
-                LivePublisher.setFlashEnable(false);// 关闭闪光灯,前置不支持闪光灯
+                np.switchCamera();// 切换前后摄像头
+                np.setFlashEnable(false);// 关闭闪光灯,前置不支持闪光灯
                 isFlsOn = false;
                 publisherFlash.setBackgroundResource(R.drawable.ic_flash_off);
                 break;
             case R.id.publisher_video:
                 if (isStarting) {
-                    LivePublisher.stopPublish();// 停止发布
+                    np.stop();
                 } else {
-                    /**
-                     * 设置视频发布的方向，此方法为可选，如果不调用，则输出视频方向跟随界面方向，如果特定指出视频方向，
-                     * 在startPublish前调用设置 videoOrientation ： 视频方向 VIDEO_ORI_PORTRAIT
-                     * home键在 下 的 9:16 竖屏方向 VIDEO_ORI_LANDSCAPE home键在 右 的 16:9 横屏方向
-                     * VIDEO_ORI_PORTRAIT_REVERSE home键在 上 的 9:16 竖屏方向
-                     * VIDEO_ORI_LANDSCAPE_REVERSE home键在 左 的 16:9 横屏方向
-                     */
-                    // LivePublisher.setVideoOrientation(LivePublisher.VIDEO_ORI_PORTRAIT);
-
-                    /**
-                     * 设置发布模式
-                     * 参考 rtmp_specification_1.0.pdf 7.2.2.6. publish
-                     * LivePublisher。PUBLISH_TYPE_LIVE			'live' 发布类型
-                     * LivePublisher。PUBLISH_TYPE_RECORD		'record' 发布类型
-                     * LivePublisher。PUBLISH_TYPE_APPEND		'append' 发布类型
-                     */
-                    // LivePublisher.setPublishType(LivePublisher.PUBLISH_TYPE_RECORD); //
 
                     /**
                      * 开始视频发布 rtmpUrl rtmp流地址
                      */
                     String pubUrl = "rtmp://xypush.nodemedia.cn/live/stream_" + SharedUtils.getInt(Constants.USEROPENID, 0) + "?userid=" + userId + "&location=" + "重庆市" + "&title=" + "我是Android直播测试" + userId;
-                    //SharedUtils.getString("pubUrl", "rtmp://pub.nodemedia.cn/NodeMedia/stream_" + Math.round((Math.random() * 1000 + 1000))));
-
-//                    try {
-                    LivePublisher.startPublish(pubUrl);
-//                    } catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
+                    np.setOutputUrl(pubUrl);
+                    np.start();
                 }
                 break;
             case R.id.publisher_flash:
                 int ret = -1;
                 if (isFlsOn) {
-                    ret = LivePublisher.setFlashEnable(false);
+                    ret = np.setFlashEnable(false);
                 } else {
-                    ret = LivePublisher.setFlashEnable(true);
+                    ret = np.setFlashEnable(true);
                 }
                 if (ret == -1) {
                     // 无闪光灯,或处于前置摄像头,不支持闪光灯操作
@@ -214,7 +149,7 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
             case R.id.publisher_cam:
                 if (isStarting) {
                     isCamOn = !isCamOn;
-                    LivePublisher.setCamEnable(isCamOn);
+                    np.setVideoEnable(isCamOn);
                     if (isCamOn) {
                         handler.sendEmptyMessage(3103);
                     } else {
@@ -228,7 +163,7 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
     }
 
     @Override
-    public void onEventCallback(int event, String msg) {
+    public void onEventCallback(NodePublisher nodePublisher, int event, String s) {
         if (handler != null) {
             handler.sendEmptyMessage(event);
         }
@@ -297,8 +232,9 @@ public class LivePublisherActivity extends BaseActivity implements OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         handler = null;
-        LivePublisher.stopPreview();
-        LivePublisher.stopPublish();
+        np.stop();
+        np.stopPreview();
+        np.release();
     }
 
 }

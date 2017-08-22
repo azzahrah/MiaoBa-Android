@@ -35,8 +35,8 @@ public class Constants {
     public final static String LOCATIONLONG = "LocationLong";//用户经度位置
     public final static String LOCATIONLAT = "LocationLat";//用户纬度位置
 
-    public final static String DNS_ADDRESS_DEV = "http://api.nodemedia.cn"; // DEV
-    public final static String DNS_ADDRESS_ONLINE = "http://api.nodemedia.cn"; // ONLINE
+    public final static String DNS_ADDRESS_DEV = "http://miaoba.tv"; // DEV
+    public final static String DNS_ADDRESS_ONLINE = "http://miaoba.tv"; // ONLINE
 
     private final static String HTTP_HOMECALL = "/api/";
     public final static String HTTP_LOGIN = HTTP_HOMECALL + "login.html";//用户登陆 登陆帐号(String uname) 密码，加密后传递(String pwds) 登陆类型 1：注册用登陆 2：三方登陆(int type) 请求时间戳(int temptime) 签名加密串(String sign) >>UserInfo

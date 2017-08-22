@@ -46,6 +46,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     compile(name: 'airship-1.0.2', ext: 'aar')
+    compile(name: 'NodeMediaClient-2.1.10', ext: 'aar')
     compile project(':ImLib')
     compile project(':WeiboSDK')
 
